@@ -1,11 +1,9 @@
 package bionicProInc.db.jdbc;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 import bionicProInc.db.pojos.*;
-import bionicsproInc.db.ifaces.DBManager;
+import bionicProInc.db.ifaces.DBManager;
 
 public class JDBCManager implements DBManager {
 	private Connection c;
