@@ -22,11 +22,9 @@ public class Customer implements Serializable {
 	private String street;
 	private String city;
 	private int postal_code;
-	private ArrayList<Order> orders;
-	private ArrayList<Product> products;
 
 	public Customer(int id, String first_name, String last_name, int age, gender gender, int phone, String email,
-			String street, String city, int postal_code, ArrayList<Order> orders, ArrayList<Product> products) {
+			String street, String city, int postal_code) {
 		super();
 		this.id = id;
 		this.first_name = first_name;
@@ -38,15 +36,8 @@ public class Customer implements Serializable {
 		this.street = street;
 		this.city = city;
 		this.postal_code = postal_code;
-		this.orders = orders;
-		this.products = products;
 	}
 
-	public Customer(int id, ArrayList<Order> orders) {
-		super();
-		this.id = id;
-		this.orders = orders;
-	}
 
 	public int getId() {
 		return id;
@@ -128,21 +119,6 @@ public class Customer implements Serializable {
 		this.postal_code = postal_code;
 	}
 
-	public ArrayList<Order> getOrders() {
-		return orders;
-	}
-
-	public void setOrdes(ArrayList<Order> orders) {
-		this.orders = orders;
-	}
-
-	public ArrayList<Product> getProducts() {
-		return products;
-	}
-
-	public void setProducts(ArrayList<Product> products) {
-		this.products = products;
-	}
 
 	@Override
 	public int hashCode() {
@@ -155,10 +131,8 @@ public class Customer implements Serializable {
 		result = prime * result + ((first_name == null) ? 0 : first_name.hashCode());
 		result = prime * result + id;
 		result = prime * result + ((last_name == null) ? 0 : last_name.hashCode());
-		result = prime * result + ((orders == null) ? 0 : orders.hashCode());
 		result = prime * result + phone;
 		result = prime * result + postal_code;
-		result = prime * result + ((products == null) ? 0 : products.hashCode());
 		result = prime * result + ((street == null) ? 0 : street.hashCode());
 		return result;
 	}
@@ -198,19 +172,9 @@ public class Customer implements Serializable {
 				return false;
 		} else if (!last_name.equals(other.last_name))
 			return false;
-		if (orders == null) {
-			if (other.orders != null)
-				return false;
-		} else if (!orders.equals(other.orders))
-			return false;
 		if (phone != other.phone)
 			return false;
 		if (postal_code != other.postal_code)
-			return false;
-		if (products == null) {
-			if (other.products != null)
-				return false;
-		} else if (!products.equals(other.products))
 			return false;
 		if (street == null) {
 			if (other.street != null)
