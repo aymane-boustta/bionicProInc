@@ -11,7 +11,7 @@ import javax.persistence.Query;
 
 import bionicProInc.db.pojos.users.Role;
 import bionicProInc.db.pojos.users.User;
-import bionicsproInc.db.ifaces.UserManager;
+import bionicProInc.db.ifaces.UserManager;
 
 public class JPAUserManager implements UserManager {
 

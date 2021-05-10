@@ -16,8 +16,8 @@
 		<class>bionicsproInc.db.pojos.Customer</class>
 		<class>bionicsproInc.db.pojos.Engineer</class>
 		<class>bionicsproInc.db.pojos.Order</class>  -->
-		<class>bionicsproInc.db.pojos.users.Role</class>
-		<class>bionicsproInc.db.pojos.users.User</class> 
+		<class>bionicProInc.db.pojos.users.Role</class>
+		<class>bionicProInc.db.pojos.users.User</class> 
  
 		
 

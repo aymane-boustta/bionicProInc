@@ -12,9 +12,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import bionicsproInc.db.jdbc.JDBCManager;
-import bionicsproInc.db.pojos.Engineer;
-import bionicsproInc.db.pojos.Product;
+import bionicProInc.db.jdbc.JDBCManager;
+import bionicProInc.db.pojos.Engineer;
+import bionicProInc.db.pojos.Product;
 
 public class Main {
 

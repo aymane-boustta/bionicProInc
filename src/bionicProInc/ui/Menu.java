@@ -9,11 +9,11 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
-import bionicsproInc.db.ifaces.*;
-import bionicsproInc.db.jdbc.JDBCManager;
-import bionicsproInc.db.jpa.JPAUserManager;
-import bionicsproInc.db.pojos.*;
-import bionicsproInc.db.pojos.users.*;
+import bionicProInc.db.ifaces.*;
+import bionicProInc.db.jdbc.JDBCManager;
+import bionicProInc.db.jpa.JPAUserManager;
+import bionicProInc.db.pojos.*;
+import bionicProInc.db.pojos.users.*;
 
 public class Menu {
 
