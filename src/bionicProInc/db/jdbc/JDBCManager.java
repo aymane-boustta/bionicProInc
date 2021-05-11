@@ -16,7 +16,7 @@ public class JDBCManager implements DBManager {
 			c = DriverManager.getConnection("jdbc:sqlite:./db/bionicsproInc.db");
 			c.createStatement().execute("PRAGMA foreign_keys=ON");
 			System.out.println("Database connection opened.");
-			// this.createTables();
+			 this.createTables();
 		} catch (SQLException sqlE) {
 			System.out.println("There was a database exception.");
 			sqlE.printStackTrace();
@@ -81,23 +81,23 @@ public class JDBCManager implements DBManager {
 			// Now we create the table that references the N-N relationships
 
 			Statement stmt7 = c.createStatement();
-			String sql7 = "CREATE TABLE engineers_products " + "(engineer_id INTEGER REFERENCES engineers(id),"
+			String sql7 = "CREATE TABLE engineers_products " + "(eng_prod_id INTEGER PRIMARY KEY AUTOINCREMENT ,engineer_id INTEGER REFERENCES engineers(id),"
 					+ " product_id INTEGER REFERENCES products(id))";
 			stmt7.executeUpdate(sql7);
 			stmt7.close();
 
 			Statement stmt8 = c.createStatement();
-			String sql8 = "CREATE TABLE products_materials " + "(product_id  INTEGER REFERENCES products(id),"
+			String sql8 = "CREATE TABLE products_materials " + "(prod_mat_id INTEGER PRIMARY KEY AUTOINCREMENT, product_id  INTEGER REFERENCES products(id),"
 					+ " material_id INTEGER REFERENCES materials(id))";
 			stmt8.executeUpdate(sql8);
 			stmt8.close();
 
 			Statement stmt9 = c.createStatement();
-			String sql9 = "CREATE TABLE products_characteristics" + "(product_id INTEGER REFERENCES products(id),"
+			String sql9 = "CREATE TABLE products_characteristics" + "(prod_char_id INTEGER PRIMARY KEY AUTOINCREMENT  , product_id INTEGER REFERENCES products(id),"
 					+ " characteristic_id INTEGER REFERENCES characteristics(id))";
 
 			stmt9.execute(sql9);
-			stmt9.close();
+			stmt9.close(); 
 
 		} catch (SQLException e) {
 			if (!e.getMessage().contains("already exists")) {
