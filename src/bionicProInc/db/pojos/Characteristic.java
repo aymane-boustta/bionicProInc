@@ -13,19 +13,19 @@ public class Characteristic implements Serializable {
 	private float length;
 	private float width;
 	private float weight;
-	private float height;
+	
 	private int joints_numb;
 	private int flexibilty_scale;
 	private ArrayList<Product> products;
 
-	public Characteristic(int id, float length, float width, float weight, float height, int joints_numb,
+	public Characteristic(float length, float width, float weight, int joints_numb,
 			int flexibilty_scale) {
 		super();
 		this.id = id;
 		this.length = length;
 		this.width = width;
 		this.weight = weight;
-		this.height = height;
+	
 		this.joints_numb = joints_numb;
 		this.flexibilty_scale = flexibilty_scale;
 	}
@@ -70,13 +70,7 @@ public class Characteristic implements Serializable {
 		this.weight = weight;
 	}
 
-	public float getHeight() {
-		return height;
-	}
-
-	public void setHeight(float height) {
-		this.height = height;
-	}
+	
 
 	public int getJoints_numb() {
 		return joints_numb;
@@ -99,7 +93,7 @@ public class Characteristic implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + flexibilty_scale;
-		result = prime * result + Float.floatToIntBits(height);
+
 		result = prime * result + id;
 		result = prime * result + joints_numb;
 		result = prime * result + Float.floatToIntBits(length);
@@ -120,8 +114,7 @@ public class Characteristic implements Serializable {
 		Characteristic other = (Characteristic) obj;
 		if (flexibilty_scale != other.flexibilty_scale)
 			return false;
-		if (Float.floatToIntBits(height) != Float.floatToIntBits(other.height))
-			return false;
+
 		if (id != other.id)
 			return false;
 		if (joints_numb != other.joints_numb)

@@ -30,7 +30,7 @@ public interface DBManager {
 
 	public Engineer getEngineer(int id);
 
-	public void addCharacteristic(Characteristic c);
+	public void addCharacteristics(Characteristic c);
 
 	public Characteristic getCharacteristic(int id);
 

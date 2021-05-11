@@ -22,11 +22,10 @@ public class Engineer implements Serializable {
 	private ArrayList<Product> products;
 	
 	
-	public Engineer(int id, String name_surname, Date contract_strating_date, Date contract_ending_date,
+	public Engineer(String name_surname, Date contract_strating_date, Date contract_ending_date,
 			String current_service, float d, float e, int project_achieved, int experience_in_years,
 			Date date_of_birth) {
 		super();
-		this.id = id;
 		this.name_surname = name_surname;
 		this.contract_strating_date = contract_strating_date;
 		this.contract_ending_date = contract_ending_date;

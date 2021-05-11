@@ -17,7 +17,7 @@ public class JDBCManager implements DBManager {
 			c = DriverManager.getConnection("jdbc:sqlite:./db/bionicsproInc.db");
 			c.createStatement().execute("PRAGMA foreign_keys=ON");
 			System.out.println("Database connection opened.");
-			this.createTables();
+			//this.createTables();
 		} catch (SQLException sqlE) {
 			System.out.println("There was a database exception.");
 			sqlE.printStackTrace();
@@ -66,6 +66,7 @@ public class JDBCManager implements DBManager {
 			String sql5 = "CREATE TABLE characteristics " + "(id INTEGER PRIMARY KEY AUTOINCREMENT,"
 					+ " length REAL NOT NULL," + " width REAL NOT NULL," + " weight REAL NOT NULL,"
 					+ " joint_numb INTEGER NOT NULL," + " flexibility_scale INTEGER NOT NULL)";
+			
 			stmt5.executeUpdate(sql5);
 			stmt5.close();
 
@@ -95,7 +96,7 @@ public class JDBCManager implements DBManager {
 					+ " products_id INTEGER REFERENCES products(id))";
 
 			stmt9.execute(sql9);
-			stmt9.close();
+			stmt9.close(); 
 
 		} catch (SQLException e) {
 			if (!e.getMessage().contains("already exists")) {
@@ -181,8 +182,8 @@ public class JDBCManager implements DBManager {
 		try {
 
 			Statement stmt = c.createStatement();
-			String sql = " INSERT INTO Engineer (id, name_surname, contract_starting_date, contract_ending_date, current_service, salary, bonus, project_achieved,"
-					+ " experience_in_years, date_of_birth) " + " VALUES ('" + eng.getId() + "','"
+			String sql = " INSERT INTO Engineer (name_surname, contract_starting_date, contract_ending_date, current_service, salary, bonus, project_achieved,"
+					+ " experience_in_years, date_of_birth) " + " VALUES ('" 
 					+ eng.getName_surname() + "','" + eng.getContract_strating_date() + "','"
 					+ eng.getContract_ending_date() + "','" + eng.getCurrent_service() + "','" + eng.getSalary() + "','"
 					+ eng.getBonus() + "','" + eng.getProject_achieved() + "','" + eng.getExperience_in_years() + "','"
@@ -214,10 +215,23 @@ public class JDBCManager implements DBManager {
 	}
 
 	@Override
-	public void addCharacteristic(Characteristic c) {
-		// TODO Auto-generated method stub
+	public void addCharacteristics(Characteristic ch) {
+		try {
+			
+			Statement st1 = c.createStatement();
+			String sql = "INSERT INTO characteristics(length, width, weight, joint_numb, flexibility_scale) "
+					+ " VALUES ('" + ch.getLength() + "', '" + ch.getWidth() + "','" + ch.getWeight() + "','"
+					+ ch.getJoints_numb() + "','" + ch.getFlexibilty_scale() + "');";
+			st1.executeUpdate(sql);
+			st1.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
+
+
+
 
 	@Override
 	public Characteristic getCharacteristic(int id) {
@@ -406,7 +420,7 @@ public class JDBCManager implements DBManager {
 				float height = rs.getFloat("height");
 				int joints_numb = rs.getInt("joints_numb");
 				int flexibilty_scale = rs.getInt("flexibilty_scale");
-				Characteristic c = new Characteristic(id, length, width, weight, height, joints_numb, flexibilty_scale);
+				Characteristic c = new Characteristic(length, width, weight, joints_numb, flexibilty_scale);
 				characteristics.add(c);
 			}
 			rs.close();
@@ -482,5 +496,7 @@ public class JDBCManager implements DBManager {
 		// TODO Auto-generated method stub
 		
 	}
+
+	
 
 }
