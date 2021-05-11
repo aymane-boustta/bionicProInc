@@ -286,21 +286,22 @@ public class JDBCManager implements DBManager {
 	}
 
 	@Override
-	public Engineer viewBonus(int id) {
+	public Float viewBonus(int id) {
+		Float bonus = null;
 		try {
-			String sql = "SELECT id,bonus FROM engineers WHERE id= ?";
+			String sql = "SELECT bonus FROM engineers WHERE id= ?";
 			PreparedStatement stmt = c.prepareStatement(sql);
 			stmt.setInt(1, id);
 			ResultSet rs = stmt.executeQuery();
-			if (rs.next()) {
-				return new Engineer(id, rs.getFloat("bonus"));
-			}
+		
+		  bonus = rs.getFloat("bonus");
+			
 			rs.close();
 			stmt.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return null;
+		return bonus;
 	}
 
 	// LIKE ADDTOCART- THE SAME FUNCTION

@@ -56,7 +56,7 @@ public interface DBManager {
 	
 	public List<Material> viewMaterialsFromProduct(int id);
 
-	public Engineer viewBonus(int id);
+	public Float viewBonus(int id);
 
 	public List<Integer> viewProjectAchieved(int rd);
 
