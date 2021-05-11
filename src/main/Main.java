@@ -43,27 +43,27 @@ public class Main {
 		/*
 		//ADDING CHARACTERISTICS
 		Characteristic ch0 = new Characteristic(110,60,20,130,0,2);
-		j.addCharacteristics(ch0);
+		j.addCharacteristic(ch0);
 		Characteristic ch1 = new Characteristic(110,60,15,170,1,3);
-		j.addCharacteristics(ch1);
+		j.addCharacteristic(ch1);
 		Characteristic ch2 = new Characteristic(110,60,10,120,1,3);
-		j.addCharacteristics(ch2);
+		j.addCharacteristic(ch2);
 		Characteristic ch3 = new Characteristic(120,70,25,120,0,2);
-		j.addCharacteristics(ch3);
+		j.addCharacteristic(ch3);
 		Characteristic ch4 = new Characteristic(120,60,25,170,1,3);
-		j.addCharacteristics(ch4);
+		j.addCharacteristic(ch4);
 		Characteristic ch5 = new Characteristic(110,60,23,110,2,5);
-		j.addCharacteristics(ch5);
+		j.addCharacteristic(ch5);
 		Characteristic ch6 = new Characteristic(120,70,35,130,2,5);
-		j.addCharacteristics(ch6);
+		j.addCharacteristic(ch6);
 		Characteristic ch7 = new Characteristic(80,40,12,60,2,2);
-		j.addCharacteristics(ch7);
+		j.addCharacteristic(ch7);
 		Characteristic ch8 = new Characteristic(70,25,8,60,3,4);
-		j.addCharacteristics(ch8);
+		j.addCharacteristic(ch8);
 		Characteristic ch9 = new Characteristic(70,25,15,130,3,4);
-		j.addCharacteristics(ch9);
+		j.addCharacteristic(ch9);
 		Characteristic ch10 = new Characteristic(75,25,20,100,3,5);
-		j.addCharacteristics(ch10);
+		j.addCharacteristic(ch10);
 		*/
 		
 		/*

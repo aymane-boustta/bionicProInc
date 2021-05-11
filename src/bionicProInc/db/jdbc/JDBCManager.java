@@ -210,13 +210,7 @@ public class JDBCManager implements DBManager {
 	}
 
 	@Override
-	public Engineer getEngineer(int id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void addCharacteristics(Characteristic ch) {
+	public void addCharacteristic(Characteristic ch) {
 		try {
 
 			Statement st1 = c.createStatement();
@@ -232,7 +226,7 @@ public class JDBCManager implements DBManager {
 	}
 
 	@Override
-	public Characteristic getCharacteristic(int id) {
+	public List<Characteristic> getCharacteristics(int id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -279,7 +273,7 @@ public class JDBCManager implements DBManager {
 	}
 
 	@Override
-	public void removeProd(int id) {
+	public void removeProduct(int id) {
 		try {
 			String sql = "DELETE FROM products WHERE id = ? ";
 			PreparedStatement stmt = c.prepareStatement(sql);
@@ -466,6 +460,18 @@ public class JDBCManager implements DBManager {
 	public List<Product> viewProductsFromOrder(int orderId) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void addProdIntoCh(Product prod) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addChIntoProd(Material mat) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -10,52 +10,62 @@ public interface DBManager {
 
 	public void disconnect();
 
-	public void addProduct(Product p);
+	public void addProduct(Product prod);
+	
+	public void removeProduct(int id);
+	
+	public void addCharacteristic(Characteristic ch);
+	
+	public List<Characteristic> getCharacteristics(int id);
 
-	public void addMaterial(Material m);
+	public void addMaterial(Material mat);
+	
+	public void addCustomer(Customer cust);
+	
+	public void addProdIntoCh(Product prod);
 
-	public void addMatIntoProd(Material m);
+	public void addChIntoProd(Material mat);
+	
+	public void addProdIntoMat(Product prod);
 
-	public void addProdIntoMat(Product p);
+	public void addMatIntoProd(Material mat);
+
+	public void addProdIntoCust(Product prod);
 
 	public void addCustIntoProd(Customer cust);
 
-	public void addProdIntoCust(Product p);
-
-	public void addCustomer(Customer cust);
-
 	public void addEngineer(Engineer eng);
 	
-	public void addOrder(Order o);
-
-	public Engineer getEngineer(int id);
-
-	public void addCharacteristics(Characteristic c);
-
-	public Characteristic getCharacteristic(int id);
-
-	public List<String> viewBodyparts();
+	public void addOrder(Order ord);
 
 	public List<Product> searchProductByBody(String bodypart);
 
-	public void removeProd(int prodId);
+	public List<String> viewBodyparts();
 
-	public Engineer viewBonus(int engId);
+	public void addToOrder(Product prod, Order ord);
 
-	public void addToOrder(Product product, Order order);
+	public List<String> viewCart(Order ord);
+	
+	public List<Product> viewProductsFromOrder(int id);
 
-	public List<String> viewCart(Order o);
-
+	public void deleteProdFromCart(String name, Order ord);
+	
 	public List<Integer> viewOtherOrders(int id);
+	
+	public List<Characteristic> viewCharacteristicsFromProduct(int id);
+	
+	public List<Material> viewMaterialsFromProduct(int id);
 
-	public List<String> viewProjectAchieved(int engId);
+	public Engineer viewBonus(int id);
 
-	public void deleteProdFromCart(String name, Order o);
+	public List<String> viewProjectAchieved(int rd);
 
-	public List<Characteristic> viewCharacteristicsFromProduct(int prodId);
 
-	public List<Material> viewMaterialsFromProduct(int prodId);
 
-	public List<Product> viewProductsFromOrder(int orderId);
+	
+
+	
+
+	
 
 }
