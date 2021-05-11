@@ -103,8 +103,12 @@ public class Main {
 		Product p9 = new Product("Rigth Foot", "Foot",399.0f,Date.valueOf("2021-01-15"), new byte[10]);
 		j.addProduct(p9);
 		*/
-		System.out.println(j.viewBonus(4));
+		//System.out.println(j.viewBonus(4));
+		//System.out.println(j.viewProjectAchieved(4));
+		System.out.println(j.searchProductByBody("Ear"));
+		
 		j.disconnect();
+		
 	}
 
 }

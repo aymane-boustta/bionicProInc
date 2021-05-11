@@ -38,7 +38,7 @@ public interface DBManager {
 	
 	public void addOrder(Order ord);
 
-	public List<Product> searchProductByBody(String bodypart);
+	public List<String> searchProductByBody(String bodypart);
 
 	public List<String> viewBodyparts();
 

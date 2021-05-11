@@ -251,25 +251,28 @@ public class JDBCManager implements DBManager {
 	}
 
 	@Override
-	public List<Product> searchProductByBody(String bodypart) {
-		List<Product> products = new ArrayList<Product>();
+	public List<String> searchProductByBody(String bodypart) {
+		List<String> prodname = new ArrayList<>();
+		int id;
+		String productname;
+		Product p = new Product();
 		try {
-			String sql = "SELECT name FROM products WHERE bodypart LIKE ?";
+			String sql = "SELECT id ,name FROM products WHERE bodypart LIKE ?";
 			PreparedStatement stm = c.prepareStatement(sql);
 			stm.setString(1, "%" + bodypart + "%");
 			ResultSet rs = stm.executeQuery();
 			while (rs.next()) {
-				int id = rs.getInt("id");
-				String productname = rs.getString("name");
-				Product p = new Product(id, productname);
-				products.add(p);
+				 id = rs.getInt("id");
+				 productname = rs.getString("name");
+				
+				prodname.add(productname);
 			}
 			rs.close();
 			stm.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return products;
+		return prodname;
 	}
 
 	@Override
