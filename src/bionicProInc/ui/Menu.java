@@ -98,7 +98,7 @@ public class Menu {
 			int choice = Integer.parseInt(reader.readLine());
 			switch (choice) {
 			case 1:
-				viewProduct();
+				viewProductE();
 				break;
 
 			case 2:
@@ -165,7 +165,7 @@ public class Menu {
 	}
 
 	// Engineer OPTION 1
-	private static void viewProduct() throws Exception {
+	private static void viewProductE() throws Exception {
 		System.out.println("Choose a bodypart:");
 		dbman.viewBodyparts();
 		String name = reader.readLine();
@@ -216,9 +216,22 @@ public class Menu {
 	}
 
 	// Engineer OPTION 3
+	private static void removeProduct() throws Exception {
+		try {
+			System.out.println("Introduce the product ID: ");
+			int id = Integer.parseInt(reader.readLine());
+			dbman.removeProduct(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	// Engineer OPTION 4
 	private static void seeProject() throws Exception {
 		try {
 			System.out.println("Introduce your ID: ");
+			
 			int id = Integer.parseInt(reader.readLine());
 			dbman.viewProjectAchieved(id);
 		} catch (Exception e) {
@@ -226,20 +239,11 @@ public class Menu {
 		}
 	}
 
-	// Engineer OPTION 4
-	private static void removeProduct() throws Exception {
-		try {
-			System.out.println("Introduce the product ID: ");
-			int id = Integer.parseInt(reader.readLine());
-			dbman.removeProd(id);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 	// Engineer OPTION 5
 	private static void viewBonus() throws Exception {
 		System.out.println("Introduce your ID:");
+		userman.getUsers().toString();
 		int id = Integer.parseInt(reader.readLine());
 		dbman.viewBonus(id);
 	}

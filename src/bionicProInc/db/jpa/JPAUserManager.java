@@ -59,7 +59,6 @@ public class JPAUserManager implements UserManager {
 
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<Role> getRoles() {
 		Query q = em.createNativeQuery("SELECT * FROM roles", Role.class);
@@ -82,6 +81,12 @@ public class JPAUserManager implements UserManager {
 			return null;
 		}
 		return null;
+	}
+
+	@Override
+	public List<User> getUsers() {
+		Query q = em.createNativeQuery("SELECT * from users", User.class);
+		return (List<User>) q.getResultList();
 	}
 
 }
