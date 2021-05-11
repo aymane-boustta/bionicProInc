@@ -58,7 +58,7 @@ public interface DBManager {
 
 	public Engineer viewBonus(int id);
 
-	public List<String> viewProjectAchieved(int rd);
+	public List<Integer> viewProjectAchieved(int rd);
 
 
 

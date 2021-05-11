@@ -16,7 +16,7 @@ public class JDBCManager implements DBManager {
 			c = DriverManager.getConnection("jdbc:sqlite:./db/bionicsproInc.db");
 			c.createStatement().execute("PRAGMA foreign_keys=ON");
 			System.out.println("Database connection opened.");
-			 this.createTables();
+			// this.createTables();
 		} catch (SQLException sqlE) {
 			System.out.println("There was a database exception.");
 			sqlE.printStackTrace();
@@ -358,23 +358,23 @@ public class JDBCManager implements DBManager {
 		return Ids;
 	}
 
-	public List<String> viewProjectAchieved(int id) {
-		List<String> prodname = new ArrayList<String>();
+	public List<Integer> viewProjectAchieved(int id) {
+		List<Integer> p_achieved = new ArrayList<>();
 		try {
-			String sql = "SELECT e.id, p.name FROM engineers as e JOIN products as p ON p.id=e.product_id WHERE id= ?";
+			String sql = "SELECT  e.project_achieved FROM engineers AS e WHERE id = ?";
 			PreparedStatement stmt = c.prepareStatement(sql);
 			stmt.setInt(1, id);
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
-				String pname = rs.getString("name");
-				prodname.add(pname);
+				 int pr_achieved = rs.getInt("project_achieved");
+				 p_achieved.add(pr_achieved);
 			}
 			rs.close();
 			stmt.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return prodname;
+		return p_achieved;
 	}
 
 	public void deleteProdFromCart(String name, Order ord) {
