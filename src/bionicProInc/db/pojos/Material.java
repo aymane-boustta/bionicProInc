@@ -11,24 +11,28 @@ public class Material implements Serializable {
 	private int id;
 	private String name;
 	private float price;
-	private ArrayList<Product> products;
 	private int amount;
+	private ArrayList<Product> products;
 
-	public Material(int id, String name, float price, ArrayList<Product> products, int amount) {
+	public Material(String name, float price, int amount, ArrayList<Product> products) {
 		super();
-		this.id = id;
 		this.name = name;
 		this.price = price;
-		this.products = products;
 		this.amount = amount;
+		this.products = products;
 	}
 
-	public Material(int id, String name, float price, int amount) {
+	public Material(String name, float price, int amount) {
 		super();
-		this.id = id;
 		this.name = name;
 		this.price = price;
 		this.amount = amount;
+		this.products = new ArrayList<Product>();
+	}
+
+	public Material() {
+		super();
+		this.products = new ArrayList<Product>();
 	}
 
 	public int getId() {
@@ -55,14 +59,6 @@ public class Material implements Serializable {
 		this.price = price;
 	}
 
-	public ArrayList<Product> getProducts() {
-		return products;
-	}
-
-	public void setProducts(ArrayList<Product> products) {
-		this.products = products;
-	}
-
 	public int getAmount() {
 		return amount;
 	}
@@ -71,15 +67,19 @@ public class Material implements Serializable {
 		this.amount = amount;
 	}
 
+	public ArrayList<Product> getProducts() {
+		return products;
+	}
+
+	public void setProducts(ArrayList<Product> products) {
+		this.products = products;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + amount;
 		result = prime * result + id;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + Float.floatToIntBits(price);
-		result = prime * result + ((products == null) ? 0 : products.hashCode());
 		return result;
 	}
 
@@ -92,23 +92,14 @@ public class Material implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Material other = (Material) obj;
-		if (amount != other.amount)
-			return false;
 		if (id != other.id)
 			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		if (Float.floatToIntBits(price) != Float.floatToIntBits(other.price))
-			return false;
-		if (products == null) {
-			if (other.products != null)
-				return false;
-		} else if (!products.equals(other.products))
-			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Material [id=" + id + ", name=" + name + ", price=" + price + ", amount=" + amount + "]";
 	}
 
 }

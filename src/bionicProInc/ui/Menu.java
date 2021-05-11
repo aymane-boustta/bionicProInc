@@ -79,7 +79,7 @@ public class Menu {
 		if (user == null) {
 			System.out.println("Wrong email or password");
 			return;
-		} else if (user.getRole().getName().equalsIgnoreCase("engineer") ) {
+		} else if (user.getRole().getName().equalsIgnoreCase("engineer")) {
 			engineerMenu();
 		} else if (user.getRole().getName().equalsIgnoreCase("customer")) {
 			customerMenu();
@@ -205,8 +205,8 @@ public class Menu {
 			ZonedDateTime zonedDateTime = ld.atStartOfDay(systemTimeZone);
 			Date date = (Date) Date.from(zonedDateTime.toInstant());
 			localprod.setDate_creation(date);
-			localprod.setCharacteristic(JDBCmethod.viewCharacteristicsFromProduct(id));
-			localprod.setMats(JDBCmethod.viewMaterialsFromProduct(id));
+			localprod.setCharacteristics(JDBCmethod.viewCharacteristicsFromProduct(id));
+			localprod.setMaterials(JDBCmethod.viewMaterialsFromProduct(id));
 			dbman.addProduct(localprod);
 
 		} catch (Exception e) {
@@ -256,16 +256,15 @@ public class Menu {
 			dbman.viewCharacteristicsFromProduct(id);
 			dbman.viewMaterialsFromProduct(id);
 			System.out.println("Do you want to add it to your cart? 1->YES 0->NO");
-			int op=Integer.parseInt(reader.readLine());
-			if(op==1) {
-				for(int i=1;i<p.size(); i++) {
-					if (p.get(i).getId()==id) {
-						Product pr=p.get(i);
+			int op = Integer.parseInt(reader.readLine());
+			if (op == 1) {
+				for (int i = 1; i < p.size(); i++) {
+					if (p.get(i).getId() == id) {
+						Product pr = p.get(i);
 						dbman.addToOrder(pr, temporaryOrder);
 					}
 				}
-			}
-			else {
+			} else {
 				return;
 			}
 		} catch (Exception e) {

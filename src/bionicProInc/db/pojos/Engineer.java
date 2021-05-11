@@ -1,9 +1,10 @@
 package bionicProInc.db.pojos;
 
 import java.io.Serializable;
-
-import java.util.ArrayList;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Engineer implements Serializable {
 	/**
 	 * 
@@ -19,23 +20,42 @@ public class Engineer implements Serializable {
 	private int project_achieved;
 	private int experience_in_years;
 	private Date date_of_birth;
-	private ArrayList<Product> products;
-	
-	
-	public Engineer(String name_surname, Date contract_strating_date, Date contract_ending_date,
-			String current_service, float d, float e, int project_achieved, int experience_in_years,
-			Date date_of_birth) {
+	private List<Product> products;
+
+	public Engineer(String name_surname, Date contract_strating_date, Date contract_ending_date, String current_service,
+			float salary, float bonus, int project_achieved, int experience_in_years, Date date_of_birth,
+			List<Product> products) {
 		super();
 		this.name_surname = name_surname;
 		this.contract_strating_date = contract_strating_date;
 		this.contract_ending_date = contract_ending_date;
 		this.current_service = current_service;
-		this.salary = d;
-		this.bonus = e;
+		this.salary = salary;
+		this.bonus = bonus;
 		this.project_achieved = project_achieved;
 		this.experience_in_years = experience_in_years;
 		this.date_of_birth = date_of_birth;
-		
+		this.products = products;
+	}
+
+	public Engineer(String name_surname, Date contract_strating_date, Date contract_ending_date, String current_service,
+			float salary, float bonus, int project_achieved, int experience_in_years, Date date_of_birth) {
+		super();
+		this.name_surname = name_surname;
+		this.contract_strating_date = contract_strating_date;
+		this.contract_ending_date = contract_ending_date;
+		this.current_service = current_service;
+		this.salary = salary;
+		this.bonus = bonus;
+		this.project_achieved = project_achieved;
+		this.experience_in_years = experience_in_years;
+		this.date_of_birth = date_of_birth;
+		this.products = new ArrayList<Product>();
+	}
+
+	public Engineer() {
+		super();
+		this.products = new ArrayList<Product>();
 	}
 
 	public Engineer(int id, float bonus) {
@@ -124,11 +144,11 @@ public class Engineer implements Serializable {
 		this.date_of_birth = date_of_birth;
 	}
 
-	public ArrayList<Product> getProducts() {
+	public List<Product> getProducts() {
 		return products;
 	}
 
-	public void setProducts(ArrayList<Product> products) {
+	public void setProducts(List<Product> products) {
 		this.products = products;
 	}
 
@@ -136,17 +156,7 @@ public class Engineer implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((name_surname == null) ? 0 : name_surname.hashCode());
-		result = prime * result + Float.floatToIntBits(bonus);
-		result = prime * result + ((contract_ending_date == null) ? 0 : contract_ending_date.hashCode());
-		result = prime * result + ((contract_strating_date == null) ? 0 : contract_strating_date.hashCode());
-		result = prime * result + ((current_service == null) ? 0 : current_service.hashCode());
-		result = prime * result + ((date_of_birth == null) ? 0 : date_of_birth.hashCode());
-		result = prime * result + experience_in_years;
 		result = prime * result + id;
-		result = prime * result + ((products == null) ? 0 : products.hashCode());
-		result = prime * result + project_achieved;
-		result = prime * result + Float.floatToIntBits(salary);
 		return result;
 	}
 
@@ -159,47 +169,18 @@ public class Engineer implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Engineer other = (Engineer) obj;
-		if (name_surname == null) {
-			if (other.name_surname != null)
-				return false;
-		} else if (!name_surname.equals(other.name_surname))
-			return false;
-		if (Float.floatToIntBits(bonus) != Float.floatToIntBits(other.bonus))
-			return false;
-		if (contract_ending_date == null) {
-			if (other.contract_ending_date != null)
-				return false;
-		} else if (!contract_ending_date.equals(other.contract_ending_date))
-			return false;
-		if (contract_strating_date == null) {
-			if (other.contract_strating_date != null)
-				return false;
-		} else if (!contract_strating_date.equals(other.contract_strating_date))
-			return false;
-		if (current_service == null) {
-			if (other.current_service != null)
-				return false;
-		} else if (!current_service.equals(other.current_service))
-			return false;
-		if (date_of_birth == null) {
-			if (other.date_of_birth != null)
-				return false;
-		} else if (!date_of_birth.equals(other.date_of_birth))
-			return false;
-		if (experience_in_years != other.experience_in_years)
-			return false;
 		if (id != other.id)
 			return false;
-		if (products == null) {
-			if (other.products != null)
-				return false;
-		} else if (!products.equals(other.products))
-			return false;
-		if (project_achieved != other.project_achieved)
-			return false;
-		if (Float.floatToIntBits(salary) != Float.floatToIntBits(other.salary))
-			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Engineer [id=" + id + ", name_surname=" + name_surname + ", contract_strating_date="
+				+ contract_strating_date + ", contract_ending_date=" + contract_ending_date + ", current_service="
+				+ current_service + ", salary=" + salary + ", bonus=" + bonus + ", project_achieved=" + project_achieved
+				+ ", experience_in_years=" + experience_in_years + ", date_of_birth=" + date_of_birth + ", products="
+				+ products + "]";
 	}
 
 }

@@ -2,6 +2,7 @@ package bionicProInc.db.pojos;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Characteristic implements Serializable {
 
@@ -12,34 +13,42 @@ public class Characteristic implements Serializable {
 	private int id;
 	private float length;
 	private float width;
+	private float height;
 	private float weight;
-	
-	private int joints_numb;
+	private int joint_numb;
 	private int flexibilty_scale;
-	private ArrayList<Product> products;
+	private List<Product> products;
 
-	public Characteristic(float length, float width, float weight, int joints_numb,
-			int flexibilty_scale) {
+	public Characteristic(float length, float width, float height, float weight, int joint_numb, int flexibilty_scale,
+			List<Product> products) {
 		super();
-		this.id = id;
 		this.length = length;
 		this.width = width;
+		this.height = height;
 		this.weight = weight;
-	
-		this.joints_numb = joints_numb;
+		this.joint_numb = joint_numb;
 		this.flexibilty_scale = flexibilty_scale;
+		this.products = products;
+	}
+
+	public Characteristic(float length, float width, float height, float weight, int joint_numb, int flexibilty_scale) {
+		super();
+		this.length = length;
+		this.width = width;
+		this.height = height;
+		this.weight = weight;
+		this.joint_numb = joint_numb;
+		this.flexibilty_scale = flexibilty_scale;
+		this.products = new ArrayList<Product>();
+	}
+
+	public Characteristic() {
+		super();
+		this.products = new ArrayList<Product>();
 	}
 
 	public int getId() {
 		return id;
-	}
-
-	public ArrayList<Product> getProducts() {
-		return products;
-	}
-
-	public void setProducts(ArrayList<Product> products) {
-		this.products = products;
 	}
 
 	public void setId(int id) {
@@ -62,6 +71,14 @@ public class Characteristic implements Serializable {
 		this.width = width;
 	}
 
+	public float getHeight() {
+		return height;
+	}
+
+	public void setHeight(float height) {
+		this.height = height;
+	}
+
 	public float getWeight() {
 		return weight;
 	}
@@ -70,14 +87,12 @@ public class Characteristic implements Serializable {
 		this.weight = weight;
 	}
 
-	
-
-	public int getJoints_numb() {
-		return joints_numb;
+	public int getJoint_numb() {
+		return joint_numb;
 	}
 
-	public void setJoints_numb(int joints_numb) {
-		this.joints_numb = joints_numb;
+	public void setJoint_numb(int joint_numb) {
+		this.joint_numb = joint_numb;
 	}
 
 	public int getFlexibilty_scale() {
@@ -88,18 +103,19 @@ public class Characteristic implements Serializable {
 		this.flexibilty_scale = flexibilty_scale;
 	}
 
+	public List<Product> getProducts() {
+		return products;
+	}
+
+	public void setProducts(List<Product> products) {
+		this.products = products;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + flexibilty_scale;
-
 		result = prime * result + id;
-		result = prime * result + joints_numb;
-		result = prime * result + Float.floatToIntBits(length);
-		result = prime * result + ((products == null) ? 0 : products.hashCode());
-		result = prime * result + Float.floatToIntBits(weight);
-		result = prime * result + Float.floatToIntBits(width);
 		return result;
 	}
 
@@ -112,25 +128,15 @@ public class Characteristic implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Characteristic other = (Characteristic) obj;
-		if (flexibilty_scale != other.flexibilty_scale)
-			return false;
-
 		if (id != other.id)
 			return false;
-		if (joints_numb != other.joints_numb)
-			return false;
-		if (Float.floatToIntBits(length) != Float.floatToIntBits(other.length))
-			return false;
-		if (products == null) {
-			if (other.products != null)
-				return false;
-		} else if (!products.equals(other.products))
-			return false;
-		if (Float.floatToIntBits(weight) != Float.floatToIntBits(other.weight))
-			return false;
-		if (Float.floatToIntBits(width) != Float.floatToIntBits(other.width))
-			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Characteristic [id=" + id + ", length=" + length + ", width=" + width + ", height=" + height
+				+ ", weight=" + weight + ", joint_numb=" + joint_numb + ", flexibilty_scale=" + flexibilty_scale + "]";
 	}
 
 }
