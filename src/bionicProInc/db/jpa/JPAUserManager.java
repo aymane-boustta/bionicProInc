@@ -24,10 +24,10 @@ public class JPAUserManager implements UserManager {
 		em.createNativeQuery("PRAGMA foreign_keys=ON").executeUpdate();
 		em.getTransaction().commit();
 		List<Role> existingRoles = this.getRoles();
-		if (existingRoles.size()<2) {
+		if (existingRoles.size() < 2) {
 
 			this.newRole(new Role("engineer"));
-			this.newRole(new Role("customer")); 
+			this.newRole(new Role("customer"));
 
 		}
 	}

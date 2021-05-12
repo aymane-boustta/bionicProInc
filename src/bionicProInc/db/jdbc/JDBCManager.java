@@ -131,7 +131,7 @@ public class JDBCManager implements DBManager {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Override
 	public void removeProduct(int id) {
 		try {
@@ -160,7 +160,13 @@ public class JDBCManager implements DBManager {
 		}
 
 	}
-	
+
+	@Override
+	public List<Characteristic> getCharacteristics(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	public void addMaterial(Material mat) {
 		try {
 			Statement st = c.createStatement();
@@ -172,28 +178,6 @@ public class JDBCManager implements DBManager {
 			e.printStackTrace();
 		}
 
-	}
-
-	public void addMatIntoProd(Material mat) {
-		try {
-			Statement st = c.createStatement();
-			String sql = "INSERT INTO products_materials (material_id) " + " VALUES ('" + mat.getId() + "');";
-			st.executeUpdate(sql);
-			st.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void addProdIntoMat(Product prod) {
-		try {
-			Statement st = c.createStatement();
-			String sql = "INSERT INTO products_materials (product_id) " + " VALUES ('" + prod.getId() + "');";
-			st.executeUpdate(sql);
-			st.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
 	}
 
 	public void addCustomer(Customer cust) {
@@ -208,6 +192,60 @@ public class JDBCManager implements DBManager {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
+	}
+
+	@Override
+	public void addProdIntoCh(Product prod, Characteristic ch) {
+		try {
+			Statement stmt = c.createStatement();
+			String sql = " INSERT INTO products_characteristics (product_id, characteristic_id) VALUES ('"
+					+ prod.getId() + "','" + ch.getId() + "')";
+			stmt.executeUpdate(sql);
+			stmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	@Override
+	public void addChIntoProd(Material mat) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void addProdIntoMat(Product prod) {
+		try {
+			Statement st = c.createStatement();
+			String sql = "INSERT INTO products_materials (product_id) " + " VALUES ('" + prod.getId() + "');";
+			st.executeUpdate(sql);
+			st.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void addMatIntoProd(Material mat) {
+		try {
+			Statement st = c.createStatement();
+			String sql = "INSERT INTO products_materials (material_id) " + " VALUES ('" + mat.getId() + "');";
+			st.executeUpdate(sql);
+			st.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void addProdIntoCust(Product p) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void addCustIntoProd(Customer cust) {
+		// TODO Auto-generated method stub
 
 	}
 
@@ -229,144 +267,25 @@ public class JDBCManager implements DBManager {
 
 	}
 
-	public void addOrder(Order ord) {
-		try {
-			Statement stmt = c.createStatement();
-			String sql = " INSERT INTO orders (customer_id, product_id)" + " VALUES ('" + ord.getCustomer_id() + "','"
-					+ ord.getProduct_id() + "');";
-			stmt.executeUpdate(sql);
-			stmt.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-
-
 	@Override
-	public List<Characteristic> getCharacteristics(int id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<String> viewBodyparts() {
-		List<String> bodyPart = new ArrayList<String>();
+	public List<Engineer> viewEngineersID() {
+		ArrayList<Engineer> engineers = new ArrayList<Engineer>();
 		try {
-			String sql = "SELECT DISTINCT bodypart FROM products ";
+			String sql = " SELECT id,name_surname FROM engineers ORDER BY id ";
 			PreparedStatement stm = c.prepareStatement(sql);
 			ResultSet rs = stm.executeQuery();
 			while (rs.next()) {
-				String part = rs.getString("bodypart");
-				bodyPart.add(part);
+				int id = rs.getInt("id");
+				String name_surname = rs.getString("name_surname");
+				Engineer eng = new Engineer(id, name_surname);
+				engineers.add(eng);
 			}
 			rs.close();
 			stm.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return bodyPart;
-	}
-
-	@Override
-	public List<String> searchProductByBody(String bodypart) {
-		List<String> prodname = new ArrayList<>();
-		int id;
-		String productname;
-		Product p = new Product();
-		try {
-			String sql = "SELECT id ,name FROM products WHERE bodypart LIKE ?";
-			PreparedStatement stm = c.prepareStatement(sql);
-			stm.setString(1, "%" + bodypart + "%");
-			ResultSet rs = stm.executeQuery();
-			while (rs.next()) {
-				id = rs.getInt("id");
-				productname = rs.getString("name");
-
-				prodname.add(productname);
-			}
-			rs.close();
-			stm.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return prodname;
-	}
-
-
-
-	@Override
-	public Float viewBonus(int id) {
-		Float bonus = null;
-		try {
-			String sql = "SELECT bonus FROM engineers WHERE id= ?";
-			PreparedStatement stmt = c.prepareStatement(sql);
-			stmt.setInt(1, id);
-			ResultSet rs = stmt.executeQuery();
-
-			bonus = rs.getFloat("bonus");
-
-			rs.close();
-			stmt.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return bonus;
-	}
-
-	// LIKE ADDTOCART- THE SAME FUNCTION
-	// WHAT IS THIS FUNCTION
-	public void addToOrder(Product prod, Order ord) {
-
-		try {
-			Statement stmt = c.createStatement();
-			String sql = " INSERT INTO orders (id, customer_id, product_id) VALUES ('" + ord.getId() + "','"
-					+ ord.getCustomer_id() + "','" + ord.getProduct_id() + "')";
-			stmt.executeUpdate(sql);
-			stmt.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-	}
-
-	public List<String> viewCart(Order ord) {
-		List<String> p_names = new ArrayList<String>();
-		try {
-			String sql = " SELECT p.name FROM products AS p JOIN order AS or ON or.product_id=p.id WHERE or.order_id= ? ";
-			PreparedStatement stmt = c.prepareStatement(sql);
-			stmt.setInt(1, ord.getId());
-			ResultSet rs = stmt.executeQuery();
-			while (rs.next()) {
-				String productName = rs.getString("name");
-				p_names.add(productName);
-			}
-			rs.close();
-			stmt.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return p_names;
-	}
-
-	@Override
-	public List<Integer> viewOtherOrders(int id) {
-		List<Integer> Ids = new ArrayList<Integer>();
-		try {
-			String sql = " SELECT id FROM orderS WHERE costumer_id= ? ";
-			PreparedStatement stmt = c.prepareStatement(sql);
-			stmt.setInt(1, id);
-			ResultSet rs = stmt.executeQuery();
-			while (rs.next()) {
-				int ids = rs.getInt(id);
-				Ids.add(ids);
-			}
-			rs.close();
-			stmt.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return Ids;
+		return engineers;
 	}
 
 	public List<Integer> viewProjectAchieved(int id) {
@@ -388,6 +307,98 @@ public class JDBCManager implements DBManager {
 		return p_achieved;
 	}
 
+	@Override
+	public Float viewBonus(int id) {
+		Float bonus = null;
+		try {
+			String sql = "SELECT bonus FROM engineers WHERE id= ?";
+			PreparedStatement stmt = c.prepareStatement(sql);
+			stmt.setInt(1, id);
+			ResultSet rs = stmt.executeQuery();
+
+			bonus = rs.getFloat("bonus");
+
+			rs.close();
+			stmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return bonus;
+	}
+
+	public void addOrder(Order ord) {
+		try {
+			Statement stmt = c.createStatement();
+			String sql = " INSERT INTO orders (customer_id, product_id)" + " VALUES ('" + ord.getCustomer_id() + "','"
+					+ ord.getProduct_id() + "');";
+			stmt.executeUpdate(sql);
+			stmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	// LIKE ADDTOCART- THE SAME FUNCTION
+	// WHAT IS THIS FUNCTION
+	public void addToOrder(Product prod, Order ord) {
+
+		try {
+			Statement stmt = c.createStatement();
+			String sql = " INSERT INTO orders (id, customer_id, product_id) VALUES ('" + ord.getId() + "','"
+					+ ord.getCustomer_id() + "','" + ord.getProduct_id() + "')";
+			stmt.executeUpdate(sql);
+			stmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	@Override
+	public List<Product> viewProductsFromOrder(int orderId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Integer> viewOtherOrders(int id) {
+		List<Integer> Ids = new ArrayList<Integer>();
+		try {
+			String sql = " SELECT id FROM orders WHERE costumer_id= ? ";
+			PreparedStatement stmt = c.prepareStatement(sql);
+			stmt.setInt(1, id);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				int ids = rs.getInt(id);
+				Ids.add(ids);
+			}
+			rs.close();
+			stmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Ids;
+	}
+
+	public List<String> viewCart(Order ord) {
+		List<String> p_names = new ArrayList<String>();
+		try {
+			String sql = " SELECT p.name FROM products AS p JOIN order AS or ON or.product_id=p.id WHERE or.order_id= ? ";
+			PreparedStatement stmt = c.prepareStatement(sql);
+			stmt.setInt(1, ord.getId());
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				String productName = rs.getString("name");
+				p_names.add(productName);
+			}
+			rs.close();
+			stmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return p_names;
+	}
+
 	public void deleteProdFromCart(String name, Order ord) {
 		try {
 			String sql = "SELECT id FROM products WHERE name = ? ";
@@ -403,6 +414,49 @@ public class JDBCManager implements DBManager {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	// CHECK
+	@Override
+	public List<String> searchProductByBody(String bodypart) {
+		List<String> prodname = new ArrayList<>();
+		int id;
+		String productname;
+		try {
+			String sql = "SELECT id ,name FROM products WHERE bodypart LIKE ?";
+			PreparedStatement stm = c.prepareStatement(sql);
+			stm.setString(1, "%" + bodypart + "%");
+			ResultSet rs = stm.executeQuery();
+			while (rs.next()) {
+				id = rs.getInt("id");
+				productname = rs.getString("name");
+				prodname.add(productname);
+			}
+			rs.close();
+			stm.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return prodname;
+	}
+
+	@Override
+	public List<String> viewBodyparts() {
+		List<String> bodyPart = new ArrayList<String>();
+		try {
+			String sql = "SELECT DISTINCT bodypart FROM products ";
+			PreparedStatement stm = c.prepareStatement(sql);
+			ResultSet rs = stm.executeQuery();
+			while (rs.next()) {
+				String part = rs.getString("bodypart");
+				bodyPart.add(part);
+			}
+			rs.close();
+			stm.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return bodyPart;
 	}
 
 	public ArrayList<Characteristic> viewCharacteristicsFromProduct(int id) {
@@ -453,65 +507,6 @@ public class JDBCManager implements DBManager {
 			e.printStackTrace();
 		}
 		return materials;
-	}
-
-	@Override
-	public List<Engineer> viewEngineersID() {
-		ArrayList<Engineer> engineers = new ArrayList<Engineer>();
-		try {
-			String sql = " SELECT id,name_surname FROM engineers ORDER BY id ";
-			PreparedStatement stm = c.prepareStatement(sql);
-			ResultSet rs = stm.executeQuery();
-			while (rs.next()) {
-				int id = rs.getInt("id");
-				String name_surname = rs.getString("name_surname");
-				Engineer eng = new Engineer(id, name_surname);
-				engineers.add(eng);
-			}
-			rs.close();
-			stm.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return engineers;
-	}
-
-	@Override
-	public void addCustIntoProd(Customer cust) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void addProdIntoCust(Product p) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public List<Product> viewProductsFromOrder(int orderId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void addToProdCh(Product prod, Characteristic ch) {
-		try {
-			Statement stmt = c.createStatement();
-			String sql = " INSERT INTO products_characteristics (product_id, characteristic_id) VALUES ('"
-					+ prod.getId() + "','" + ch.getId() + "')";
-			stmt.executeUpdate(sql);
-			stmt.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-	}
-
-	@Override
-	public void addChIntoProd(Material mat) {
-		// TODO Auto-generated method stub
-
 	}
 
 }
