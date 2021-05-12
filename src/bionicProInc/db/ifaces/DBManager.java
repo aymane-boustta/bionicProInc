@@ -22,7 +22,7 @@ public interface DBManager {
 	
 	public void addCustomer(Customer cust);
 	
-	public void addToProdCh(Product prod, Characteristic ch);
+	public void addToProdCh(Product prod, Characteristic c);
 
 	public void addChIntoProd(Material mat);
 	
