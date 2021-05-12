@@ -197,6 +197,25 @@ public class JDBCManager implements DBManager {
 	}
 
 	@Override
+	public int getCustomerID(String email) {
+		int id = 0;
+		try {
+			String sql = "SELECT id FROM customers WHERE email LIKE ?";
+			PreparedStatement stmt = c.prepareStatement(sql);
+			stmt.setString(1, "%" + email + "%");
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				id = rs.getInt("id");
+			}
+			rs.close();
+			stmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return id;
+	}
+
+	@Override
 	public void addProdIntoCh(Product prod, Characteristic ch) {
 		try {
 			Statement stmt = c.createStatement();
@@ -269,12 +288,31 @@ public class JDBCManager implements DBManager {
 	}
 
 	@Override
+	public int getEngineerID(String email) {
+		int id = 0;
+		try {
+			String sql = "SELECT id FROM engineers WHERE email LIKE ?";
+			PreparedStatement stmt = c.prepareStatement(sql);
+			stmt.setString(1, "%" + email + "%");
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				id = rs.getInt("id");
+			}
+			rs.close();
+			stmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return id;
+	}
+
+	@Override
 	public List<Engineer> viewEngineersID() {
 		ArrayList<Engineer> engineers = new ArrayList<Engineer>();
 		try {
 			String sql = " SELECT id,name_surname FROM engineers ORDER BY id ";
-			PreparedStatement stm = c.prepareStatement(sql);
-			ResultSet rs = stm.executeQuery();
+			PreparedStatement stmt = c.prepareStatement(sql);
+			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				int id = rs.getInt("id");
 				String name_surname = rs.getString("name_surname");
@@ -282,7 +320,7 @@ public class JDBCManager implements DBManager {
 				engineers.add(eng);
 			}
 			rs.close();
-			stm.close();
+			stmt.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -292,7 +330,7 @@ public class JDBCManager implements DBManager {
 	public List<Integer> viewProjectAchieved(int id) {
 		List<Integer> p_achieved = new ArrayList<>();
 		try {
-			String sql = "SELECT  project_achieved FROM engineers WHERE id = ?";
+			String sql = "SELECT  project_achieved FROM engineers WHERE id LIKE ?";
 			PreparedStatement stmt = c.prepareStatement(sql);
 			stmt.setInt(1, id);
 			ResultSet rs = stmt.executeQuery();
@@ -316,9 +354,9 @@ public class JDBCManager implements DBManager {
 			PreparedStatement stmt = c.prepareStatement(sql);
 			stmt.setInt(1, id);
 			ResultSet rs = stmt.executeQuery();
-
-			bonus = rs.getFloat("bonus");
-
+			while (rs.next()) {
+				bonus = rs.getFloat("bonus");
+			}
 			rs.close();
 			stmt.close();
 		} catch (Exception e) {

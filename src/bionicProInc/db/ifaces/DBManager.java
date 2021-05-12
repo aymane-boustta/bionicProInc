@@ -21,6 +21,8 @@ public interface DBManager {
 	public void addMaterial(Material mat);
 
 	public void addCustomer(Customer cust);
+	
+	public int getCustomerID(String email);
 
 	public void addProdIntoCh(Product prod, Characteristic ch);
 
@@ -35,6 +37,8 @@ public interface DBManager {
 	public void addCustIntoProd(Customer cust);
 
 	public void addEngineer(Engineer eng);
+	
+	public int getEngineerID(String email);
 
 	public List<Engineer> viewEngineersID();
 
