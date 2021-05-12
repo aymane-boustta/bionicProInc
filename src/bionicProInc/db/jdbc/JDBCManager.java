@@ -93,8 +93,8 @@ public class JDBCManager implements DBManager {
 			stmt8.close();
 
 			Statement stmt9 = c.createStatement();
-			String sql9 = "CREATE TABLE products_characteristics" + "(prod_char_id INTEGER PRIMARY KEY AUTOINCREMENT  , product_id INTEGER REFERENCES products(id),"
-					+ " characteristic_id INTEGER REFERENCES characteristics(id))";
+			String sql9 = "CREATE TABLE products_characteristics" + "(product_id INTEGER REFERENCES products(id),"
+					+ " characteristic_id INTEGER REFERENCES characteristics(id)," + "PRIMARY KEY (product_id, characteristic_id))";
 
 			stmt9.execute(sql9);
 			stmt9.close(); 
@@ -467,10 +467,20 @@ public class JDBCManager implements DBManager {
 	}
 
 	@Override
-	public void addProdIntoCh(Product prod) {
-		// TODO Auto-generated method stub
-		
+	public void addToProdCh(Product prod, Characteristic ch) {
+		try {
+			Statement stmt = c.createStatement();
+			String sql = " INSERT INTO products_characteristics (product_id, characteristic_id) VALUES ('" + prod.getId() + "','"
+					+ ch.getId() +  "')";
+			stmt.executeUpdate(sql);
+			stmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
+		
+	
 
 	@Override
 	public void addChIntoProd(Material mat) {

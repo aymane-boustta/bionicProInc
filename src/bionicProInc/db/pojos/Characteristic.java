@@ -19,9 +19,9 @@ public class Characteristic implements Serializable {
 	private int flexibilty_scale;
 	private List<Product> products;
 
-	public Characteristic(float length, float width, float height, float weight, int joint_numb, int flexibilty_scale,
+	public Characteristic(int id, float length, float width, float height, float weight, int joint_numb, int flexibilty_scale,
 			List<Product> products) {
-		super();
+		this.id = id;
 		this.length = length;
 		this.width = width;
 		this.height = height;
