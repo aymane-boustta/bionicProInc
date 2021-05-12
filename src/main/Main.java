@@ -106,7 +106,7 @@ public class Main {
 		//j.addProduct(p9);
 		
 		//System.out.println(j.viewBonus(4));
-		//System.out.println(j.viewProjectAchieved(4));
+		System.out.println(j.viewProjectAchieved(4));
 		//System.out.println(j.searchProductByBody("Ear"));
 		//j.addToProdCh(p2, ch3);
 		
