@@ -86,7 +86,7 @@ public class Main {
 		//ADDING PRODUCTS
 		
 		Product p0 = new Product(1, "Rigth hand", "Hand",399.0f,Date.valueOf("2021-01-15"), new byte[10],null,null,null);
-		//j.addProduct(p0);
+		j.addProduct(p0); // 
 		Product p1 = new Product(2, "Left hand", "Hand",399.0f,Date.valueOf("2021-01-15"), new byte[10],null,null,null);
 		//j.addProduct(p1);
 		Product p2 = new Product(3, "Rigth leg", "Leg",799.0f,Date.valueOf("2021-01-15"), new byte[10],null,null,null);

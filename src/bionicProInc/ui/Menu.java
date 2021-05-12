@@ -134,8 +134,7 @@ public class Menu {
 			System.out.println("\n Choose an option:");
 			System.out.println("1. View product");
 			System.out.println("2. Make purchase");
-			System.out.println("3. Change product");
-			System.out.println("4. See other purchases");
+			System.out.println("3. See other purchases");
 			System.out.println("0. Exit");
 			int choice = Integer.parseInt(reader.readLine());
 			switch (choice) {
