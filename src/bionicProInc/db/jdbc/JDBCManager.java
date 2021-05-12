@@ -42,20 +42,20 @@ public class JDBCManager implements DBManager {
 		try {
 
 			Statement stmt1 = c.createStatement();
-			String sql1 = "CREATE TABLE products " + "(id INTEGER  PRIMARY KEY AUTOINCREMENT," + " name TEXT NOT NULL, "
+			String sql1 = "CREATE TABLE products " + "(id INTEGER  PRIMARY KEY AUTOINCREMENT UNIQUE," + " name TEXT NOT NULL, "
 					+ " bodypart  TEXT NOT NULL UNIQUE," + " price REAL NOT NULL," + " date_creation DATE NOT NULL,"
 					+ " photo BLOB )";
 			stmt1.executeUpdate(sql1);
 			stmt1.close();
 
 			Statement stmt2 = c.createStatement();
-			String sql2 = "CREATE TABLE materials " + "(id INTEGER  PRIMARY KEY AUTOINCREMENT,"
+			String sql2 = "CREATE TABLE materials " + "(id INTEGER  PRIMARY KEY AUTOINCREMENT UNIQUE,"
 					+ " name     TEXT     NOT NULL UNIQUE, " + " price REAL NOT NULL," + " amount   INTEGER	 NOT NULL)";
 			stmt2.executeUpdate(sql2);
 			stmt2.close();
 
 			Statement stmt3 = c.createStatement();
-			String sql3 = "CREATE TABLE customers " + "(id INTEGER  PRIMARY KEY AUTOINCREMENT,"
+			String sql3 = "CREATE TABLE customers " + "(id INTEGER  PRIMARY KEY AUTOINCREMENT UNIQUE,"
 					+ " name_surname     TEXT     NOT NULL UNIQUE, " + " age INTEGER NOT NULL,"
 					+ " gender TEXT NOT NULL," + " phone INTEGER NOT NULL," + " email TEXT NOT NULL,"
 					+ " street TEXT NOT NULL," + " city TEXT NOT NULL," + " postal_code INTEGER NOT NULL)";
@@ -63,7 +63,7 @@ public class JDBCManager implements DBManager {
 			stmt3.close();
 
 			Statement stmt4 = c.createStatement();
-			String sql4 = "CREATE TABLE engineers " + "(id INTEGER  PRIMARY KEY AUTOINCREMENT,"
+			String sql4 = "CREATE TABLE engineers " + "(id INTEGER  PRIMARY KEY AUTOINCREMENT UNIQUE,"
 					+ " name_surname     TEXT     NOT NULL UNIQUE, " + " email     TEXT     NOT NULL UNIQUE, "
 					+ " contract_starting_date DATE NOT NULL," + " contract_ending_date DATE NOT NULL,"
 					+ " current_service TEXT NOT NULL," + " salary REAL NOT NULL," + " bonus REAL NOT NULL,"
@@ -74,7 +74,7 @@ public class JDBCManager implements DBManager {
 			stmt4.close();
 
 			Statement stmt5 = c.createStatement();
-			String sql5 = "CREATE TABLE characteristics " + "(id INTEGER PRIMARY KEY AUTOINCREMENT,"
+			String sql5 = "CREATE TABLE characteristics " + "(id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,"
 					+ " length REAL NOT NULL," + " width REAL NOT NULL," + " height REAL NOT NULL,"
 					+ " weight REAL NOT NULL," + " joint_numb INTEGER NOT NULL,"
 					+ " flexibility_scale INTEGER NOT NULL)";
@@ -93,20 +93,20 @@ public class JDBCManager implements DBManager {
 
 			Statement stmt7 = c.createStatement();
 			String sql7 = "CREATE TABLE engineers_products "
-					+ "(eng_prod_id INTEGER PRIMARY KEY AUTOINCREMENT ,engineer_id INTEGER REFERENCES engineers(id),"
+					+ "(eng_prod_id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,engineer_id INTEGER REFERENCES engineers(id),"
 					+ " product_id INTEGER REFERENCES products(id))";
 			stmt7.executeUpdate(sql7);
 			stmt7.close();
 
 			Statement stmt8 = c.createStatement();
 			String sql8 = "CREATE TABLE products_materials "
-					+ "(prod_mat_id INTEGER PRIMARY KEY AUTOINCREMENT, product_id  INTEGER REFERENCES products(id),"
+					+ "(prod_mat_id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, product_id  INTEGER REFERENCES products(id),"
 					+ " material_id INTEGER REFERENCES materials(id))";
 			stmt8.executeUpdate(sql8);
 			stmt8.close();
 
 			Statement stmt9 = c.createStatement();
-			String sql9 = "CREATE TABLE products_characteristics" + "(product_id INTEGER REFERENCES products(id),"
+			String sql9 = "CREATE TABLE products_characteristics " + "(product_id INTEGER REFERENCES products(id),"
 					+ " characteristic_id INTEGER REFERENCES characteristics(id),"
 					+ "PRIMARY KEY (product_id, characteristic_id))";
 

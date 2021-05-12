@@ -38,11 +38,13 @@ public interface DBManager {
 
 	public void addEngineer(Engineer eng);
 	
+	int getEngineerID(String email);
+	
 	public void addOrder(Order ord);
 
 	public List<String> searchProductByBody(String bodypart);
 	
-	int getEngineerID(String email);
+	
 
 	public List<String> viewBodyparts();
 
