@@ -1,6 +1,9 @@
 package bionicProInc.db.jdbc;
 
 import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +12,7 @@ import bionicProInc.db.ifaces.DBManager;
 
 public class JDBCManager implements DBManager {
 	private Connection c;
+	
 
 	public void connect() {
 		try {
@@ -155,7 +159,7 @@ public class JDBCManager implements DBManager {
 				String name = rs.getString("name");
 				String bodypart = rs.getString("bodypart");
 				float price = rs.getFloat("price");
-				Date date_creation = rs.getDate("date_creation");
+				Date date_creation = rs.getDate("date_creation"); 
 				Product prod = new Product(id, name, bodypart, price, date_creation);
 				products.add(prod);
 			}
