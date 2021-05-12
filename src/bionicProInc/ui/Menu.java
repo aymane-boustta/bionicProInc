@@ -20,7 +20,6 @@ public class Menu {
 	private static DBManager dbman = new JDBCManager();
 	private static UserManager userman = new JPAUserManager();
 	private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-	private static Order temporaryOrder = new Order();
 	private static Product localprod = new Product();
 	private static JDBCManager JDBCmethod = new JDBCManager();
 	private static List<Product> products;
@@ -91,10 +90,10 @@ public class Menu {
 	private static void engineerMenu(int id) throws Exception {
 		do {
 			System.out.println("\n Choose an option:");
-			System.out.println("1. View product");
-			System.out.println("2. Add new product");
-			System.out.println("3. Remove product");
-			System.out.println("4. See existing projects");
+			System.out.println("1. View and existing product");
+			System.out.println("2. Add a new product to the shop");
+			System.out.println("3. Remove an existing product from the shop");
+			System.out.println("4. See how many projects you have successfully achieved (Good Job!)");
 			System.out.println("5. View bonus");
 			System.out.println("0. Exit");
 			int choice = Integer.parseInt(reader.readLine());
@@ -132,9 +131,9 @@ public class Menu {
 	private static void customerMenu(int id) throws Exception {
 		do {
 			System.out.println("\n Choose an option:");
-			System.out.println("1. View product");
-			System.out.println("2. Make purchase");
-			System.out.println("3. See other purchases");
+			System.out.println("1. View all available products");
+			System.out.println("2. Purchase a product");
+			System.out.println("3. See all my previous purchases");
 			System.out.println("0. Exit");
 			int choice = Integer.parseInt(reader.readLine());
 			switch (choice) {
@@ -147,11 +146,7 @@ public class Menu {
 				break;
 
 			case 3:
-				changeProduct();
-				break;
-
-			case 4:
-				seeOtherPurchases();
+				viewPreviousPurchases(id);
 				break;
 
 			case 0:
@@ -228,19 +223,9 @@ public class Menu {
 
 	// Engineer OPTION 4
 	private static void seeProject(int id) throws Exception {
-		System.out.println("You have achieved " + dbman.viewProjectAchieved(id).toString() + " projects so far");
+		System.out.println("You have completed " + dbman.viewProjectAchieved(id).toString() + " successful projects so far.");
 
 	}
-	/*
-	 * // Engineer OPTION 4 private static void seeProject() throws Exception {
-	 * List<Engineer> engineers = dbman.viewEngineersID(); for (int i = 0; i <
-	 * engineers.size(); i++) { System.out.println(engineers.get(i).showID()); } try
-	 * { System.out.println("Introduce your ID: "); int id =
-	 * Integer.parseInt(reader.readLine());
-	 * System.out.println("You have achieved project #" +
-	 * dbman.viewProjectAchieved(id) + " so far"); } catch (Exception e) {
-	 * e.printStackTrace(); } }
-	 */
 
 	// Engineer OPTION 5
 	private static void viewBonus(int id) throws Exception {
@@ -248,18 +233,15 @@ public class Menu {
 		System.out.println("Your bonus is: " + dbman.viewBonus(id) + "€");
 
 	}
-	/*
-	 * // Engineer OPTION 5 private static void viewBonus() throws Exception {
-	 * List<Engineer> engineers = dbman.viewEngineersID(); for (int i = 0; i <
-	 * engineers.size(); i++) { System.out.println(engineers.get(i).showID()); } try
-	 * { System.out.println("Introduce your ID: "); int id =
-	 * Integer.parseInt(reader.readLine()); System.out.println("Your bonus is: " +
-	 * dbman.viewBonus(id) + "€"); } catch (Exception e) { e.printStackTrace(); }
-	 * 
-	 * }
-	 */
 
-	// CUSTOMER OPTION 1
+	// Customer OPTION 1
+	// TODO
+	private static void viewProductC() throws Exception {
+		System.out.println(dbman.viewAllProducts().toString());
+	}
+	/*
+	// Customer OPTION 1
+	// TODO
 	private static void viewProductC() throws Exception {
 		try {
 			System.out.println("Choose a bodypart:");
@@ -276,7 +258,7 @@ public class Menu {
 				for (int i = 0; i < products.size(); i++) {
 					if (products.get(i).getId() == id) {
 						Product prod = products.get(i);
-						dbman.addToOrder(prod, temporaryOrder);
+
 					}
 				}
 			} else {
@@ -286,59 +268,25 @@ public class Menu {
 			e.printStackTrace();
 		}
 	}
-
+*/
 	// Customer OPTION 2
+	// TODO
 	private static void makePurchase() throws Exception {
 		try {
-			System.out.println("These are the products: \n");
-			dbman.viewCart(temporaryOrder);
-			System.out.println("Are you sure? " + " 1->YES 0->NO");
-			int option = Integer.parseInt(reader.readLine());
-			if (option == 1) {
-				dbman.addOrder(temporaryOrder);
-			} else {
-			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	// Customer OPTION 3
-	private static void changeProduct() throws Exception {
+	// TODO
+	private static void viewPreviousPurchases(int id) throws Exception {
 		try {
-			System.out.println("Choose the product you want to remove from cart:");
-			dbman.viewCart(temporaryOrder);
-			String pName = reader.readLine();
-			System.out.println("Are you sure you want to delete that product? " + " 1->YES 0->NO");
-			int option = Integer.parseInt(reader.readLine());
-			if (option == 1) {
-				dbman.deleteProdFromCart(pName, temporaryOrder);
-			} else {
-				return;
-			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	// CUSTOMER OPTION 4
-	private static void seeOtherPurchases() throws Exception {
-		try {
-			System.out.println("Confirm your ID: ");
-			int id = Integer.parseInt(reader.readLine());
-			dbman.viewOtherOrders(id);
-			System.out.println("Do you want to select a product? 1->YES 0->NO");
-			int option = Integer.parseInt(reader.readLine());
-			if (option == 1) {
-				System.out.println("Select id of product: ");
-				int p_id = Integer.parseInt(reader.readLine());
-				dbman.viewCharacteristicsFromProduct(p_id);
-				dbman.viewMaterialsFromProduct(p_id);
-			} else {
-				return;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 }

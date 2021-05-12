@@ -14,12 +14,22 @@ public class Material implements Serializable {
 	private int amount;
 	private ArrayList<Product> products;
 
-	public Material(String name, float price, int amount, ArrayList<Product> products) {
+	public Material(int id, String name, float price, int amount, ArrayList<Product> products) {
 		super();
+		this.id = id;
 		this.name = name;
 		this.price = price;
 		this.amount = amount;
 		this.products = products;
+	}
+	
+	public Material(int id, String name, float price, int amount) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.price = price;
+		this.amount = amount;
+		this.products = new ArrayList<Product>();
 	}
 
 	public Material(String name, float price, int amount) {

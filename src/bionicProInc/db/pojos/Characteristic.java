@@ -30,6 +30,17 @@ public class Characteristic implements Serializable {
 		this.flexibilty_scale = flexibilty_scale;
 		this.products = products;
 	}
+	
+	public Characteristic(int id, float length, float width, float height, float weight, int joint_numb, int flexibilty_scale) {
+		this.id = id;
+		this.length = length;
+		this.width = width;
+		this.height = height;
+		this.weight = weight;
+		this.joint_numb = joint_numb;
+		this.flexibilty_scale = flexibilty_scale;
+		this.products = new ArrayList<Product>();
+	}
 
 	public Characteristic(float length, float width, float height, float weight, int joint_numb, int flexibilty_scale) {
 		super();

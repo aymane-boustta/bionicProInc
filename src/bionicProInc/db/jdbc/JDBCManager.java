@@ -42,9 +42,9 @@ public class JDBCManager implements DBManager {
 		try {
 
 			Statement stmt1 = c.createStatement();
-			String sql1 = "CREATE TABLE products " + "(id INTEGER  PRIMARY KEY AUTOINCREMENT UNIQUE," + " name TEXT NOT NULL, "
-					+ " bodypart  TEXT NOT NULL UNIQUE," + " price REAL NOT NULL," + " date_creation DATE NOT NULL,"
-					+ " photo BLOB )";
+			String sql1 = "CREATE TABLE products " + "(id INTEGER  PRIMARY KEY AUTOINCREMENT UNIQUE,"
+					+ " name TEXT NOT NULL, " + " bodypart  TEXT NOT NULL UNIQUE," + " price REAL NOT NULL,"
+					+ " date_creation DATE NOT NULL," + " photo BLOB )";
 			stmt1.executeUpdate(sql1);
 			stmt1.close();
 
@@ -82,33 +82,30 @@ public class JDBCManager implements DBManager {
 			stmt5.executeUpdate(sql5);
 			stmt5.close();
 
+			// Now we create the table that references the Many-to-Many relationships
+
 			Statement stmt6 = c.createStatement();
-			String sql6 = "CREATE TABLE orders " + "(id INTEGER PRIMARY KEY AUTOINCREMENT,"
-					+ " customer_id INTEGER references customers(id),"
-					+ " product_id INTEGER  REFERENCES products(id))";
-			stmt6.executeUpdate(sql6);
+			String sql6 = "CREATE TABLE products_characteristics " + "(product_id INTEGER REFERENCES products(id),"
+					+ " characteristic_id INTEGER REFERENCES characteristics(id),"
+					+ "PRIMARY KEY (product_id, characteristic_id))";
+			stmt6.execute(sql6);
 			stmt6.close();
 
-			// Now we create the table that references the N-N relationships
-
 			Statement stmt7 = c.createStatement();
-			String sql7 = "CREATE TABLE engineers_products "
-					+ "(eng_prod_id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,engineer_id INTEGER REFERENCES engineers(id),"
-					+ " product_id INTEGER REFERENCES products(id))";
+			String sql7 = "CREATE TABLE products_materials " + "(product_id  INTEGER REFERENCES products(id),"
+					+ " material_id INTEGER REFERENCES materials(id)," + "PRIMARY KEY (product_id, material_id))";
 			stmt7.executeUpdate(sql7);
 			stmt7.close();
 
 			Statement stmt8 = c.createStatement();
-			String sql8 = "CREATE TABLE products_materials "
-					+ "(prod_mat_id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, product_id  INTEGER REFERENCES products(id),"
-					+ " material_id INTEGER REFERENCES materials(id))";
+			String sql8 = "CREATE TABLE engineers_products " + "(engineer_id INTEGER REFERENCES engineers(id),"
+					+ " product_id INTEGER REFERENCES products(id)," + "PRIMARY KEY (engineer_id,product_id))";
 			stmt8.executeUpdate(sql8);
 			stmt8.close();
 
 			Statement stmt9 = c.createStatement();
-			String sql9 = "CREATE TABLE products_characteristics " + "(product_id INTEGER REFERENCES products(id),"
-					+ " characteristic_id INTEGER REFERENCES characteristics(id),"
-					+ "PRIMARY KEY (product_id, characteristic_id))";
+			String sql9 = "CREATE TABLE customers_products " + "(customer_id INTEGER REFERENCES customers(id),"
+					+ " product_id INTEGER REFERENCES products(id)," + "PRIMARY KEY (customer_id,product_id))";
 
 			stmt9.execute(sql9);
 			stmt9.close();
@@ -147,6 +144,30 @@ public class JDBCManager implements DBManager {
 	}
 
 	@Override
+	public List<Product> viewAllProducts() {
+		ArrayList<Product> products = new ArrayList<Product>();
+		try {
+			String sql = "SELECT id,name,bodypart,price,date_creation,photo FROM products";
+			PreparedStatement stmt = c.prepareStatement(sql);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String name = rs.getString("name");
+				String bodypart = rs.getString("bodypart");
+				float price = rs.getFloat("price");
+				Date date_creation = rs.getDate("date_creation");
+				Product prod = new Product(id, name, bodypart, price, date_creation);
+				products.add(prod);
+			}
+			rs.close();
+			stmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return products;
+	}
+
+	@Override
 	public void addCharacteristic(Characteristic ch) {
 		try {
 
@@ -160,12 +181,6 @@ public class JDBCManager implements DBManager {
 			e.printStackTrace();
 		}
 
-	}
-
-	@Override
-	public List<Characteristic> getCharacteristics(int id) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	public void addMaterial(Material mat) {
@@ -216,7 +231,7 @@ public class JDBCManager implements DBManager {
 	}
 
 	@Override
-	public void addProdIntoCh(Product prod, Characteristic ch) {
+	public void addProd_Ch(Product prod, Characteristic ch) {
 		try {
 			Statement stmt = c.createStatement();
 			String sql = " INSERT INTO products_characteristics (product_id, characteristic_id) VALUES ('"
@@ -230,42 +245,43 @@ public class JDBCManager implements DBManager {
 	}
 
 	@Override
-	public void addChIntoProd(Material mat) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void addProdIntoMat(Product prod) {
+	public void addProd_Mat(Product prod, Material mat) {
 		try {
-			Statement st = c.createStatement();
-			String sql = "INSERT INTO products_materials (product_id) " + " VALUES ('" + prod.getId() + "');";
-			st.executeUpdate(sql);
-			st.close();
-		} catch (SQLException e) {
+			Statement stmt = c.createStatement();
+			String sql = " INSERT INTO products_materials (product_id, material_id) VALUES ('" + prod.getId() + "','"
+					+ mat.getId() + "')";
+			stmt.executeUpdate(sql);
+			stmt.close();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
 	}
 
-	public void addMatIntoProd(Material mat) {
+	@Override
+	public void addCust_Prod(Customer cust, Product prod) {
 		try {
-			Statement st = c.createStatement();
-			String sql = "INSERT INTO products_materials (material_id) " + " VALUES ('" + mat.getId() + "');";
-			st.executeUpdate(sql);
-			st.close();
-		} catch (SQLException e) {
+			Statement stmt = c.createStatement();
+			String sql = " INSERT INTO customers_products (customer_id, product_id) VALUES ('" + cust.getId() + "','"
+					+ prod.getId() + "')";
+			stmt.executeUpdate(sql);
+			stmt.close();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	@Override
-	public void addProdIntoCust(Product p) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void addCustIntoProd(Customer cust) {
-		// TODO Auto-generated method stub
+	public void addEng_Prod(Engineer eng, Product prod) {
+		try {
+			Statement stmt = c.createStatement();
+			String sql = " INSERT INTO engineers_products (engineer_id, product_id) VALUES ('" + eng.getId() + "','"
+					+ prod.getId() + "')";
+			stmt.executeUpdate(sql);
+			stmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 
@@ -287,7 +303,6 @@ public class JDBCManager implements DBManager {
 
 	}
 
-
 	@Override
 	public int getEngineerID(String email) {
 		int id = 0;
@@ -305,27 +320,6 @@ public class JDBCManager implements DBManager {
 			e.printStackTrace();
 		}
 		return id;
-	}
-
-	@Override
-	public List<Engineer> viewEngineersID() {
-		ArrayList<Engineer> engineers = new ArrayList<Engineer>();
-		try {
-			String sql = " SELECT id,name_surname FROM engineers ORDER BY id ";
-			PreparedStatement stmt = c.prepareStatement(sql);
-			ResultSet rs = stmt.executeQuery();
-			while (rs.next()) {
-				int id = rs.getInt("id");
-				String name_surname = rs.getString("name_surname");
-				Engineer eng = new Engineer(id, name_surname);
-				engineers.add(eng);
-			}
-			rs.close();
-			stmt.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return engineers;
 	}
 
 	public List<Integer> viewProjectAchieved(int id) {
@@ -364,96 +358,6 @@ public class JDBCManager implements DBManager {
 			e.printStackTrace();
 		}
 		return bonus;
-	}
-
-	public void addOrder(Order ord) {
-		try {
-			Statement stmt = c.createStatement();
-			String sql = " INSERT INTO orders (customer_id, product_id)" + " VALUES ('" + ord.getCustomer_id() + "','"
-					+ ord.getProduct_id() + "');";
-			stmt.executeUpdate(sql);
-			stmt.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	// LIKE ADDTOCART- THE SAME FUNCTION
-	// WHAT IS THIS FUNCTION
-	public void addToOrder(Product prod, Order ord) {
-
-		try {
-			Statement stmt = c.createStatement();
-			String sql = " INSERT INTO orders (id, customer_id, product_id) VALUES ('" + ord.getId() + "','"
-					+ ord.getCustomer_id() + "','" + ord.getProduct_id() + "')";
-			stmt.executeUpdate(sql);
-			stmt.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-	}
-
-	@Override
-	public List<Product> viewProductsFromOrder(int orderId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Integer> viewOtherOrders(int id) {
-		List<Integer> Ids = new ArrayList<Integer>();
-		try {
-			String sql = " SELECT id FROM orders WHERE costumer_id= ? ";
-			PreparedStatement stmt = c.prepareStatement(sql);
-			stmt.setInt(1, id);
-			ResultSet rs = stmt.executeQuery();
-			while (rs.next()) {
-				int ids = rs.getInt(id);
-				Ids.add(ids);
-			}
-			rs.close();
-			stmt.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return Ids;
-	}
-
-	public List<String> viewCart(Order ord) {
-		List<String> p_names = new ArrayList<String>();
-		try {
-			String sql = " SELECT p.name FROM products AS p JOIN order AS or ON or.product_id=p.id WHERE or.order_id= ? ";
-			PreparedStatement stmt = c.prepareStatement(sql);
-			stmt.setInt(1, ord.getId());
-			ResultSet rs = stmt.executeQuery();
-			while (rs.next()) {
-				String productName = rs.getString("name");
-				p_names.add(productName);
-			}
-			rs.close();
-			stmt.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return p_names;
-	}
-
-	public void deleteProdFromCart(String name, Order ord) {
-		try {
-			String sql = "SELECT id FROM products WHERE name = ? ";
-			PreparedStatement stmt = c.prepareStatement(sql);
-			stmt.setString(1, "%" + name + "%");
-			ResultSet rs = stmt.executeQuery();
-			while (rs.next()) {
-				int id = rs.getInt("product_id");
-				ord.removeProduct(id);
-			}
-			rs.close();
-			stmt.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	// CHECK
@@ -547,6 +451,12 @@ public class JDBCManager implements DBManager {
 			e.printStackTrace();
 		}
 		return materials;
+	}
+
+	@Override
+	public List<Integer> viewPreviousPurchases(int id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

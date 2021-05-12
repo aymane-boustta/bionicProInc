@@ -18,11 +18,12 @@ public class Customer implements Serializable {
 	private String street;
 	private String city;
 	private int postal_code;
-	private List<Order> orders;
+	private List<Product> products;
 
-	public Customer(String name_surname, int age, String gender, int phone, String email, String street, String city,
-			int postal_code, List<Order> orders) {
+	public Customer(int id, String name_surname, int age, String gender, int phone, String email, String street, String city,
+			int postal_code, List<Product> products) {
 		super();
+		this.id = id;
 		this.name_surname = name_surname;
 		this.age = age;
 		this.gender = gender;
@@ -31,9 +32,24 @@ public class Customer implements Serializable {
 		this.street = street;
 		this.city = city;
 		this.postal_code = postal_code;
-		this.orders = orders;
+		this.products = products;
 	}
 
+	public Customer(int id, String name_surname, int age, String gender, int phone, String email, String street, String city,
+			int postal_code) {
+		super();
+		this.id = id;
+		this.name_surname = name_surname;
+		this.age = age;
+		this.gender = gender;
+		this.phone = phone;
+		this.email = email;
+		this.street = street;
+		this.city = city;
+		this.postal_code = postal_code;
+		this.products = new ArrayList<Product>();
+	}
+	
 	public Customer(String name_surname, int age, String gender, int phone, String email, String street, String city,
 			int postal_code) {
 		super();
@@ -45,12 +61,12 @@ public class Customer implements Serializable {
 		this.street = street;
 		this.city = city;
 		this.postal_code = postal_code;
-		this.orders = new ArrayList<Order>();
+		this.products = new ArrayList<Product>();
 	}
 
 	public Customer() {
 		super();
-		this.orders = new ArrayList<Order>();
+		this.products = new ArrayList<Product>();
 	}
 
 	public int getId() {
@@ -125,12 +141,12 @@ public class Customer implements Serializable {
 		this.postal_code = postal_code;
 	}
 
-	public List<Order> getOrders() {
-		return orders;
+	public List<Product> getProducts() {
+		return products;
 	}
 
-	public void setOrders(List<Order> orders) {
-		this.orders = orders;
+	public void setOrders(List<Product> products) {
+		this.products = products;
 	}
 
 	@Override
@@ -159,7 +175,7 @@ public class Customer implements Serializable {
 	public String toString() {
 		return "Customer [id=" + id + ", name_surname=" + name_surname + ", age=" + age + ", gender=" + gender
 				+ ", phone=" + phone + ", email=" + email + ", street=" + street + ", city=" + city + ", postal_code="
-				+ postal_code + ", orders=" + orders + "]";
+				+ postal_code + ", products=" + products + "]";
 	}
 
 }

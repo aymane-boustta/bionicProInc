@@ -11,73 +11,43 @@ public interface DBManager {
 	public void disconnect();
 
 	public void addProduct(Product prod);
-	
+
 	public void removeProduct(int id);
 	
+	public List<Product> viewAllProducts();
+
 	public void addCharacteristic(Characteristic ch);
-	
-	public List<Characteristic> getCharacteristics(int id);
 
 	public void addMaterial(Material mat);
-	
+
 	public void addCustomer(Customer cust);
-	
+
 	public int getCustomerID(String email);
 
-	public void addProdIntoCh(Product prod, Characteristic ch);
+	public void addProd_Ch(Product prod, Characteristic ch);
 
-	public void addChIntoProd(Material mat);
-	
-	public void addProdIntoMat(Product prod);
+	public void addProd_Mat(Product prod, Material mat);
 
-	public void addMatIntoProd(Material mat);
+	public void addCust_Prod(Customer cust, Product prod);
 
-	public void addProdIntoCust(Product prod);
-
-	public void addCustIntoProd(Customer cust);
+	public void addEng_Prod(Engineer eng, Product prod);
 
 	public void addEngineer(Engineer eng);
-	
+
 	int getEngineerID(String email);
-	
-	public void addOrder(Order ord);
+
+	public List<Integer> viewProjectAchieved(int id);
+
+	public Float viewBonus(int id);
 
 	public List<String> searchProductByBody(String bodypart);
-	
-	
 
 	public List<String> viewBodyparts();
 
-	public void addToOrder(Product prod, Order ord);
-
-	public List<String> viewCart(Order ord);
-	
-	public List<Product> viewProductsFromOrder(int id);
-
-	public void deleteProdFromCart(String name, Order ord);
-	
-	public List<Integer> viewOtherOrders(int id);
-	
 	public List<Characteristic> viewCharacteristicsFromProduct(int id);
-	
+
 	public List<Material> viewMaterialsFromProduct(int id);
-	
-	public List<Engineer> viewEngineersID();
 
-	public List<Integer> viewProjectAchieved(int id);
-	
-	public Float viewBonus(int id);
-
-	
-	
-
-
-
-
-	
-
-	
-
-	
+	public List<Integer> viewPreviousPurchases(int id);
 
 }
