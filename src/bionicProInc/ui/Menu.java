@@ -80,13 +80,15 @@ public class Menu {
 			System.out.println("Wrong email or password");
 			return;
 		} else if (user.getRole().getName().equalsIgnoreCase("engineer")) {
-			engineerMenu();
+			int id = dbman.getEngineerID(email);
+			engineerMenu(id);
 		} else if (user.getRole().getName().equalsIgnoreCase("customer")) {
-			customerMenu();
+			int id = dbman.getCustomerID(email);
+			customerMenu(id);
 		}
 	}
 
-	private static void engineerMenu() throws Exception {
+	private static void engineerMenu(int id) throws Exception {
 		do {
 			System.out.println("\n Choose an option:");
 			System.out.println("1. View product");
@@ -110,12 +112,11 @@ public class Menu {
 				break;
 
 			case 4:
-
-				seeProject();
+				seeProject(id);
 				break;
 
 			case 5:
-				viewBonus();
+				viewBonus(id);
 				break;
 
 			case 0:
@@ -128,7 +129,7 @@ public class Menu {
 		} while (true);
 	}
 
-	private static void customerMenu() throws Exception {
+	private static void customerMenu(int id) throws Exception {
 		do {
 			System.out.println("\n Choose an option:");
 			System.out.println("1. View product");
@@ -227,35 +228,37 @@ public class Menu {
 	}
 
 	// Engineer OPTION 4
-	private static void seeProject() throws Exception {
-		List<Engineer> engineers = dbman.viewEngineersID();
-		for (int i = 0; i < engineers.size(); i++) {
-			System.out.println(engineers.get(i).showID());
-		}
-		try {
-			System.out.println("Introduce your ID: ");
-			int id = Integer.parseInt(reader.readLine());
-			System.out.println("You have achieved project #" + dbman.viewProjectAchieved(id) + " so far");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	private static void seeProject(int id) throws Exception {
+		System.out.println("You have achieved " + dbman.viewProjectAchieved(id).toString() + " projects so far");
+
 	}
+	/*
+	 * // Engineer OPTION 4 private static void seeProject() throws Exception {
+	 * List<Engineer> engineers = dbman.viewEngineersID(); for (int i = 0; i <
+	 * engineers.size(); i++) { System.out.println(engineers.get(i).showID()); } try
+	 * { System.out.println("Introduce your ID: "); int id =
+	 * Integer.parseInt(reader.readLine());
+	 * System.out.println("You have achieved project #" +
+	 * dbman.viewProjectAchieved(id) + " so far"); } catch (Exception e) {
+	 * e.printStackTrace(); } }
+	 */
 
 	// Engineer OPTION 5
-	private static void viewBonus() throws Exception {
-		List<Engineer> engineers = dbman.viewEngineersID();
-		for (int i = 0; i < engineers.size(); i++) {
-			System.out.println(engineers.get(i).showID());
-		}
-		try {
-			System.out.println("Introduce your ID: ");
-			int id = Integer.parseInt(reader.readLine());
-			System.out.println("Your bonus is: " + dbman.viewBonus(id) + "€");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	private static void viewBonus(int id) throws Exception {
+
+		System.out.println("Your bonus is: " + dbman.viewBonus(id) + "€");
 
 	}
+	/*
+	 * // Engineer OPTION 5 private static void viewBonus() throws Exception {
+	 * List<Engineer> engineers = dbman.viewEngineersID(); for (int i = 0; i <
+	 * engineers.size(); i++) { System.out.println(engineers.get(i).showID()); } try
+	 * { System.out.println("Introduce your ID: "); int id =
+	 * Integer.parseInt(reader.readLine()); System.out.println("Your bonus is: " +
+	 * dbman.viewBonus(id) + "€"); } catch (Exception e) { e.printStackTrace(); }
+	 * 
+	 * }
+	 */
 
 	// CUSTOMER OPTION 1
 	private static void viewProductC() throws Exception {

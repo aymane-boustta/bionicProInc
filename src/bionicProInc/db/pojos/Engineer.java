@@ -12,6 +12,7 @@ public class Engineer implements Serializable {
 	private static final long serialVersionUID = 7354779387678883946L;
 	private int id;
 	private String name_surname;
+	private String email;
 	private Date contract_strating_date;
 	private Date contract_ending_date;
 	private String current_service;
@@ -22,11 +23,12 @@ public class Engineer implements Serializable {
 	private Date date_of_birth;
 	private List<Product> products;
 
-	public Engineer(String name_surname, Date contract_strating_date, Date contract_ending_date, String current_service,
-			float salary, float bonus, int project_achieved, int experience_in_years, Date date_of_birth,
-			List<Product> products) {
+	public Engineer(String name_surname, String email, Date contract_strating_date, Date contract_ending_date,
+			String current_service, float salary, float bonus, int project_achieved, int experience_in_years,
+			Date date_of_birth, List<Product> products) {
 		super();
 		this.name_surname = name_surname;
+		this.email = email;
 		this.contract_strating_date = contract_strating_date;
 		this.contract_ending_date = contract_ending_date;
 		this.current_service = current_service;
@@ -38,10 +40,12 @@ public class Engineer implements Serializable {
 		this.products = products;
 	}
 
-	public Engineer(String name_surname, Date contract_strating_date, Date contract_ending_date, String current_service,
-			float salary, float bonus, int project_achieved, int experience_in_years, Date date_of_birth) {
+	public Engineer(String name_surname, String email, Date contract_strating_date, Date contract_ending_date,
+			String current_service, float salary, float bonus, int project_achieved, int experience_in_years,
+			Date date_of_birth) {
 		super();
 		this.name_surname = name_surname;
+		this.email = email;
 		this.contract_strating_date = contract_strating_date;
 		this.contract_ending_date = contract_ending_date;
 		this.current_service = current_service;
@@ -84,6 +88,14 @@ public class Engineer implements Serializable {
 
 	public void setName_surname(String name_surname) {
 		this.name_surname = name_surname;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public Date getContract_strating_date() {
@@ -183,14 +195,14 @@ public class Engineer implements Serializable {
 	public String showID() {
 		return "[id=" + this.id + ", name_surname=" + this.name_surname + "]";
 	}
-	
+
 	@Override
 	public String toString() {
-		return "Engineer [id=" + id + ", name_surname=" + name_surname + ", contract_strating_date="
-				+ contract_strating_date + ", contract_ending_date=" + contract_ending_date + ", current_service="
-				+ current_service + ", salary=" + salary + ", bonus=" + bonus + ", project_achieved=" + project_achieved
-				+ ", experience_in_years=" + experience_in_years + ", date_of_birth=" + date_of_birth + ", products="
-				+ products + "]";
+		return "Engineer [id=" + id + ", name_surname=" + name_surname + ", email=" + email
+				+ ", contract_strating_date=" + contract_strating_date + ", contract_ending_date="
+				+ contract_ending_date + ", current_service=" + current_service + ", salary=" + salary + ", bonus="
+				+ bonus + ", project_achieved=" + project_achieved + ", experience_in_years=" + experience_in_years
+				+ ", date_of_birth=" + date_of_birth + ", products=" + products + "]";
 	}
 
 }
