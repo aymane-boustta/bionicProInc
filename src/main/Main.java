@@ -38,7 +38,7 @@ public class Main {
 		
 		//ADDING ENGINEERS
 		/*
-		Engineer e = new Engineer("Ricardo Oriol ",Date.valueOf("2020-03-13"),Date.valueOf("2030-03-13"),"CFO",10000.0f,8000.0f,0,0,Date.valueOf("1997-05-25"));
+		Engineer e = new Engineer("Ricardo Oriol ","ricardooriol@engineer.com", Date.valueOf("2020-03-13"),Date.valueOf("2030-03-13"),"CFO",10000.0f,8000.0f,0,0,Date.valueOf("1997-05-25"));
 		j.addEngineer(e); 
 		*/
 		
