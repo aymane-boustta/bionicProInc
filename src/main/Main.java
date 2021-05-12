@@ -106,12 +106,12 @@ public class Main {
 		j.addProduct(p9);
 		*/
 		
-<<<<<<< HEAD
+
 		//System.out.println(j.viewBonus(4));
 		System.out.println(j.viewProjectAchieved(4));
 		//System.out.println(j.searchProductByBody("Ear"));
 		//j.addToProdCh(p2, ch3);
-=======
+
 		//TESTING
 		/*
 		System.out.println(j.viewBonus(4));
@@ -119,7 +119,7 @@ public class Main {
 		System.out.println(j.searchProductByBody("Ear"));
 		j.addProdIntoCh(p2, ch3);
 		*/
->>>>>>> branch 'master' of https://github.com/aymane-boustta/bionicProInc
+
 		
 		j.disconnect();
 		

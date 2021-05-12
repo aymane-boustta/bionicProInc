@@ -41,6 +41,8 @@ public interface DBManager {
 	public void addOrder(Order ord);
 
 	public List<String> searchProductByBody(String bodypart);
+	
+	int getEngineerID(String email);
 
 	public List<String> viewBodyparts();
 
@@ -63,6 +65,8 @@ public interface DBManager {
 	public List<Integer> viewProjectAchieved(int id);
 	
 	public Float viewBonus(int id);
+
+	
 	
 
 
