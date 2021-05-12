@@ -23,7 +23,7 @@ public class Menu {
 	private static Order temporaryOrder = new Order();
 	private static Product localprod = new Product();
 	private static JDBCManager JDBCmethod = new JDBCManager();
-	private static List<Product> p;
+	private static List<Product> products;
 
 	public static void main(String[] args) throws Exception {
 		dbman.connect();
@@ -272,12 +272,12 @@ public class Menu {
 			dbman.viewCharacteristicsFromProduct(id);
 			dbman.viewMaterialsFromProduct(id);
 			System.out.println("Do you want to add it to your cart? 1->YES 0->NO");
-			int op = Integer.parseInt(reader.readLine());
-			if (op == 1) {
-				for (int i = 1; i < p.size(); i++) {
-					if (p.get(i).getId() == id) {
-						Product pr = p.get(i);
-						dbman.addToOrder(pr, temporaryOrder);
+			int option = Integer.parseInt(reader.readLine());
+			if (option == 1) {
+				for (int i = 0; i < products.size(); i++) {
+					if (products.get(i).getId() == id) {
+						Product prod = products.get(i);
+						dbman.addToOrder(prod, temporaryOrder);
 					}
 				}
 			} else {
