@@ -226,29 +226,35 @@ public class Menu {
 		}
 	}
 
-
 	// Engineer OPTION 4
 	private static void seeProject() throws Exception {
+		List<Engineer> engineers = dbman.viewEngineersID();
+		for (int i = 0; i < engineers.size(); i++) {
+			System.out.println(engineers.get(i).showID());
+		}
 		try {
 			System.out.println("Introduce your ID: ");
-			
 			int id = Integer.parseInt(reader.readLine());
-			dbman.viewProjectAchieved(id);
+			System.out.println("You have achieved project #" + dbman.viewProjectAchieved(id) + " so far");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-
 	// Engineer OPTION 5
 	private static void viewBonus() throws Exception {
 		List<Engineer> engineers = dbman.viewEngineersID();
-		for(int i = 0;i<engineers.size();i++) {
+		for (int i = 0; i < engineers.size(); i++) {
 			System.out.println(engineers.get(i).showID());
 		}
-		System.out.println("Introduce your ID:");
-		int id = Integer.parseInt(reader.readLine());
-		System.out.println("Your bonus is: " + dbman.viewBonus(id));
+		try {
+			System.out.println("Introduce your ID: ");
+			int id = Integer.parseInt(reader.readLine());
+			System.out.println("Your bonus is: " + dbman.viewBonus(id) + "€");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	// CUSTOMER OPTION 1

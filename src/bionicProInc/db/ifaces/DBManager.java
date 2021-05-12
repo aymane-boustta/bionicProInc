@@ -55,12 +55,14 @@ public interface DBManager {
 	public List<Characteristic> viewCharacteristicsFromProduct(int id);
 	
 	public List<Material> viewMaterialsFromProduct(int id);
-
-	public Float viewBonus(int id);
-
-	public List<Integer> viewProjectAchieved(int rd);
 	
 	public List<Engineer> viewEngineersID();
+
+	public List<Integer> viewProjectAchieved(int id);
+	
+	public Float viewBonus(int id);
+	
+
 
 
 

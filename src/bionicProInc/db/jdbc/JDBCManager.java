@@ -16,12 +16,22 @@ public class JDBCManager implements DBManager {
 			c = DriverManager.getConnection("jdbc:sqlite:./db/bionicsproInc.db");
 			c.createStatement().execute("PRAGMA foreign_keys=ON");
 			System.out.println("Database connection opened.");
-			//this.createTables();
+			// this.createTables();
 		} catch (SQLException sqlE) {
 			System.out.println("There was a database exception.");
 			sqlE.printStackTrace();
 		} catch (Exception e) {
 			System.out.println("There was a general exception.");
+			e.printStackTrace();
+		}
+	}
+
+	public void disconnect() {
+		try {
+			c.close();
+			System.out.println("Database is closed .");
+		} catch (SQLException e) {
+			System.out.println("There was a problem while closing the database connection.");
 			e.printStackTrace();
 		}
 	}
@@ -81,38 +91,31 @@ public class JDBCManager implements DBManager {
 			// Now we create the table that references the N-N relationships
 
 			Statement stmt7 = c.createStatement();
-			String sql7 = "CREATE TABLE engineers_products " + "(eng_prod_id INTEGER PRIMARY KEY AUTOINCREMENT ,engineer_id INTEGER REFERENCES engineers(id),"
+			String sql7 = "CREATE TABLE engineers_products "
+					+ "(eng_prod_id INTEGER PRIMARY KEY AUTOINCREMENT ,engineer_id INTEGER REFERENCES engineers(id),"
 					+ " product_id INTEGER REFERENCES products(id))";
 			stmt7.executeUpdate(sql7);
 			stmt7.close();
 
 			Statement stmt8 = c.createStatement();
-			String sql8 = "CREATE TABLE products_materials " + "(prod_mat_id INTEGER PRIMARY KEY AUTOINCREMENT, product_id  INTEGER REFERENCES products(id),"
+			String sql8 = "CREATE TABLE products_materials "
+					+ "(prod_mat_id INTEGER PRIMARY KEY AUTOINCREMENT, product_id  INTEGER REFERENCES products(id),"
 					+ " material_id INTEGER REFERENCES materials(id))";
 			stmt8.executeUpdate(sql8);
 			stmt8.close();
 
 			Statement stmt9 = c.createStatement();
 			String sql9 = "CREATE TABLE products_characteristics" + "(product_id INTEGER REFERENCES products(id),"
-					+ " characteristic_id INTEGER REFERENCES characteristics(id)," + "PRIMARY KEY (product_id, characteristic_id))";
+					+ " characteristic_id INTEGER REFERENCES characteristics(id),"
+					+ "PRIMARY KEY (product_id, characteristic_id))";
 
 			stmt9.execute(sql9);
-			stmt9.close(); 
+			stmt9.close();
 
 		} catch (SQLException e) {
 			if (!e.getMessage().contains("already exists")) {
 				e.printStackTrace();
 			}
-		}
-	}
-
-	public void disconnect() {
-		try {
-			c.close();
-			System.out.println("Database is closed .");
-		} catch (SQLException e) {
-			System.out.println("There was a problem while closing the database connection.");
-			e.printStackTrace();
 		}
 	}
 
@@ -128,7 +131,36 @@ public class JDBCManager implements DBManager {
 			e.printStackTrace();
 		}
 	}
+	
+	@Override
+	public void removeProduct(int id) {
+		try {
+			String sql = "DELETE FROM products WHERE id = ? ";
+			PreparedStatement stmt = c.prepareStatement(sql);
+			stmt.setInt(1, id);
+			stmt.executeUpdate();
+			stmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
+	@Override
+	public void addCharacteristic(Characteristic ch) {
+		try {
+
+			Statement st1 = c.createStatement();
+			String sql = "INSERT INTO characteristics(length, width, height, weight, joint_numb, flexibility_scale) "
+					+ " VALUES ('" + ch.getLength() + "', '" + ch.getWidth() + "','" + ch.getHeight() + "','"
+					+ ch.getWeight() + "','" + ch.getJoint_numb() + "','" + ch.getFlexibilty_scale() + "');";
+			st1.executeUpdate(sql);
+			st1.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+	
 	public void addMaterial(Material mat) {
 		try {
 			Statement st = c.createStatement();
@@ -209,21 +241,7 @@ public class JDBCManager implements DBManager {
 		}
 	}
 
-	@Override
-	public void addCharacteristic(Characteristic ch) {
-		try {
 
-			Statement st1 = c.createStatement();
-			String sql = "INSERT INTO characteristics(length, width, height, weight, joint_numb, flexibility_scale) "
-					+ " VALUES ('" + ch.getLength() + "', '" + ch.getWidth() + "','" + ch.getHeight() + "','"
-					+ ch.getWeight() + "','" + ch.getJoint_numb() + "','" + ch.getFlexibilty_scale() + "');";
-			st1.executeUpdate(sql);
-			st1.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-	}
 
 	@Override
 	public List<Characteristic> getCharacteristics(int id) {
@@ -262,9 +280,9 @@ public class JDBCManager implements DBManager {
 			stm.setString(1, "%" + bodypart + "%");
 			ResultSet rs = stm.executeQuery();
 			while (rs.next()) {
-				 id = rs.getInt("id");
-				 productname = rs.getString("name");
-				
+				id = rs.getInt("id");
+				productname = rs.getString("name");
+
 				prodname.add(productname);
 			}
 			rs.close();
@@ -275,18 +293,7 @@ public class JDBCManager implements DBManager {
 		return prodname;
 	}
 
-	@Override
-	public void removeProduct(int id) {
-		try {
-			String sql = "DELETE FROM products WHERE id = ? ";
-			PreparedStatement stmt = c.prepareStatement(sql);
-			stmt.setInt(1, id);
-			stmt.executeUpdate();
-			stmt.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+
 
 	@Override
 	public Float viewBonus(int id) {
@@ -296,9 +303,9 @@ public class JDBCManager implements DBManager {
 			PreparedStatement stmt = c.prepareStatement(sql);
 			stmt.setInt(1, id);
 			ResultSet rs = stmt.executeQuery();
-		
-		  bonus = rs.getFloat("bonus");
-			
+
+			bonus = rs.getFloat("bonus");
+
 			rs.close();
 			stmt.close();
 		} catch (Exception e) {
@@ -365,13 +372,13 @@ public class JDBCManager implements DBManager {
 	public List<Integer> viewProjectAchieved(int id) {
 		List<Integer> p_achieved = new ArrayList<>();
 		try {
-			String sql = "SELECT  e.project_achieved FROM engineers AS e WHERE id = ?";
+			String sql = "SELECT  project_achieved FROM engineers WHERE id = ?";
 			PreparedStatement stmt = c.prepareStatement(sql);
 			stmt.setInt(1, id);
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
-				 int pr_achieved = rs.getInt("project_achieved");
-				 p_achieved.add(pr_achieved);
+				int pr_achieved = rs.getInt("project_achieved");
+				p_achieved.add(pr_achieved);
 			}
 			rs.close();
 			stmt.close();
@@ -447,7 +454,7 @@ public class JDBCManager implements DBManager {
 		}
 		return materials;
 	}
-	
+
 	@Override
 	public List<Engineer> viewEngineersID() {
 		ArrayList<Engineer> engineers = new ArrayList<Engineer>();
@@ -458,7 +465,7 @@ public class JDBCManager implements DBManager {
 			while (rs.next()) {
 				int id = rs.getInt("id");
 				String name_surname = rs.getString("name_surname");
-				Engineer eng = new Engineer (id,name_surname);
+				Engineer eng = new Engineer(id, name_surname);
 				engineers.add(eng);
 			}
 			rs.close();
@@ -491,8 +498,8 @@ public class JDBCManager implements DBManager {
 	public void addToProdCh(Product prod, Characteristic ch) {
 		try {
 			Statement stmt = c.createStatement();
-			String sql = " INSERT INTO products_characteristics (product_id, characteristic_id) VALUES ('" + prod.getId() + "','"
-					+ ch.getId() +  "')";
+			String sql = " INSERT INTO products_characteristics (product_id, characteristic_id) VALUES ('"
+					+ prod.getId() + "','" + ch.getId() + "')";
 			stmt.executeUpdate(sql);
 			stmt.close();
 		} catch (Exception e) {
@@ -500,13 +507,11 @@ public class JDBCManager implements DBManager {
 		}
 
 	}
-		
-	
 
 	@Override
 	public void addChIntoProd(Material mat) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
