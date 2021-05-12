@@ -242,10 +242,13 @@ public class Menu {
 
 	// Engineer OPTION 5
 	private static void viewBonus() throws Exception {
+		List<Engineer> engineers = dbman.viewEngineersID();
+		for(int i = 0;i<engineers.size();i++) {
+			System.out.println(engineers.get(i).showID());
+		}
 		System.out.println("Introduce your ID:");
-		userman.getUsers().toString();
 		int id = Integer.parseInt(reader.readLine());
-		dbman.viewBonus(id);
+		System.out.println("Your bonus is: " + dbman.viewBonus(id));
 	}
 
 	// CUSTOMER OPTION 1

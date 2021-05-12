@@ -64,6 +64,12 @@ public class Engineer implements Serializable {
 		this.bonus = bonus;
 	}
 
+	public Engineer(int id, String name_surname) {
+		super();
+		this.id = id;
+		this.name_surname = name_surname;
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -174,6 +180,10 @@ public class Engineer implements Serializable {
 		return true;
 	}
 
+	public String showID() {
+		return "[id=" + this.id + ", name_surname=" + this.name_surname + "]";
+	}
+	
 	@Override
 	public String toString() {
 		return "Engineer [id=" + id + ", name_surname=" + name_surname + ", contract_strating_date="

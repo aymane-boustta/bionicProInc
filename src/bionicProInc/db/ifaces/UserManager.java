@@ -12,8 +12,6 @@ public interface UserManager {
 	public void disconnect();
 
 	public void newUser(User u);
-	
-	public List<User> getUsers();
 
 	public void newRole(Role r);
 
