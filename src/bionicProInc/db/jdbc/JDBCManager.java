@@ -56,18 +56,19 @@ public class JDBCManager implements DBManager {
 
 			Statement stmt3 = c.createStatement();
 			String sql3 = "CREATE TABLE customers " + "(id INTEGER  PRIMARY KEY AUTOINCREMENT,"
-					+ " name_surname     TEXT     NOT NULL, " + " age INTEGER NOT NULL," + " gender TEXT NOT NULL,"
-					+ " phone INTEGER NOT NULL," + " email TEXT NOT NULL," + " street TEXT NOT NULL,"
-					+ " city TEXT NOT NULL," + " postal_code INTEGER NOT NULL)";
+					+ " name_surname     TEXT     NOT NULL UNIQUE, " + " age INTEGER NOT NULL,"
+					+ " gender TEXT NOT NULL," + " phone INTEGER NOT NULL," + " email TEXT NOT NULL,"
+					+ " street TEXT NOT NULL," + " city TEXT NOT NULL," + " postal_code INTEGER NOT NULL)";
 			stmt3.executeUpdate(sql3);
 			stmt3.close();
 
 			Statement stmt4 = c.createStatement();
 			String sql4 = "CREATE TABLE engineers " + "(id INTEGER  PRIMARY KEY AUTOINCREMENT,"
-					+ " name_surname     TEXT     NOT NULL UNIQUE, " + " contract_starting_date DATE NOT NULL UNIQUE,"
-					+ " contract_ending_date DATE NOT NULL," + " current_service TEXT NOT NULL,"
-					+ " salary REAL NOT NULL," + " bonus REAL NOT NULL," + " project_achieved INTEGER NOT NULL,"
-					+ " experience_in_years INTEGER NOT NULL," + " date_of_birth DATE NOT NULL)";
+					+ " name_surname     TEXT     NOT NULL UNIQUE, " + " email     TEXT     NOT NULL UNIQUE, "
+					+ " contract_starting_date DATE NOT NULL," + " contract_ending_date DATE NOT NULL,"
+					+ " current_service TEXT NOT NULL," + " salary REAL NOT NULL," + " bonus REAL NOT NULL,"
+					+ " project_achieved INTEGER NOT NULL," + " experience_in_years INTEGER NOT NULL,"
+					+ " date_of_birth DATE NOT NULL)";
 
 			stmt4.executeUpdate(sql4);
 			stmt4.close();
