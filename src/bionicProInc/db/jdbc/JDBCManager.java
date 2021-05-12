@@ -16,7 +16,7 @@ public class JDBCManager implements DBManager {
 			c = DriverManager.getConnection("jdbc:sqlite:./db/bionicsproInc.db");
 			c.createStatement().execute("PRAGMA foreign_keys=ON");
 			System.out.println("Database connection opened.");
-			// this.createTables();
+			//this.createTables();
 		} catch (SQLException sqlE) {
 			System.out.println("There was a database exception.");
 			sqlE.printStackTrace();
@@ -235,7 +235,7 @@ public class JDBCManager implements DBManager {
 	public List<String> viewBodyparts() {
 		List<String> bodyPart = new ArrayList<String>();
 		try {
-			String sql = " SELECT DISTINCT bodypart FROM products ";
+			String sql = "SELECT DISTINCT bodypart FROM products ";
 			PreparedStatement stm = c.prepareStatement(sql);
 			ResultSet rs = stm.executeQuery();
 			while (rs.next()) {
@@ -446,6 +446,27 @@ public class JDBCManager implements DBManager {
 			e.printStackTrace();
 		}
 		return materials;
+	}
+	
+	@Override
+	public List<Engineer> viewEngineersID() {
+		ArrayList<Engineer> engineers = new ArrayList<Engineer>();
+		try {
+			String sql = " SELECT id,name_surname FROM engineers ORDER BY id ";
+			PreparedStatement stm = c.prepareStatement(sql);
+			ResultSet rs = stm.executeQuery();
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String name_surname = rs.getString("name_surname");
+				Engineer eng = new Engineer (id,name_surname);
+				engineers.add(eng);
+			}
+			rs.close();
+			stm.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return engineers;
 	}
 
 	@Override

@@ -83,10 +83,4 @@ public class JPAUserManager implements UserManager {
 		return null;
 	}
 
-	@Override
-	public List<User> getUsers() {
-		Query q = em.createNativeQuery("SELECT * from users", User.class);
-		return (List<User>) q.getResultList();
-	}
-
 }
