@@ -19,8 +19,8 @@ public class Characteristic implements Serializable {
 	private int flexibilty_scale;
 	private List<Product> products;
 
-	public Characteristic(int id, float length, float width, float height, float weight, int joint_numb, int flexibilty_scale,
-			List<Product> products) {
+	public Characteristic(int id, float length, float width, float height, float weight, int joint_numb,
+			int flexibilty_scale, List<Product> products) {
 		this.id = id;
 		this.length = length;
 		this.width = width;
@@ -30,8 +30,9 @@ public class Characteristic implements Serializable {
 		this.flexibilty_scale = flexibilty_scale;
 		this.products = products;
 	}
-	
-	public Characteristic(int id, float length, float width, float height, float weight, int joint_numb, int flexibilty_scale) {
+
+	public Characteristic(int id, float length, float width, float height, float weight, int joint_numb,
+			int flexibilty_scale) {
 		this.id = id;
 		this.length = length;
 		this.width = width;
@@ -147,7 +148,8 @@ public class Characteristic implements Serializable {
 	@Override
 	public String toString() {
 		return "\n Characteristic ID: " + id + ", Length: " + length + ", Width: " + width + ", Height: " + height
-				+ ", Weight: " + weight + ", Number of joints: " + joint_numb + ", Flexibility scale (1-10): " + flexibilty_scale;
+				+ ", Weight: " + weight + ", Number of joints: " + joint_numb + ", Flexibility scale (1-10): "
+				+ flexibilty_scale;
 	}
 
 }

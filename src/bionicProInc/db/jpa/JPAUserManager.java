@@ -59,6 +59,7 @@ public class JPAUserManager implements UserManager {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Role> getRoles() {
 		Query q = em.createNativeQuery("SELECT * FROM roles", Role.class);

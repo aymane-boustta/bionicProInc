@@ -141,7 +141,8 @@ public class Menu {
 			System.out.println("\n Choose an option:");
 			System.out.println("1. View all available products");
 			System.out.println("2. Purchase a product");
-			System.out.println("3. Display my purchase history");
+			System.out.println("3. Show my purchase history");
+			System.out.println("4. Clear my purchase history");
 			System.out.println("0. Log out");
 			int choice = Integer.parseInt(reader.readLine());
 			switch (choice) {
@@ -154,7 +155,11 @@ public class Menu {
 				break;
 
 			case 3:
-				viewPreviousPurchases(id);
+				viewPurchaseHistory(id);
+				break;
+				
+			case 4:
+				clearPurchaseHistory(id);
 				break;
 
 			case 0:
@@ -191,8 +196,6 @@ public class Menu {
 		System.out.println("\nThe product has been successfully updated, and now it looks like this: ");
 		System.out.println(dbman.viewProduct(product_id));
 	}
-	
-	
 
 	private static void productUpdateMenu(Product prod) throws Exception {
 		do {
@@ -377,9 +380,18 @@ public class Menu {
 	}
 
 	// Customer OPTION 3
-	private static void viewPreviousPurchases(int id) throws Exception {
+	private static void viewPurchaseHistory(int id) throws Exception {
 		List<Integer> previousPurchases = dbman.viewPreviousPurchases(id);
-		System.out.println("You have purchased the following products:");
+		System.out.println("You have purchased the following " + previousPurchases.size() + " products:");
+		for (int i = 0; i < previousPurchases.size(); i++) {
+			System.out.println(dbman.viewProduct(previousPurchases.get(i)));
+		}
+	}
+	
+	// Customer OPTION 4
+	private static void clearPurchaseHistory(int id) throws Exception {
+		List<Integer> previousPurchases = dbman.viewPreviousPurchases(id);
+		System.out.println("You have purchased the following " + previousPurchases.size() + " products:");
 		for (int i = 0; i < previousPurchases.size(); i++) {
 			System.out.println(dbman.viewProduct(previousPurchases.get(i)));
 		}

@@ -40,7 +40,7 @@ public class Engineer implements Serializable {
 		this.date_of_birth = date_of_birth;
 		this.products = products;
 	}
-	
+
 	public Engineer(int id, String name_surname, String email, Date contract_strating_date, Date contract_ending_date,
 			String current_service, float salary, float bonus, int project_achieved, int experience_in_years,
 			Date date_of_birth) {
@@ -220,8 +220,8 @@ public class Engineer implements Serializable {
 		return "Engineer ID: " + id + ", Full name: " + name_surname + ", Email address: " + email
 				+ ", Contract starting date: " + contract_strating_date + ", Contract ending date: "
 				+ contract_ending_date + ", Current service: " + current_service + ", Salary: " + salary + ", Bonus: "
-				+ bonus + ", Number of projects achieved: " + project_achieved + ", Years of experience: " + experience_in_years
-				+ ", Date of birth:" + date_of_birth;
+				+ bonus + ", Number of projects achieved: " + project_achieved + ", Years of experience: "
+				+ experience_in_years + ", Date of birth:" + date_of_birth;
 	}
 
 }

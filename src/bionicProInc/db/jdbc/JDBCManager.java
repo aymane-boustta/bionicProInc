@@ -4,9 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.*;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,16 +53,17 @@ public class JDBCManager implements DBManager {
 			stmt1.close();
 
 			Statement stmt2 = c.createStatement();
-			String sql2 = "CREATE TABLE materials " + "(id INTEGER  PRIMARY KEY AUTOINCREMENT UNIQUE,"
-					+ " name     TEXT     NOT NULL UNIQUE, " + " price REAL NOT NULL," + " amount   INTEGER	 NOT NULL)";
+			String sql2 = "CREATE TABLE characteristics " + "(id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,"
+					+ " length REAL NOT NULL," + " width REAL NOT NULL," + " height REAL NOT NULL,"
+					+ " weight REAL NOT NULL," + " joint_numb INTEGER NOT NULL,"
+					+ " flexibility_scale INTEGER NOT NULL)";
+
 			stmt2.executeUpdate(sql2);
 			stmt2.close();
 
 			Statement stmt3 = c.createStatement();
-			String sql3 = "CREATE TABLE customers " + "(id INTEGER  PRIMARY KEY AUTOINCREMENT UNIQUE,"
-					+ " name_surname     TEXT     NOT NULL UNIQUE, " + " age INTEGER NOT NULL,"
-					+ " gender TEXT NOT NULL," + " phone INTEGER NOT NULL," + " email TEXT NOT NULL,"
-					+ " street TEXT NOT NULL," + " city TEXT NOT NULL," + " postal_code INTEGER NOT NULL)";
+			String sql3 = "CREATE TABLE materials " + "(id INTEGER  PRIMARY KEY AUTOINCREMENT UNIQUE,"
+					+ " name     TEXT     NOT NULL UNIQUE, " + " price REAL NOT NULL," + " amount   INTEGER	 NOT NULL)";
 			stmt3.executeUpdate(sql3);
 			stmt3.close();
 
@@ -81,11 +79,10 @@ public class JDBCManager implements DBManager {
 			stmt4.close();
 
 			Statement stmt5 = c.createStatement();
-			String sql5 = "CREATE TABLE characteristics " + "(id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,"
-					+ " length REAL NOT NULL," + " width REAL NOT NULL," + " height REAL NOT NULL,"
-					+ " weight REAL NOT NULL," + " joint_numb INTEGER NOT NULL,"
-					+ " flexibility_scale INTEGER NOT NULL)";
-
+			String sql5 = "CREATE TABLE customers " + "(id INTEGER  PRIMARY KEY AUTOINCREMENT UNIQUE,"
+					+ " name_surname     TEXT     NOT NULL UNIQUE, " + " age INTEGER NOT NULL,"
+					+ " gender TEXT NOT NULL," + " phone INTEGER NOT NULL," + " email TEXT NOT NULL,"
+					+ " street TEXT NOT NULL," + " city TEXT NOT NULL," + " postal_code INTEGER NOT NULL)";
 			stmt5.executeUpdate(sql5);
 			stmt5.close();
 
@@ -126,13 +123,13 @@ public class JDBCManager implements DBManager {
 
 	public void addCustomer(Customer cust) {
 		try {
-			Statement st = c.createStatement();
+			Statement stmt = c.createStatement();
 			String sql = "INSERT INTO customers(name_surname, age, gender, phone, email, street, city, postal_code) "
 					+ " VALUES ('" + cust.getName_surname() + "', '" + cust.getAge() + "','" + cust.getGender() + "','"
 					+ cust.getPhone() + "', " + "'" + cust.getEmail() + "','" + cust.getStreet() + "','"
 					+ cust.getCity() + "','" + cust.getPostal_code() + "');";
-			st.executeUpdate(sql);
-			st.close();
+			stmt.executeUpdate(sql);
+			stmt.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -181,12 +178,12 @@ public class JDBCManager implements DBManager {
 
 	public void addProduct(Product prod) {
 		try {
-			Statement st1 = c.createStatement();
+			Statement stmt = c.createStatement();
 			String sql = "INSERT INTO products (name,bodypart, price, date_creation, photo) " + " VALUES('"
 					+ prod.getName() + "','" + prod.getBodypart() + "','" + prod.getPrice() + "','"
 					+ prod.getDate_creation() + "','" + prod.getPhoto() + "');";
-			st1.executeUpdate(sql);
-			st1.close();
+			stmt.executeUpdate(sql);
+			stmt.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -320,12 +317,12 @@ public class JDBCManager implements DBManager {
 	public void addCharacteristic(Characteristic ch) {
 		try {
 
-			Statement st1 = c.createStatement();
+			Statement stmt = c.createStatement();
 			String sql = "INSERT INTO characteristics(length, width, height, weight, joint_numb, flexibility_scale) "
 					+ " VALUES ('" + ch.getLength() + "', '" + ch.getWidth() + "','" + ch.getHeight() + "','"
 					+ ch.getWeight() + "','" + ch.getJoint_numb() + "','" + ch.getFlexibilty_scale() + "');";
-			st1.executeUpdate(sql);
-			st1.close();
+			stmt.executeUpdate(sql);
+			stmt.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -334,11 +331,11 @@ public class JDBCManager implements DBManager {
 
 	public void addMaterial(Material mat) {
 		try {
-			Statement st = c.createStatement();
+			Statement stmt = c.createStatement();
 			String sql = "INSERT INTO materials (name, price, amount) " + " VALUES ('" + mat.getName() + "','"
 					+ mat.getPrice() + "','" + mat.getAmount() + "');";
-			st.executeUpdate(sql);
-			st.close();
+			stmt.executeUpdate(sql);
+			stmt.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -376,7 +373,7 @@ public class JDBCManager implements DBManager {
 				float height = rs.getFloat("height");
 				int joint_numb = rs.getInt("joint_numb");
 				int flexibilty_scale = rs.getInt("flexibility_scale");
-				Characteristic ch = new Characteristic(id,length, width, height, weight, joint_numb, flexibilty_scale);
+				Characteristic ch = new Characteristic(id, length, width, height, weight, joint_numb, flexibilty_scale);
 				characteristics.add(ch);
 			}
 			rs.close();
@@ -400,7 +397,7 @@ public class JDBCManager implements DBManager {
 		}
 
 	}
-	
+
 	public ArrayList<Material> viewMaterialsFromProduct(int product_id) {
 		ArrayList<Material> materials = new ArrayList<Material>();
 		try {
@@ -414,7 +411,7 @@ public class JDBCManager implements DBManager {
 				String name = rs.getString("name");
 				Float price = rs.getFloat("price");
 				int amount = rs.getInt("amount");
-				Material mat = new Material(id,name,price,amount);
+				Material mat = new Material(id, name, price, amount);
 				materials.add(mat);
 			}
 			rs.close();
@@ -519,14 +516,14 @@ public class JDBCManager implements DBManager {
 		List<String> bodyParts = new ArrayList<String>();
 		try {
 			String sql = "SELECT DISTINCT bodypart FROM products ";
-			PreparedStatement stm = c.prepareStatement(sql);
-			ResultSet rs = stm.executeQuery();
+			PreparedStatement stmt = c.prepareStatement(sql);
+			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				String part = rs.getString("bodypart");
 				bodyParts.add(part);
 			}
 			rs.close();
-			stm.close();
+			stmt.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -538,9 +535,9 @@ public class JDBCManager implements DBManager {
 		List<Product> products = new ArrayList<>();
 		try {
 			String sql = "SELECT id,name,bodypart,price,date_creation,photo FROM products WHERE bodypart LIKE ?";
-			PreparedStatement stm = c.prepareStatement(sql);
-			stm.setString(1, "%" + bodypart + "%");
-			ResultSet rs = stm.executeQuery();
+			PreparedStatement stmt = c.prepareStatement(sql);
+			stmt.setString(1, "%" + bodypart + "%");
+			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				int id = rs.getInt("id");
 				String name = rs.getString("name");
@@ -554,7 +551,7 @@ public class JDBCManager implements DBManager {
 				products.add(prod);
 			}
 			rs.close();
-			stm.close();
+			stmt.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -617,12 +614,12 @@ public class JDBCManager implements DBManager {
 
 	@Override
 	public void updateProducCharacteristics(Product prod) {
-		// TODO Auto-generated method stub
+		// TODO
 	}
 
 	@Override
 	public void updateProductMaterials(Product prod) {
-		// TODO Auto-generated method stub
+		// TODO
 	}
 
 }

@@ -40,7 +40,7 @@ public interface DBManager {
 	public List<Characteristic> viewCharacteristicsFromProduct(int id);
 
 	public void addProd_Mat(Product prod, Material mat);
-	
+
 	public ArrayList<Material> viewMaterialsFromProduct(int id);
 
 	public void addEng_Prod(Engineer eng, Product prod);

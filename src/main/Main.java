@@ -28,77 +28,6 @@ public class Main {
 		JDBCManager j = new JDBCManager();
 		j.connect();
 		
-		/*
-		System.out.println("Introduce contract start : ");
-		LocalDate startDate = LocalDate.parse(reader.readLine(), formatter);
-		System.out.println("Introduce contract end : ");
-		LocalDate endDate = LocalDate.parse(reader.readLine(), formatter);
-		System.out.println("Introduce birthdate : ");
-		LocalDate birthtDate = LocalDate.parse(reader.readLine(), formatter);
-		*/
-		
-		//ADDING ENGINEERS (MATCH TO THE DATABASE DATA!)
-		/*
-		Engineer e0 = new Engineer(1, "Jack Browne","jackbrowne@engineer.com", Date.valueOf("2009-11-10"),Date.valueOf("2022-11-10"),"Production Control",4000.0f,3000.0f,3,8,Date.valueOf("1984-03-04"));
-		//j.addEngineer(e0);
-		Engineer e1 = new Engineer(2, "Alida Mckenney","ricardooriol@engineer.com", Date.valueOf("2020-03-13"),Date.valueOf("2030-03-13"),"CFO",10000.0f,8000.0f,0,0,Date.valueOf("1997-05-25"));
-		//j.addEngineer(e1);
-		Engineer e2 = new Engineer(3, "Carlos Martinez","ricardooriol@engineer.com", Date.valueOf("2020-03-13"),Date.valueOf("2030-03-13"),"CFO",10000.0f,8000.0f,0,0,Date.valueOf("1997-05-25"));
-		//j.addEngineer(e2);
-		Engineer e3 = new Engineer(4, "Mamadu Bongo","ricardooriol@engineer.com", Date.valueOf("2020-03-13"),Date.valueOf("2030-03-13"),"CFO",10000.0f,8000.0f,0,0,Date.valueOf("1997-05-25"));
-		//j.addEngineer(e3);
-		Engineer e4 = new Engineer(5, "Said Almaktum","ricardooriol@engineer.com", Date.valueOf("2020-03-13"),Date.valueOf("2030-03-13"),"CFO",10000.0f,8000.0f,0,0,Date.valueOf("1997-05-25"));
-		//j.addEngineer(e4);
-		Engineer e5 = new Engineer(6, "Carlotta Zerbelotti","ricardooriol@engineer.com", Date.valueOf("2020-03-13"),Date.valueOf("2030-03-13"),"CFO",10000.0f,8000.0f,0,0,Date.valueOf("1997-05-25"));
-		//j.addEngineer(e5);
-		Engineer e6 = new Engineer(7, "Aymane Boustta","ricardooriol@engineer.com", Date.valueOf("2020-03-13"),Date.valueOf("2030-03-13"),"CFO",10000.0f,8000.0f,0,0,Date.valueOf("1997-05-25"));
-		//j.addEngineer(e6);
-		Engineer e7 = new Engineer(8, "Ricardo Oriol","ricardooriol@engineer.com", Date.valueOf("2020-03-13"),Date.valueOf("2030-03-13"),"CFO",10000.0f,8000.0f,0,0,Date.valueOf("1997-05-25"));
-		//j.addEngineer(e7);
-		*/
-		
-		
-		//ADDING CHARACTERISTICS
-		/*
-		Characteristic ch0 = new Characteristic(1,110,60,20,130,0,2);
-		//j.addCharacteristic(ch0);
-		Characteristic ch1 = new Characteristic(2,110,60,15,170,1,3);
-		//j.addCharacteristic(ch1);
-		Characteristic ch2 = new Characteristic(3,110,60,10,120,1,3);
-		//j.addCharacteristic(ch2);
-		Characteristic ch3 = new Characteristic(4,120,70,25,120,0,2);
-		//j.addCharacteristic(ch3);
-		Characteristic ch4 = new Characteristic(5,120,60,25,170,1,3);
-		//j.addCharacteristic(ch4);
-		Characteristic ch5 = new Characteristic(6,110,60,23,110,2,5);
-		//j.addCharacteristic(ch5);
-		Characteristic ch6 = new Characteristic(7,120,70,35,130,2,5);
-		//j.addCharacteristic(ch6);
-		Characteristic ch7 = new Characteristic(8,80,40,12,60,2,2);
-		//j.addCharacteristic(ch7);
-		Characteristic ch8 = new Characteristic(9,70,25,8,60,3,4);
-		//j.addCharacteristic(ch8);
-		Characteristic ch9 = new Characteristic(10,70,25,15,130,3,4);
-		//j.addCharacteristic(ch9);
-		Characteristic ch10 = new Characteristic(11,75,25,20,100,3,5);
-		//j.addCharacteristic(ch10);
-		*/
-		
-		
-		//ADDING CUSTOMERS
-		/*
-		Customer c0 = new Customer(1, "Charles Clark", 48, "MALE", 628374912,"charlesclark@gmail.com","Calle de la Concordia 44", "Madrid", 28003);
-		//j.addCustomer(c0);
-		Customer c1 = new Customer(2, "Melinda Gates", 66, "FEMALE", 725384909,"melindagates@gmail.com","Calle de la Esperanza 55", "Madrid", 28203);
-		//j.addCustomer(c1);
-		Customer c2 = new Customer(3, "Clara Clark", 49, "FEMALE", 813474722,"claraclark@gmail.com","Calle de la Concordia 44", "Madrid", 28003);
-		//j.addCustomer(c2);
-		Customer c3 = new Customer(4, "Andres Galante", 23, "MALE", 627834992,"andresgalante@gmail.com","Calle de la Misericordia 91", "Madrid", 28008);
-		//j.addCustomer(c3);
-		Customer c4 = new Customer(5, "Maria Dario", 48, "FEMALE", 627491033,"mariadario@gmail.com","Calle Jamoncito 28", "Sevilla", 28043);
-		//j.addCustomer(c4);
-		*/
-		 
 		
 		
 		//ADDING PRODUCTS
@@ -130,15 +59,38 @@ public class Main {
 		Product p10 = new Product(10, "DUMMY", "Foot",399.0f,Date.valueOf("2021-01-15"), new byte[10]);
 		j.addProduct(p10);
 		Product p11 = new Product(10, "DUMMY2", "Foot",399.0f,Date.valueOf("2021-01-15"), new byte[10]);
-		j.addProduct(p11);*/
-
-		//TESTING
-		/*
-		System.out.println(j.viewBonus(4));
-		System.out.println(j.viewProjectAchieved(4));
-		System.out.println(j.searchProductByBody("Ear"));
-		j.addProdIntoCh(p2, ch3);
+		j.addProduct(p11);
 		*/
+		
+		
+		
+		//ADDING CHARACTERISTICS
+		/*
+		Characteristic ch0 = new Characteristic(1,110,60,20,130,0,2);
+		//j.addCharacteristic(ch0);
+		Characteristic ch1 = new Characteristic(2,110,60,15,170,1,3);
+		//j.addCharacteristic(ch1);
+		Characteristic ch2 = new Characteristic(3,110,60,10,120,1,3);
+		//j.addCharacteristic(ch2);
+		Characteristic ch3 = new Characteristic(4,120,70,25,120,0,2);
+		//j.addCharacteristic(ch3);
+		Characteristic ch4 = new Characteristic(5,120,60,25,170,1,3);
+		//j.addCharacteristic(ch4);
+		Characteristic ch5 = new Characteristic(6,110,60,23,110,2,5);
+		//j.addCharacteristic(ch5);
+		Characteristic ch6 = new Characteristic(7,120,70,35,130,2,5);
+		//j.addCharacteristic(ch6);
+		Characteristic ch7 = new Characteristic(8,80,40,12,60,2,2);
+		//j.addCharacteristic(ch7);
+		Characteristic ch8 = new Characteristic(9,70,25,8,60,3,4);
+		//j.addCharacteristic(ch8);
+		Characteristic ch9 = new Characteristic(10,70,25,15,130,3,4);
+		//j.addCharacteristic(ch9);
+		Characteristic ch10 = new Characteristic(11,75,25,20,100,3,5);
+		//j.addCharacteristic(ch10);
+		*/
+		
+		
 		
 		//ADDING MATERIALS
 		/*
@@ -156,9 +108,56 @@ public class Main {
 		//j.addMaterial(m5);
 		Material m6 = new Material(7, "Polyurethane",10.75f,8000);
 		//j.addMaterial(m6);
-		/*
-
 		*/
+		 
+		
+		
+		//ADDING ENGINEERS
+		/*
+		System.out.println("Introduce contract start : ");
+		LocalDate startDate = LocalDate.parse(reader.readLine(), formatter);
+		System.out.println("Introduce contract end : ");
+		LocalDate endDate = LocalDate.parse(reader.readLine(), formatter);
+		System.out.println("Introduce birthdate : ");
+		LocalDate birthtDate = LocalDate.parse(reader.readLine(), formatter);
+		*/
+		
+		/*
+		Engineer e0 = new Engineer(1, "Jack Browne","jackbrowne@engineer.com", Date.valueOf("2009-11-10"),Date.valueOf("2022-11-10"),"Production Control",4000.0f,3000.0f,3,8,Date.valueOf("1984-03-04"));
+		//j.addEngineer(e0);
+		Engineer e1 = new Engineer(2, "Alida Mckenney","alidamckenney@engineer.com", Date.valueOf("2020-10-03"),Date.valueOf("2022-10-03"),"Production Control",5000.0f,3000.0f,2,4,Date.valueOf("1990-02-03"));
+		//j.addEngineer(e1);
+		Engineer e2 = new Engineer(3, "Carlos Martinez","carlosmartinez@engineer.com", Date.valueOf("2019-10-02"),Date.valueOf("2029-10-02"),"Designing",3300.0f,1000.0f,2,4,Date.valueOf("1982-09-23"));
+		//j.addEngineer(e2);
+		Engineer e3 = new Engineer(4, "Mamadu Bongo","mamadubongo@engineer.com", Date.valueOf("2012-03-03"),Date.valueOf("2032-03-03"),"Development Service",5000.0f,2000.0f,2,4,Date.valueOf("1978-09-07"));
+		//j.addEngineer(e3);
+		Engineer e4 = new Engineer(5, "Said Almaktum","saidalmaktum@engineer.com", Date.valueOf("2011-11-11"),Date.valueOf("2028-11-11"),"Designing",4000.0f,2000.0f,7,8,Date.valueOf("1983-04-04"));
+		//j.addEngineer(e4);
+		Engineer e5 = new Engineer(6, "Carlotta Zerbelotti","carlottazerbelotti@engineer.com", Date.valueOf("2006-10-10"),Date.valueOf("2026-10-10"),"Development Service",6000.0f,5000.0f,10,12,Date.valueOf("1970-02-23"));
+		//j.addEngineer(e5);
+		Engineer e6 = new Engineer(7, "Aymane Boustta","aymaneboustta@engineer.com", Date.valueOf("2020-03-13"),Date.valueOf("2030-03-13"),"CEO",10000.0f,8000.0f,0,0,Date.valueOf("1998-03-12"));
+		//j.addEngineer(e6);
+		Engineer e7 = new Engineer(8, "Ricardo Oriol","ricardooriol@engineer.com", Date.valueOf("2020-03-13"),Date.valueOf("2030-03-13"),"CFO",10000.0f,8000.0f,0,0,Date.valueOf("1997-05-27"));
+		//j.addEngineer(e7);
+		*/
+		
+		
+		
+		//ADDING CUSTOMERS
+		/*
+		Customer c0 = new Customer(1, "Charles Clark", 48, "MALE", 628374912,"charlesclark@gmail.com","Calle de la Concordia 44", "Madrid", 28003);
+		//j.addCustomer(c0);
+		Customer c1 = new Customer(2, "Melinda Gates", 66, "FEMALE", 725384909,"melindagates@gmail.com","Calle de la Esperanza 55", "Madrid", 28203);
+		//j.addCustomer(c1);
+		Customer c2 = new Customer(3, "Clara Clark", 49, "FEMALE", 813474722,"claraclark@gmail.com","Calle de la Concordia 44", "Madrid", 28003);
+		//j.addCustomer(c2);
+		Customer c3 = new Customer(4, "Andres Galante", 23, "MALE", 627834992,"andresgalante@gmail.com","Calle de la Misericordia 91", "Madrid", 28008);
+		//j.addCustomer(c3);
+		Customer c4 = new Customer(5, "Maria Dario", 48, "FEMALE", 627491033,"mariadario@gmail.com","Calle Jamoncito 28", "Sevilla", 28043);
+		//j.addCustomer(c4);
+		*/
+
+		
 		
 		//FILLING PRODUCTS_CHARACTERISTICS
 		/*
@@ -170,6 +169,8 @@ public class Main {
 		j.addProd_Ch(p1, ch9);
 		j.addProd_Ch(p2, ch9);
 		*/
+		
+		
 		
 		//FILLING PRODUCTS_MATERIALS
 		/*
@@ -194,6 +195,8 @@ public class Main {
 		j.addProd_Mat(p9,m4);
 		*/
 		
+		
+		
 		//FILLING CUSTOMERS_PRODUCTS
 		/*
 		j.addCust_Prod(c0, p2);
@@ -202,6 +205,8 @@ public class Main {
 		j.addCust_Prod(c3, p7);
 		j.addCust_Prod(c4, p1);
 		*/
+		
+		
 		
 		//FILLING ENGINEERS_PRODUCTS
 		/*
@@ -228,6 +233,8 @@ public class Main {
 		j.addEng_Prod(e4,p9);
 		j.addEng_Prod(e5,p9);
 		*/
+		
+		
 		
 		j.disconnect();
 	}
