@@ -6,8 +6,6 @@ import java.io.InputStreamReader;
 import java.security.MessageDigest;
 import java.sql.Date;
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import bionicProInc.db.ifaces.*;
@@ -21,7 +19,6 @@ public class Menu {
 	private static DBManager dbman = new JDBCManager();
 	private static UserManager userman = new JPAUserManager();
 	private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-	private static JDBCManager JDBCmethod = new JDBCManager();
 	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 	public static void main(String[] args) throws Exception {
@@ -45,6 +42,7 @@ public class Menu {
 				userman.disconnect();
 				System.exit(0);
 				break;
+
 			default:
 				break;
 			}
@@ -90,11 +88,13 @@ public class Menu {
 	private static void engineerMenu(int id) throws Exception {
 		do {
 			System.out.println("\n Choose an option:");
-			System.out.println("1. View and existing product");
-			System.out.println("2. Add a new product to the shop");
-			System.out.println("3. Remove an existing product from the shop");
-			System.out.println("4. See how many projects you have successfully achieved (Good Job!)");
-			System.out.println("5. View bonus");
+			System.out.println("1. Update an existing product");
+			System.out.println("2. Add a new characteristic to the database");
+			System.out.println("3. Add a new material to the database");
+			System.out.println("4. Add a new product to the shop");
+			System.out.println("5. Remove an existing product from the shop");
+			System.out.println("6. See how many projects you have successfully achieved (Good job, keep it up!)");
+			System.out.println("7. View your current bonus");
 			System.out.println("0. Exit");
 			int choice = Integer.parseInt(reader.readLine());
 			switch (choice) {
@@ -103,18 +103,26 @@ public class Menu {
 				break;
 
 			case 2:
-				addProduct();
+				addCharacteristic();
 				break;
 
 			case 3:
-				removeProduct();
+				addMaterial();
 				break;
 
 			case 4:
-				seeProject(id);
+				addProduct();
 				break;
 
 			case 5:
+				removeProduct();
+				break;
+
+			case 6:
+				seeProject(id);
+				break;
+
+			case 7:
 				viewBonus(id);
 				break;
 
@@ -133,7 +141,7 @@ public class Menu {
 			System.out.println("\n Choose an option:");
 			System.out.println("1. View all available products");
 			System.out.println("2. Purchase a product");
-			System.out.println("3. See all my previous purchases");
+			System.out.println("3. Display my purchase history");
 			System.out.println("0. Exit");
 			int choice = Integer.parseInt(reader.readLine());
 			switch (choice) {
@@ -160,56 +168,91 @@ public class Menu {
 	}
 
 	// Engineer OPTION 1
-	// OPTIONS TO UPDATE CERTAIN ITEMS OF THE PRODUCT
 	private static void viewProductE() throws Exception {
 		System.out.println("Choose a bodypart:");
 		dbman.viewBodyparts();
-		String name = reader.readLine();
-		dbman.searchProductByBody(name);
-		System.out.println("Choose a product: ");
-		int id = Integer.parseInt(reader.readLine());
-		dbman.viewCharacteristicsFromProduct(id);
-		dbman.viewMaterialsFromProduct(id);
+		String bodypart = reader.readLine();
+		List<Product> products = dbman.searchProductByBody(bodypart);
+		if (products.isEmpty()) {
+			System.out.println("There are no products with the bodypart: " + bodypart);
+			return;
+		}
+		for (int i = 0; i < products.size(); i++) {
+			System.out.println(products.get(i));
+		}
+		System.out.println("Choose the product that you want to update: ");
+		int product_id = Integer.parseInt(reader.readLine());
+		if (dbman.viewProduct(product_id).getName() == null) {
+			System.out.println("There is no product with the ID: " + product_id);
+			return;
+		}
+		System.out.println(dbman.viewProduct(product_id));
+		productUpdateMenu(dbman.viewProduct(product_id));
+		System.out.println("The product has been successfully updated, and now it looks like this: ");
+		System.out.println(dbman.viewProduct(product_id));
+	}
+	
+	
+
+	private static void productUpdateMenu(Product prod) throws Exception {
+		do {
+			System.out.println("\n Choose an option:");
+			System.out.println("1. Update the name");
+			System.out.println("2. Update the bodypart it substitutes");
+			System.out.println("3. Update the price");
+			System.out.println("4. Update the characteristics");
+			System.out.println("5. Update the materials");
+			System.out.println("0. Exit");
+			int choice = Integer.parseInt(reader.readLine());
+			switch (choice) {
+			case 1:
+				dbman.updateProductName(prod);
+				break;
+
+			case 2:
+				dbman.updateProductBodypart(prod);
+				break;
+
+			case 3:
+				dbman.updateProductPrice(prod);
+				break;
+
+			case 4:
+				dbman.updateProducCharacteristics(prod);
+				break;
+
+			case 5:
+				dbman.updateProductMaterials(prod);
+				break;
+
+			case 0:
+				return;
+
+			default:
+				break;
+
+			}
+		} while (true);
 	}
 
 	// Engineer OPTION 2
-	// NEED TO SPEAK ABOUT HOW TO ADD PHOTO ATTRIBUTE FROM A STRING ...
-	private static void addProduct() throws Exception {
+	private static void addCharacteristic() throws Exception {
 		try {
-			System.out.println("Introduce prothesis name: ");
-			String name = reader.readLine();
-			System.out.println("Introduce prothesis bodypart: ");
-			String bodypart = reader.readLine();
-			System.out.println("Introduce prothesis price: ");
-			Float price = Float.parseFloat(reader.readLine());
-			System.out.print("Start Date (yyyy-MM-dd): ");
-			LocalDate date_creation = LocalDate.parse(reader.readLine(), formatter);
-			byte[] photo = new byte[10];
-			Product prod = new Product(name, bodypart, price,Date.valueOf(date_creation), photo);
-			
-			//MISSING SET CHARACTERISTICS AND MATERIALS
-			//PRICE COULD BE SET AUTOMATICALLY USING A FORMULA WITH MATERIAL'S AMOUNT
-			/*
-			int y, m, d;
-			System.out.println("Introduce prothesis creation's year: ");
-			y = Integer.parseInt(reader.readLine());
-			System.out.println("Introduce prothesis creation's month: ");
-			m = Integer.parseInt(reader.readLine());
-			System.out.println("Introduce prothesis creation's day: ");
-			d = Integer.parseInt(reader.readLine());
-			LocalDate ld = LocalDate.of(y, m, d);
-			ZoneId systemTimeZone = ZoneId.systemDefault();
-			ZonedDateTime zonedDateTime = ld.atStartOfDay(systemTimeZone);
-			Date date = (Date) Date.from(zonedDateTime.toInstant());
-			localprod.setDate_creation(date);
-			*/
-			
-			/*
-			localprod.setCharacteristics(JDBCmethod.viewCharacteristicsFromProduct(id));
-			localprod.setMaterials(JDBCmethod.viewMaterialsFromProduct(id));
-			
-			*/
-			dbman.addProduct(prod);
+			System.out.println("Introduce the characteristic's length: ");
+			Float length = Float.parseFloat(reader.readLine());
+			System.out.println("Introduce the characteristic's width: ");
+			Float width = Float.parseFloat(reader.readLine());
+			System.out.println("Introduce the characteristic's height: ");
+			Float height = Float.parseFloat(reader.readLine());
+			System.out.println("Introduce the characteristic's weight: ");
+			Float weight = Float.parseFloat(reader.readLine());
+			System.out.println("Introduce the characteristic's joint_numb: ");
+			int joint_numb = Integer.parseInt(reader.readLine());
+			System.out.println("Introduce the characteristic's flexibility_scale: ");
+			int flexibility_scale = Integer.parseInt(reader.readLine());
+			Characteristic ch = new Characteristic(length, width, height, weight, joint_numb, flexibility_scale);
+			System.out.println("The product was added successfully.");
+			dbman.addCharacteristic(ch);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -218,17 +261,68 @@ public class Menu {
 	}
 
 	// Engineer OPTION 3
-	// WHAT IF THE PRODUCT DOES NOT EXIST? ==> ID MATCHES NO PRODUCT
+	private static void addMaterial() throws Exception {
+		try {
+			System.out.println("Introduce the material's name: ");
+			String name = reader.readLine();
+			System.out.println("Introduce the material's price: ");
+			Float price = Float.parseFloat(reader.readLine());
+			System.out.println("Introduce the material's amount: ");
+			int amount = Integer.parseInt(reader.readLine());
+			Material mat = new Material(name, price, amount);
+			System.out.println("The material was added successfully.");
+			dbman.addMaterial(mat);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	// Engineer OPTION 4
+	// NEED TO SPEAK ABOUT HOW TO ADD PHOTO ATTRIBUTE FROM A STRING ...
+	private static void addProduct() throws Exception {
+		try {
+			System.out.println("Introduce the prothesis' name: ");
+			String name = reader.readLine();
+			System.out.println("Introduce the bodypart that the prothesis will substitute: ");
+			String bodypart = reader.readLine();
+			System.out.println("Introduce the prothesis' price: ");
+			Float price = Float.parseFloat(reader.readLine());
+			System.out.print("Introduce the starting date of the project (yyyy-MM-dd): ");
+			LocalDate date_creation = LocalDate.parse(reader.readLine(), formatter);
+			byte[] photo = new byte[10];
+			Product prod = new Product(name, bodypart, price, Date.valueOf(date_creation), photo);
+
+			/*
+			 * localprod.setCharacteristics(JDBCmethod.viewCharacteristicsFromProduct(id));
+			 * localprod.setMaterials(JDBCmethod.viewMaterialsFromProduct(id));
+			 * 
+			 */
+			dbman.addProduct(prod);
+			System.out.println("The product was added successfully.");
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	// Engineer OPTION 5
 	private static void removeProduct() throws Exception {
 		try {
 			System.out.println("Introduce the ID of the product that you want to remove: ");
-			int id = Integer.parseInt(reader.readLine());
+			int product_id = Integer.parseInt(reader.readLine());
+			if (dbman.viewProduct(product_id).getName() == null) {
+				System.out.println("There is no product with the ID: " + product_id);
+				return;
+			}
 			System.out.println("Please confirm the deletion: YES/NO");
 			String option = reader.readLine();
-			if(option.equalsIgnoreCase("YES")) {
-				dbman.removeProduct(id);
+			if (option.equalsIgnoreCase("YES")) {
+				dbman.removeProduct(product_id);
 				System.out.println("Deletion confirmed.");
-			}else {
+			} else {
 				System.out.println("Deletion cancelled.");
 			}
 		} catch (Exception e) {
@@ -236,13 +330,14 @@ public class Menu {
 		}
 	}
 
-	// Engineer OPTION 4
+	// Engineer OPTION 6
 	private static void seeProject(int id) throws Exception {
-		System.out.println("You have completed " + dbman.viewProjectAchieved(id).toString() + " successful projects so far.");
+		System.out.println(
+				"You have completed " + dbman.viewProjectAchieved(id).toString() + " successful projects so far.");
 
 	}
 
-	// Engineer OPTION 5
+	// Engineer OPTION 7
 	private static void viewBonus(int id) throws Exception {
 
 		System.out.println("Your bonus is: " + dbman.viewBonus(id) + "€");
@@ -252,24 +347,27 @@ public class Menu {
 	// Customer OPTION 1
 	private static void viewProductC() throws Exception {
 		List<Product> products = dbman.viewAllProducts();
-		for(int i = 0;i<products.size();i++) {
+		for (int i = 0; i < products.size(); i++) {
 			System.out.println(products.get(i));
 		}
 	}
-	
+
 	// Customer OPTION 2
-	// WHAT IF THE PRODUCT DOES NOT EXIST? ==> ID MATCHES NO PRODUCT
 	private static void makePurchase(int customer_id) throws Exception {
 		try {
 			System.out.println("Introduce the ID of the product that you want to buy: ");
 			int product_id = Integer.parseInt(reader.readLine());
+			if (dbman.viewProduct(product_id).getName() == null) {
+				System.out.println("There is no product with the ID: " + product_id);
+				return;
+			}
 			System.out.println(dbman.viewProduct(product_id));
 			System.out.println("Please confirm your purchase: YES/NO");
 			String option = reader.readLine();
-			if(option.equalsIgnoreCase("YES")) {
+			if (option.equalsIgnoreCase("YES")) {
 				dbman.addCust_Prod(dbman.getCustomer(customer_id), dbman.getProduct(product_id));
 				System.out.println("Purchase confirmed.");
-			}else {
+			} else {
 				System.out.println("Purchase cancelled.");
 			}
 
@@ -282,7 +380,7 @@ public class Menu {
 	private static void viewPreviousPurchases(int id) throws Exception {
 		List<Integer> previousPurchases = dbman.viewPreviousPurchases(id);
 		System.out.println("You have purchased the following products:");
-		for(int i = 0;i<previousPurchases.size();i++) {
+		for (int i = 0; i < previousPurchases.size(); i++) {
 			System.out.println(dbman.viewProduct(previousPurchases.get(i)));
 		}
 	}

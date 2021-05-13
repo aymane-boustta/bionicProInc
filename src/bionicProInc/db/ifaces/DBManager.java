@@ -11,13 +11,13 @@ public interface DBManager {
 	public void disconnect();
 
 	public void addCustomer(Customer cust);
-	
+
 	public Customer getCustomer(int id);
 
 	public int getCustomerID(String email);
 
 	public void addProduct(Product prod);
-	
+
 	public Product getProduct(int id);
 
 	public void removeProduct(int id);
@@ -25,7 +25,7 @@ public interface DBManager {
 	public List<Product> viewAllProducts();
 
 	public Product viewProduct(int id);
-	
+
 	public void addCust_Prod(Customer cust, Product prod);
 
 	public List<Integer> viewPreviousPurchases(int id);
@@ -52,8 +52,18 @@ public interface DBManager {
 
 	public Float viewBonus(int id);
 
-	public List<String> searchProductByBody(String bodypart);
-
 	public List<String> viewBodyparts();
+
+	public List<Product> searchProductByBody(String bodypart);
+
+	public void updateProductName(Product prod);
+
+	public void updateProductBodypart(Product prod);
+
+	public void updateProductPrice(Product prod);
+
+	public void updateProducCharacteristics(Product prod);
+
+	public void updateProductMaterials(Product prod);
 
 }

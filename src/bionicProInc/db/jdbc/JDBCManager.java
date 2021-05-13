@@ -1,5 +1,8 @@
 package bionicProInc.db.jdbc;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -12,6 +15,7 @@ import bionicProInc.db.ifaces.DBManager;
 
 public class JDBCManager implements DBManager {
 	private Connection c;
+	BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
 	public void connect() {
 		try {
@@ -134,7 +138,7 @@ public class JDBCManager implements DBManager {
 		}
 
 	}
-	
+
 	@Override
 	public Customer getCustomer(int id) {
 		Customer cust = new Customer();
@@ -145,8 +149,8 @@ public class JDBCManager implements DBManager {
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				String name_surname = rs.getString("name_surname");
-				cust = new Customer(id,name_surname);
-				
+				cust = new Customer(id, name_surname);
+
 			}
 			rs.close();
 			stmt.close();
@@ -187,7 +191,7 @@ public class JDBCManager implements DBManager {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Override
 	public Product getProduct(int id) {
 		Product prod = new Product();
@@ -198,8 +202,8 @@ public class JDBCManager implements DBManager {
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				String name = rs.getString("name");
-				prod = new Product(id,name);
-				
+				prod = new Product(id, name);
+
 			}
 			rs.close();
 			stmt.close();
@@ -278,13 +282,13 @@ public class JDBCManager implements DBManager {
 		}
 		return prod;
 	}
-	
+
 	@Override
 	public void addCust_Prod(Customer cust, Product prod) {
 		try {
 			Statement stmt = c.createStatement();
-			String sql = "INSERT INTO customers_products (customer_id, product_id) " + " VALUES ('" + cust.getId() + "','"
-					+ prod.getId() + "');";
+			String sql = "INSERT INTO customers_products (customer_id, product_id) " + " VALUES ('" + cust.getId()
+					+ "','" + prod.getId() + "');";
 			stmt.executeUpdate(sql);
 			stmt.close();
 		} catch (Exception e) {
@@ -418,8 +422,6 @@ public class JDBCManager implements DBManager {
 		return materials;
 	}
 
-
-
 	@Override
 	public void addEng_Prod(Engineer eng, Product prod) {
 		try {
@@ -509,48 +511,115 @@ public class JDBCManager implements DBManager {
 		return bonus;
 	}
 
-	// CHECK
-	@Override
-	public List<String> searchProductByBody(String bodypart) {
-		List<String> prodname = new ArrayList<>();
-		try {
-			String sql = "SELECT name FROM products WHERE bodypart LIKE ?";
-			PreparedStatement stm = c.prepareStatement(sql);
-			stm.setString(1, "%" + bodypart + "%");
-			ResultSet rs = stm.executeQuery();
-			while (rs.next()) {
-				String productname = rs.getString("name");
-				prodname.add(productname);
-			}
-			rs.close();
-			stm.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return prodname;
-	}
-
 	@Override
 	public List<String> viewBodyparts() {
-		List<String> bodyPart = new ArrayList<String>();
+		List<String> bodyParts = new ArrayList<String>();
 		try {
 			String sql = "SELECT DISTINCT bodypart FROM products ";
 			PreparedStatement stm = c.prepareStatement(sql);
 			ResultSet rs = stm.executeQuery();
 			while (rs.next()) {
 				String part = rs.getString("bodypart");
-				bodyPart.add(part);
+				bodyParts.add(part);
 			}
 			rs.close();
 			stm.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return bodyPart;
+		return bodyParts;
 	}
 
+	@Override
+	public List<Product> searchProductByBody(String bodypart) {
+		List<Product> products = new ArrayList<>();
+		try {
+			String sql = "SELECT id,name,bodypart,price,date_creation,photo FROM products WHERE bodypart LIKE ?";
+			PreparedStatement stm = c.prepareStatement(sql);
+			stm.setString(1, "%" + bodypart + "%");
+			ResultSet rs = stm.executeQuery();
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String name = rs.getString("name");
+				float price = rs.getFloat("price");
+				String string = rs.getString("date_creation");
+				Date date_creation = Date.valueOf(string);
+				byte[] photo = rs.getBytes("photo");
+				ArrayList<Characteristic> characteristics = viewCharacteristicsFromProduct(id);
+				ArrayList<Material> materials = viewMaterialsFromProduct(id);
+				Product prod = new Product(id, name, bodypart, price, date_creation, photo, characteristics, materials);
+				products.add(prod);
+			}
+			rs.close();
+			stm.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return products;
+	}
 
+	@Override
+	public void updateProductName(Product prod) {
+		try {
+			System.out.println("Introduce the new name for the product: ");
+			String name = reader.readLine();
+			String sql = "UPDATE products SET name=? WHERE id=?";
+			PreparedStatement prep = c.prepareStatement(sql);
+			prep.setString(1, name);
+			prep.setInt(2, prod.getId());
+			prep.executeUpdate();
+			System.out.println("Name updated successfully.");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
+	@Override
+	public void updateProductBodypart(Product prod) {
+		try {
+			System.out.println("Introduce the new bodypart for the product: ");
+			String bodypart = reader.readLine();
+			String sql = "UPDATE products SET bodypart=? WHERE id=?";
+			PreparedStatement prep = c.prepareStatement(sql);
+			prep.setString(1, bodypart);
+			prep.setInt(2, prod.getId());
+			prep.executeUpdate();
+			System.out.println("Bodypart updated successfully.");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
+	@Override
+	public void updateProductPrice(Product prod) {
+		try {
+			System.out.println("Introduce the new price for the product: ");
+			Float price = Float.parseFloat(reader.readLine());
+			String sql = "UPDATE products SET price=? WHERE id=?";
+			PreparedStatement prep = c.prepareStatement(sql);
+			prep.setFloat(1, price);
+			prep.setInt(2, prod.getId());
+			prep.executeUpdate();
+			System.out.println("Price updated successfully.");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void updateProducCharacteristics(Product prod) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void updateProductMaterials(Product prod) {
+		// TODO Auto-generated method stub
+	}
 
 }
