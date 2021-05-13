@@ -28,7 +28,7 @@ public class Menu {
 			System.out.println("\n Choose an option:");
 			System.out.println("1. Register");
 			System.out.println("2. Login");
-			System.out.println("0. Exit");
+			System.out.println("0. Exit Database");
 			int choice = Integer.parseInt(reader.readLine());
 			switch (choice) {
 			case 1:
@@ -95,7 +95,7 @@ public class Menu {
 			System.out.println("5. Remove an existing product from the shop");
 			System.out.println("6. See how many projects you have successfully achieved (Good job, keep it up!)");
 			System.out.println("7. View your current bonus");
-			System.out.println("0. Exit");
+			System.out.println("0. Log out");
 			int choice = Integer.parseInt(reader.readLine());
 			switch (choice) {
 			case 1:
@@ -142,7 +142,7 @@ public class Menu {
 			System.out.println("1. View all available products");
 			System.out.println("2. Purchase a product");
 			System.out.println("3. Display my purchase history");
-			System.out.println("0. Exit");
+			System.out.println("0. Log out");
 			int choice = Integer.parseInt(reader.readLine());
 			switch (choice) {
 			case 1:
@@ -180,7 +180,7 @@ public class Menu {
 		for (int i = 0; i < products.size(); i++) {
 			System.out.println(products.get(i));
 		}
-		System.out.println("Choose the product that you want to update: ");
+		System.out.println("\nChoose the product that you want to update: ");
 		int product_id = Integer.parseInt(reader.readLine());
 		if (dbman.viewProduct(product_id).getName() == null) {
 			System.out.println("There is no product with the ID: " + product_id);
@@ -188,7 +188,7 @@ public class Menu {
 		}
 		System.out.println(dbman.viewProduct(product_id));
 		productUpdateMenu(dbman.viewProduct(product_id));
-		System.out.println("The product has been successfully updated, and now it looks like this: ");
+		System.out.println("\nThe product has been successfully updated, and now it looks like this: ");
 		System.out.println(dbman.viewProduct(product_id));
 	}
 	
@@ -300,7 +300,7 @@ public class Menu {
 			 * 
 			 */
 			dbman.addProduct(prod);
-			System.out.println("The product was added successfully.");
+			System.out.println("\nThe product was added successfully.");
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -314,10 +314,10 @@ public class Menu {
 			System.out.println("Introduce the ID of the product that you want to remove: ");
 			int product_id = Integer.parseInt(reader.readLine());
 			if (dbman.viewProduct(product_id).getName() == null) {
-				System.out.println("There is no product with the ID: " + product_id);
+				System.out.println("\nThere is no product with the ID: " + product_id);
 				return;
 			}
-			System.out.println("Please confirm the deletion: YES/NO");
+			System.out.println("\nPlease confirm the deletion: YES/NO");
 			String option = reader.readLine();
 			if (option.equalsIgnoreCase("YES")) {
 				dbman.removeProduct(product_id);
@@ -348,7 +348,7 @@ public class Menu {
 	private static void viewProductC() throws Exception {
 		List<Product> products = dbman.viewAllProducts();
 		for (int i = 0; i < products.size(); i++) {
-			System.out.println(products.get(i));
+			System.out.println(products.get(i).toString());
 		}
 	}
 
@@ -358,11 +358,11 @@ public class Menu {
 			System.out.println("Introduce the ID of the product that you want to buy: ");
 			int product_id = Integer.parseInt(reader.readLine());
 			if (dbman.viewProduct(product_id).getName() == null) {
-				System.out.println("There is no product with the ID: " + product_id);
+				System.out.println("\nThere is no product with the ID: " + product_id);
 				return;
 			}
-			System.out.println(dbman.viewProduct(product_id));
-			System.out.println("Please confirm your purchase: YES/NO");
+			System.out.println(dbman.viewProduct(product_id).toString());
+			System.out.println("\nPlease confirm your purchase: YES/NO");
 			String option = reader.readLine();
 			if (option.equalsIgnoreCase("YES")) {
 				dbman.addCust_Prod(dbman.getCustomer(customer_id), dbman.getProduct(product_id));

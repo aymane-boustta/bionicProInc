@@ -1,5 +1,6 @@
 package bionicProInc.db.ifaces;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import bionicProInc.db.pojos.*;
@@ -39,8 +40,8 @@ public interface DBManager {
 	public List<Characteristic> viewCharacteristicsFromProduct(int id);
 
 	public void addProd_Mat(Product prod, Material mat);
-
-	public List<Material> viewMaterialsFromProduct(int id);
+	
+	public ArrayList<Material> viewMaterialsFromProduct(int id);
 
 	public void addEng_Prod(Engineer eng, Product prod);
 

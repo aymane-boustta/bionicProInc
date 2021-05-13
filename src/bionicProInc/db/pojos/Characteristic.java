@@ -146,8 +146,8 @@ public class Characteristic implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Characteristic [id=" + id + ", length=" + length + ", width=" + width + ", height=" + height
-				+ ", weight=" + weight + ", joint_numb=" + joint_numb + ", flexibilty_scale=" + flexibilty_scale + "]";
+		return "\n Characteristic ID: " + id + ", Length: " + length + ", Width: " + width + ", Height: " + height
+				+ ", Weight: " + weight + ", Number of joints: " + joint_numb + ", Flexibility scale (1-10): " + flexibilty_scale;
 	}
 
 }

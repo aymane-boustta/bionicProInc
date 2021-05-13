@@ -37,9 +37,9 @@ public class Product implements Serializable {
 		this.engineer = engineer;
 		this.materials = materials;
 	}
-	
+
 	public Product(int id, String name, String bodypart, Float price, Date date_creation, byte[] photo,
-			ArrayList<Characteristic> characteristics,ArrayList<Material> materials) {
+			ArrayList<Characteristic> characteristics, ArrayList<Material> materials) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -212,9 +212,9 @@ public class Product implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Product [id=" + id + ", name=" + name + ", bodypart=" + bodypart + ", price=" + price
-				+ ", date_creation=" + date_creation + ", photo=" + Arrays.toString(photo) + ", characteristics="
-				+ characteristics + ", materials=" + materials + "]";
+		return "\nProduct ID: " + id + ", Name: " + name + ", Bodypart: " + bodypart + ", Price: " + price
+				+ ", Date of creation: " + date_creation + ", Photo = " + Arrays.toString(photo)
+				+ ", \nCharacteristics: " + characteristics.toString() + ", \nMaterials: " + materials.toString();
 	}
 
 }

@@ -359,23 +359,24 @@ public class JDBCManager implements DBManager {
 
 	}
 
-	public ArrayList<Characteristic> viewCharacteristicsFromProduct(int id) {
+	public ArrayList<Characteristic> viewCharacteristicsFromProduct(int product_id) {
 		ArrayList<Characteristic> characteristics = new ArrayList<Characteristic>();
 		try {
 			String sql = "SELECT c.id,c.length,c.width,c.height,c.weight,c.joint_numb,c.flexibility_scale, pc.characteristic_id "
 					+ "FROM products_characteristics as pc JOIN characteristics as c "
 					+ "ON pc.characteristic_id = c.id  WHERE pc.product_id = ?";
 			PreparedStatement stmt = c.prepareStatement(sql);
-			stmt.setInt(1, id);
+			stmt.setInt(1, product_id);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
+				int id = rs.getInt("id");
 				float length = rs.getFloat("length");
 				float width = rs.getFloat("width");
 				float weight = rs.getFloat("weight");
 				float height = rs.getFloat("height");
 				int joint_numb = rs.getInt("joint_numb");
 				int flexibilty_scale = rs.getInt("flexibility_scale");
-				Characteristic ch = new Characteristic(length, width, height, weight, joint_numb, flexibilty_scale);
+				Characteristic ch = new Characteristic(id,length, width, height, weight, joint_numb, flexibilty_scale);
 				characteristics.add(ch);
 			}
 			rs.close();
@@ -399,19 +400,21 @@ public class JDBCManager implements DBManager {
 		}
 
 	}
-
-	public ArrayList<Material> viewMaterialsFromProduct(int id) {
+	
+	public ArrayList<Material> viewMaterialsFromProduct(int product_id) {
 		ArrayList<Material> materials = new ArrayList<Material>();
 		try {
-			String sql = "SELECT m.id,m.name,m.amount, pm.material_id FROM products_materials as pm JOIN materials as m "
+			String sql = "SELECT m.id,m.name,m.price,m.amount, pm.material_id FROM products_materials as pm JOIN materials as m "
 					+ "ON pm.material_id = m.id WHERE pm.product_id = ?";
 			PreparedStatement stmt = c.prepareStatement(sql);
-			stmt.setInt(1, id);
+			stmt.setInt(1, product_id);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
+				int id = rs.getInt("id");
 				String name = rs.getString("name");
+				Float price = rs.getFloat("price");
 				int amount = rs.getInt("amount");
-				Material mat = new Material(name, amount);
+				Material mat = new Material(id,name,price,amount);
 				materials.add(mat);
 			}
 			rs.close();

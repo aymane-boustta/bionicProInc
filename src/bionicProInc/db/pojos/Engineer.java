@@ -217,11 +217,11 @@ public class Engineer implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Engineer [id=" + id + ", name_surname=" + name_surname + ", email=" + email
-				+ ", contract_strating_date=" + contract_strating_date + ", contract_ending_date="
-				+ contract_ending_date + ", current_service=" + current_service + ", salary=" + salary + ", bonus="
-				+ bonus + ", project_achieved=" + project_achieved + ", experience_in_years=" + experience_in_years
-				+ ", date_of_birth=" + date_of_birth + ", products=" + products + "]";
+		return "Engineer ID: " + id + ", Full name: " + name_surname + ", Email address: " + email
+				+ ", Contract starting date: " + contract_strating_date + ", Contract ending date: "
+				+ contract_ending_date + ", Current service: " + current_service + ", Salary: " + salary + ", Bonus: "
+				+ bonus + ", Number of projects achieved: " + project_achieved + ", Years of experience: " + experience_in_years
+				+ ", Date of birth:" + date_of_birth;
 	}
 
 }
