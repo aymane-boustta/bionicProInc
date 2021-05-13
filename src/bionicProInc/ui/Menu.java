@@ -111,7 +111,7 @@ public class Menu {
 				break;
 
 			case 4:
-				addProduct();
+				addProduct(id);
 				break;
 
 			case 5:
@@ -157,7 +157,7 @@ public class Menu {
 			case 3:
 				viewPurchaseHistory(id);
 				break;
-				
+
 			case 4:
 				clearPurchaseHistory(id);
 				break;
@@ -175,7 +175,7 @@ public class Menu {
 	// Engineer OPTION 1
 	private static void viewProductE() throws Exception {
 		System.out.println("Choose a bodypart:");
-		dbman.viewBodyparts();
+		System.out.println(dbman.viewBodyparts());
 		String bodypart = reader.readLine();
 		List<Product> products = dbman.searchProductByBody(bodypart);
 		if (products.isEmpty()) {
@@ -254,7 +254,7 @@ public class Menu {
 			System.out.println("Introduce the characteristic's flexibility_scale: ");
 			int flexibility_scale = Integer.parseInt(reader.readLine());
 			Characteristic ch = new Characteristic(length, width, height, weight, joint_numb, flexibility_scale);
-			System.out.println("The product was added successfully.");
+			System.out.println("The characteristic has been successfully added.");
 			dbman.addCharacteristic(ch);
 
 		} catch (Exception e) {
@@ -273,7 +273,7 @@ public class Menu {
 			System.out.println("Introduce the material's amount: ");
 			int amount = Integer.parseInt(reader.readLine());
 			Material mat = new Material(name, price, amount);
-			System.out.println("The material was added successfully.");
+			System.out.println("The material has been successfully addded.");
 			dbman.addMaterial(mat);
 
 		} catch (Exception e) {
@@ -284,7 +284,7 @@ public class Menu {
 
 	// Engineer OPTION 4
 	// NEED TO SPEAK ABOUT HOW TO ADD PHOTO ATTRIBUTE FROM A STRING ...
-	private static void addProduct() throws Exception {
+	private static void addProduct(int id) throws Exception {
 		try {
 			System.out.println("Introduce the prothesis' name: ");
 			String name = reader.readLine();
@@ -296,15 +296,10 @@ public class Menu {
 			LocalDate date_creation = LocalDate.parse(reader.readLine(), formatter);
 			byte[] photo = new byte[10];
 			Product prod = new Product(name, bodypart, price, Date.valueOf(date_creation), photo);
-
-			/*
-			 * localprod.setCharacteristics(JDBCmethod.viewCharacteristicsFromProduct(id));
-			 * localprod.setMaterials(JDBCmethod.viewMaterialsFromProduct(id));
-			 * 
-			 */
 			dbman.addProduct(prod);
-			System.out.println("\nThe product was added successfully.");
-
+			System.out.println("\nThe product has been successfully added.");
+			dbman.addEng_Prod(dbman.getEngineer(id), dbman.getProduct(dbman.getProductID(prod.getName())));
+			dbman.updateEngineerProjectAchieved(dbman.getEngineer(id));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -314,15 +309,16 @@ public class Menu {
 	// Engineer OPTION 5
 	private static void removeProduct() throws Exception {
 		try {
+			System.out.println(dbman.viewAllProducts());
 			System.out.println("Introduce the ID of the product that you want to remove: ");
 			int product_id = Integer.parseInt(reader.readLine());
 			if (dbman.viewProduct(product_id).getName() == null) {
 				System.out.println("\nThere is no product with the ID: " + product_id);
 				return;
 			}
-			System.out.println("\nPlease confirm the deletion: YES/NO");
+			System.out.println("\nType YES to confirm the deletion, type anything else to cancel.");
 			String option = reader.readLine();
-			if (option.equalsIgnoreCase("YES")) {
+			if (option.equalsIgnoreCase("yes")) {
 				dbman.removeProduct(product_id);
 				System.out.println("Deletion confirmed.");
 			} else {
@@ -365,9 +361,9 @@ public class Menu {
 				return;
 			}
 			System.out.println(dbman.viewProduct(product_id).toString());
-			System.out.println("\nPlease confirm your purchase: YES/NO");
+			System.out.println("\nType YES to confirm your purchase. Type anything else to to cancel the purchase.");
 			String option = reader.readLine();
-			if (option.equalsIgnoreCase("YES")) {
+			if (option.equalsIgnoreCase("yes")) {
 				dbman.addCust_Prod(dbman.getCustomer(customer_id), dbman.getProduct(product_id));
 				System.out.println("Purchase confirmed.");
 			} else {
@@ -381,20 +377,23 @@ public class Menu {
 
 	// Customer OPTION 3
 	private static void viewPurchaseHistory(int id) throws Exception {
-		List<Integer> previousPurchases = dbman.viewPreviousPurchases(id);
+		List<Integer> previousPurchases = dbman.viewPurchaseHistory(id);
+		if (previousPurchases.isEmpty()) {
+			System.out.println(
+					"Your purchase history is empty, you should buy some products to make your life better. ;)");
+			return;
+		}
 		System.out.println("You have purchased the following " + previousPurchases.size() + " products:");
 		for (int i = 0; i < previousPurchases.size(); i++) {
 			System.out.println(dbman.viewProduct(previousPurchases.get(i)));
 		}
 	}
-	
+
 	// Customer OPTION 4
 	private static void clearPurchaseHistory(int id) throws Exception {
-		List<Integer> previousPurchases = dbman.viewPreviousPurchases(id);
-		System.out.println("You have purchased the following " + previousPurchases.size() + " products:");
-		for (int i = 0; i < previousPurchases.size(); i++) {
-			System.out.println(dbman.viewProduct(previousPurchases.get(i)));
-		}
+		dbman.clearPurchaseHistory(id);
+		System.out.println("Your have purchase history has been cleared, it now shows no items.");
+
 	}
 
 }

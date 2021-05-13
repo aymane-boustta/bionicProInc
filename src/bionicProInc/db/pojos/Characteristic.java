@@ -54,6 +54,13 @@ public class Characteristic implements Serializable {
 		this.products = new ArrayList<Product>();
 	}
 
+	public Characteristic(int id, float length) {
+		super();
+		this.id = id;
+		this.length = length;
+		this.products = new ArrayList<Product>();
+	}
+
 	public Characteristic() {
 		super();
 		this.products = new ArrayList<Product>();
