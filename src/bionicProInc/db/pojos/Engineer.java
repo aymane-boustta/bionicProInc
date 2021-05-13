@@ -23,10 +23,11 @@ public class Engineer implements Serializable {
 	private Date date_of_birth;
 	private List<Product> products;
 
-	public Engineer(String name_surname, String email, Date contract_strating_date, Date contract_ending_date,
+	public Engineer(int id, String name_surname, String email, Date contract_strating_date, Date contract_ending_date,
 			String current_service, float salary, float bonus, int project_achieved, int experience_in_years,
 			Date date_of_birth, List<Product> products) {
 		super();
+		this.id = id;
 		this.name_surname = name_surname;
 		this.email = email;
 		this.contract_strating_date = contract_strating_date;
@@ -38,6 +39,24 @@ public class Engineer implements Serializable {
 		this.experience_in_years = experience_in_years;
 		this.date_of_birth = date_of_birth;
 		this.products = products;
+	}
+
+	public Engineer(int id, String name_surname, String email, Date contract_strating_date, Date contract_ending_date,
+			String current_service, float salary, float bonus, int project_achieved, int experience_in_years,
+			Date date_of_birth) {
+		super();
+		this.id = id;
+		this.name_surname = name_surname;
+		this.email = email;
+		this.contract_strating_date = contract_strating_date;
+		this.contract_ending_date = contract_ending_date;
+		this.current_service = current_service;
+		this.salary = salary;
+		this.bonus = bonus;
+		this.project_achieved = project_achieved;
+		this.experience_in_years = experience_in_years;
+		this.date_of_birth = date_of_birth;
+		this.products = new ArrayList<Product>();
 	}
 
 	public Engineer(String name_surname, String email, Date contract_strating_date, Date contract_ending_date,
@@ -55,6 +74,12 @@ public class Engineer implements Serializable {
 		this.experience_in_years = experience_in_years;
 		this.date_of_birth = date_of_birth;
 		this.products = new ArrayList<Product>();
+	}
+
+	public Engineer(int id, int project_achieved) {
+		super();
+		this.id = id;
+		this.project_achieved = project_achieved;
 	}
 
 	public Engineer() {
@@ -198,11 +223,11 @@ public class Engineer implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Engineer [id=" + id + ", name_surname=" + name_surname + ", email=" + email
-				+ ", contract_strating_date=" + contract_strating_date + ", contract_ending_date="
-				+ contract_ending_date + ", current_service=" + current_service + ", salary=" + salary + ", bonus="
-				+ bonus + ", project_achieved=" + project_achieved + ", experience_in_years=" + experience_in_years
-				+ ", date_of_birth=" + date_of_birth + ", products=" + products + "]";
+		return "Engineer ID: " + id + ", Full name: " + name_surname + ", Email address: " + email
+				+ ", Contract starting date: " + contract_strating_date + ", Contract ending date: "
+				+ contract_ending_date + ", Current service: " + current_service + ", Salary: " + salary + ", Bonus: "
+				+ bonus + ", Number of projects achieved: " + project_achieved + ", Years of experience: "
+				+ experience_in_years + ", Date of birth:" + date_of_birth;
 	}
 
 }

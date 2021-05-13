@@ -1,5 +1,6 @@
 package bionicProInc.db.ifaces;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import bionicProInc.db.pojos.*;
@@ -10,74 +11,80 @@ public interface DBManager {
 
 	public void disconnect();
 
-	public void addProduct(Product prod);
-	
-	public void removeProduct(int id);
-	
-	public void addCharacteristic(Characteristic ch);
-	
-	public List<Characteristic> getCharacteristics(int id);
-
-	public void addMaterial(Material mat);
-	
 	public void addCustomer(Customer cust);
-	
+
+	public Customer getCustomer(int id);
+
 	public int getCustomerID(String email);
 
-	public void addProdIntoCh(Product prod, Characteristic ch);
+	public void addProduct(Product prod);
 
-	public void addChIntoProd(Material mat);
-	
-	public void addProdIntoMat(Product prod);
+	public Product getProduct(int id);
 
-	public void addMatIntoProd(Material mat);
+	public void removeProduct(int id);
 
-	public void addProdIntoCust(Product prod);
+	public List<Product> viewAllProducts();
 
-	public void addCustIntoProd(Customer cust);
+	public Product viewProduct(int id);
+
+	public int getProductID(String name);
+
+	public void addCust_Prod(Customer cust, Product prod);
+
+	public List<Integer> viewPurchaseHistory(int id);
+
+	public void clearPurchaseHistory(int id);
+
+	public void addCharacteristic(Characteristic ch);
+
+	public List<Characteristic> viewAllCharacteristics();
+
+	public Characteristic getCharacteristic(int id);
+
+	public void addMaterial(Material mat);
+
+	public List<Material> viewAllMaterials();
+
+	public Material getMaterial(int id);
+
+	public void addProd_Ch(Product prod, Characteristic ch);
+
+	public void removeProd_Ch(Product prod, Characteristic ch);
+
+	public ArrayList<Characteristic> viewCharacteristicsFromProduct(int id);
+
+	public void addProd_Mat(Product prod, Material mat);
+
+	public void removeProd_Mat(Product prod, Material mat);
+
+	public ArrayList<Material> viewMaterialsFromProduct(int id);
+
+	public void addEng_Prod(Engineer eng, Product prod);
 
 	public void addEngineer(Engineer eng);
-	
-	int getEngineerID(String email);
-	
-	public void addOrder(Order ord);
 
-	public List<String> searchProductByBody(String bodypart);
-	
-	
+	public void updateEngineerProjectAchieved(Engineer eng);
+
+	public Engineer getEngineer(int id);
+
+	public int getEngineerID(String email);
+
+	public List<Integer> viewProjectAchieved(int id);
+
+	public Float viewBonus(int id);
 
 	public List<String> viewBodyparts();
 
-	public void addToOrder(Product prod, Order ord);
+	public List<Product> searchProductByBody(String bodypart);
 
-	public List<String> viewCart(Order ord);
-	
-	public List<Product> viewProductsFromOrder(int id);
+	public void updateProductName(Product prod);
 
-	public void deleteProdFromCart(String name, Order ord);
-	
-	public List<Integer> viewOtherOrders(int id);
-	
-	public List<Characteristic> viewCharacteristicsFromProduct(int id);
-	
-	public List<Material> viewMaterialsFromProduct(int id);
-	
-	public List<Engineer> viewEngineersID();
+	public void updateProductBodypart(Product prod);
 
-	public List<Integer> viewProjectAchieved(int id);
-	
-	public Float viewBonus(int id);
+	public void updateProductPrice(Product prod);
 
-	
-	
+	public void updateProducCharacteristics(Product prod);
 
-
-
-
-	
-
-	
-
-	
+	public void updateProductMaterials(Product prod);
 
 }

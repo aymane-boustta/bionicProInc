@@ -19,8 +19,8 @@ public class Characteristic implements Serializable {
 	private int flexibilty_scale;
 	private List<Product> products;
 
-	public Characteristic(int id, float length, float width, float height, float weight, int joint_numb, int flexibilty_scale,
-			List<Product> products) {
+	public Characteristic(int id, float length, float width, float height, float weight, int joint_numb,
+			int flexibilty_scale, List<Product> products) {
 		this.id = id;
 		this.length = length;
 		this.width = width;
@@ -31,6 +31,18 @@ public class Characteristic implements Serializable {
 		this.products = products;
 	}
 
+	public Characteristic(int id, float length, float width, float height, float weight, int joint_numb,
+			int flexibilty_scale) {
+		this.id = id;
+		this.length = length;
+		this.width = width;
+		this.height = height;
+		this.weight = weight;
+		this.joint_numb = joint_numb;
+		this.flexibilty_scale = flexibilty_scale;
+		this.products = new ArrayList<Product>();
+	}
+
 	public Characteristic(float length, float width, float height, float weight, int joint_numb, int flexibilty_scale) {
 		super();
 		this.length = length;
@@ -39,6 +51,13 @@ public class Characteristic implements Serializable {
 		this.weight = weight;
 		this.joint_numb = joint_numb;
 		this.flexibilty_scale = flexibilty_scale;
+		this.products = new ArrayList<Product>();
+	}
+
+	public Characteristic(int id, float length) {
+		super();
+		this.id = id;
+		this.length = length;
 		this.products = new ArrayList<Product>();
 	}
 
@@ -135,8 +154,9 @@ public class Characteristic implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Characteristic [id=" + id + ", length=" + length + ", width=" + width + ", height=" + height
-				+ ", weight=" + weight + ", joint_numb=" + joint_numb + ", flexibilty_scale=" + flexibilty_scale + "]";
+		return "\n Characteristic ID: " + id + ", Length: " + length + ", Width: " + width + ", Height: " + height
+				+ ", Weight: " + weight + ", Number of joints: " + joint_numb + ", Flexibility scale (1-10): "
+				+ flexibilty_scale;
 	}
 
 }

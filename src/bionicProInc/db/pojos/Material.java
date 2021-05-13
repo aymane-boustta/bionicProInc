@@ -14,12 +14,30 @@ public class Material implements Serializable {
 	private int amount;
 	private ArrayList<Product> products;
 
-	public Material(String name, float price, int amount, ArrayList<Product> products) {
+	public Material(int id, String name, float price, int amount, ArrayList<Product> products) {
 		super();
+		this.id = id;
 		this.name = name;
 		this.price = price;
 		this.amount = amount;
 		this.products = products;
+	}
+
+	public Material(int id, String name, float price, int amount) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.price = price;
+		this.amount = amount;
+		this.products = new ArrayList<Product>();
+	}
+
+	public Material(int id, String name, int amount) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.amount = amount;
+		this.products = new ArrayList<Product>();
 	}
 
 	public Material(String name, float price, int amount) {
@@ -28,6 +46,19 @@ public class Material implements Serializable {
 		this.price = price;
 		this.amount = amount;
 		this.products = new ArrayList<Product>();
+	}
+
+	public Material(String name, int amount) {
+		super();
+		this.name = name;
+		this.amount = amount;
+		this.products = new ArrayList<Product>();
+	}
+
+	public Material(int id, String name) {
+		super();
+		this.id = id;
+		this.name = name;
 	}
 
 	public Material() {
@@ -99,7 +130,7 @@ public class Material implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Material [id=" + id + ", name=" + name + ", price=" + price + ", amount=" + amount + "]";
+		return "\n Material ID: " + id + ", Name: " + name + ", Price: " + price + ", Amount: " + amount;
 	}
 
 }
