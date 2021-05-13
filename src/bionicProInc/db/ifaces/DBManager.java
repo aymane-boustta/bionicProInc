@@ -10,25 +10,37 @@ public interface DBManager {
 
 	public void disconnect();
 
+	public void addCustomer(Customer cust);
+	
+	public Customer getCustomer(int id);
+
+	public int getCustomerID(String email);
+
 	public void addProduct(Product prod);
+	
+	public Product getProduct(int id);
 
 	public void removeProduct(int id);
-	
+
 	public List<Product> viewAllProducts();
+
+	public Product viewProduct(int id);
+	
+	public void addCust_Prod(Customer cust, Product prod);
+
+	public List<Integer> viewPreviousPurchases(int id);
 
 	public void addCharacteristic(Characteristic ch);
 
 	public void addMaterial(Material mat);
 
-	public void addCustomer(Customer cust);
-
-	public int getCustomerID(String email);
-
 	public void addProd_Ch(Product prod, Characteristic ch);
+
+	public List<Characteristic> viewCharacteristicsFromProduct(int id);
 
 	public void addProd_Mat(Product prod, Material mat);
 
-	public void addCust_Prod(Customer cust, Product prod);
+	public List<Material> viewMaterialsFromProduct(int id);
 
 	public void addEng_Prod(Engineer eng, Product prod);
 
@@ -43,11 +55,5 @@ public interface DBManager {
 	public List<String> searchProductByBody(String bodypart);
 
 	public List<String> viewBodyparts();
-
-	public List<Characteristic> viewCharacteristicsFromProduct(int id);
-
-	public List<Material> viewMaterialsFromProduct(int id);
-
-	public List<Integer> viewPreviousPurchases(int id);
 
 }

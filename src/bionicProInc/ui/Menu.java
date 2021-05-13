@@ -142,7 +142,7 @@ public class Menu {
 				break;
 
 			case 2:
-				makePurchase();
+				makePurchase(id);
 				break;
 
 			case 3:
@@ -160,6 +160,7 @@ public class Menu {
 	}
 
 	// Engineer OPTION 1
+	// OPTIONS TO UPDATE CERTAIN ITEMS OF THE PRODUCT
 	private static void viewProductE() throws Exception {
 		System.out.println("Choose a bodypart:");
 		dbman.viewBodyparts();
@@ -217,11 +218,19 @@ public class Menu {
 	}
 
 	// Engineer OPTION 3
+	// WHAT IF THE PRODUCT DOES NOT EXIST? ==> ID MATCHES NO PRODUCT
 	private static void removeProduct() throws Exception {
 		try {
-			System.out.println("Introduce the product ID: ");
+			System.out.println("Introduce the ID of the product that you want to remove: ");
 			int id = Integer.parseInt(reader.readLine());
-			dbman.removeProduct(id);
+			System.out.println("Please confirm the deletion: YES/NO");
+			String option = reader.readLine();
+			if(option.equalsIgnoreCase("YES")) {
+				dbman.removeProduct(id);
+				System.out.println("Deletion confirmed.");
+			}else {
+				System.out.println("Deletion cancelled.");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -241,7 +250,6 @@ public class Menu {
 	}
 
 	// Customer OPTION 1
-	// TODO
 	private static void viewProductC() throws Exception {
 		List<Product> products = dbman.viewAllProducts();
 		for(int i = 0;i<products.size();i++) {
@@ -250,9 +258,20 @@ public class Menu {
 	}
 	
 	// Customer OPTION 2
-	// TODO
-	private static void makePurchase() throws Exception {
+	// WHAT IF THE PRODUCT DOES NOT EXIST? ==> ID MATCHES NO PRODUCT
+	private static void makePurchase(int customer_id) throws Exception {
 		try {
+			System.out.println("Introduce the ID of the product that you want to buy: ");
+			int product_id = Integer.parseInt(reader.readLine());
+			System.out.println(dbman.viewProduct(product_id));
+			System.out.println("Please confirm your purchase: YES/NO");
+			String option = reader.readLine();
+			if(option.equalsIgnoreCase("YES")) {
+				dbman.addCust_Prod(dbman.getCustomer(customer_id), dbman.getProduct(product_id));
+				System.out.println("Purchase confirmed.");
+			}else {
+				System.out.println("Purchase cancelled.");
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -260,12 +279,11 @@ public class Menu {
 	}
 
 	// Customer OPTION 3
-	// TODO
 	private static void viewPreviousPurchases(int id) throws Exception {
-		try {
-
-		} catch (Exception e) {
-			e.printStackTrace();
+		List<Integer> previousPurchases = dbman.viewPreviousPurchases(id);
+		System.out.println("You have purchased the following products:");
+		for(int i = 0;i<previousPurchases.size();i++) {
+			System.out.println(dbman.viewProduct(previousPurchases.get(i)));
 		}
 	}
 

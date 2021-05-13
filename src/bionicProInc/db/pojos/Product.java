@@ -26,6 +26,7 @@ public class Product implements Serializable {
 
 	public Product(int id, String name, String bodypart, Float price, Date date_creation, byte[] photo,
 			ArrayList<Characteristic> characteristics, ArrayList<Engineer> engineer, ArrayList<Material> materials) {
+		super();
 		this.id = id;
 		this.name = name;
 		this.bodypart = bodypart;
@@ -39,6 +40,7 @@ public class Product implements Serializable {
 	
 	public Product(int id, String name, String bodypart, Float price, Date date_creation, byte[] photo,
 			ArrayList<Characteristic> characteristics,ArrayList<Material> materials) {
+		super();
 		this.id = id;
 		this.name = name;
 		this.bodypart = bodypart;
@@ -51,6 +53,7 @@ public class Product implements Serializable {
 	}
 
 	public Product(int id, String name, String bodypart, Float price, Date date_creation, byte[] photo) {
+		super();
 		this.id = id;
 		this.name = name;
 		this.bodypart = bodypart;

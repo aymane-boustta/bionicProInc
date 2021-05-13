@@ -120,6 +120,61 @@ public class JDBCManager implements DBManager {
 		}
 	}
 
+	public void addCustomer(Customer cust) {
+		try {
+			Statement st = c.createStatement();
+			String sql = "INSERT INTO customers(name_surname, age, gender, phone, email, street, city, postal_code) "
+					+ " VALUES ('" + cust.getName_surname() + "', '" + cust.getAge() + "','" + cust.getGender() + "','"
+					+ cust.getPhone() + "', " + "'" + cust.getEmail() + "','" + cust.getStreet() + "','"
+					+ cust.getCity() + "','" + cust.getPostal_code() + "');";
+			st.executeUpdate(sql);
+			st.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+	
+	@Override
+	public Customer getCustomer(int id) {
+		Customer cust = new Customer();
+		try {
+			String sql = "SELECT id,name_surname FROM customers WHERE id= ?";
+			PreparedStatement stmt = c.prepareStatement(sql);
+			stmt.setInt(1, id);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				String name_surname = rs.getString("name_surname");
+				cust = new Customer(id,name_surname);
+				
+			}
+			rs.close();
+			stmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return cust;
+	}
+
+	@Override
+	public int getCustomerID(String email) {
+		int id = 0;
+		try {
+			String sql = "SELECT id FROM customers WHERE email LIKE ?";
+			PreparedStatement stmt = c.prepareStatement(sql);
+			stmt.setString(1, "%" + email + "%");
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				id = rs.getInt("id");
+			}
+			rs.close();
+			stmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return id;
+	}
+
 	public void addProduct(Product prod) {
 		try {
 			Statement st1 = c.createStatement();
@@ -131,6 +186,27 @@ public class JDBCManager implements DBManager {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	@Override
+	public Product getProduct(int id) {
+		Product prod = new Product();
+		try {
+			String sql = "SELECT id,name FROM products WHERE id= ?";
+			PreparedStatement stmt = c.prepareStatement(sql);
+			stmt.setInt(1, id);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				String name = rs.getString("name");
+				prod = new Product(id,name);
+				
+			}
+			rs.close();
+			stmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return prod;
 	}
 
 	@Override
@@ -176,6 +252,67 @@ public class JDBCManager implements DBManager {
 	}
 
 	@Override
+	public Product viewProduct(int id) {
+		Product prod = new Product();
+		try {
+			String sql = "SELECT name,bodypart,price,date_creation,photo FROM products WHERE id = ?";
+			PreparedStatement stmt = c.prepareStatement(sql);
+			stmt.setInt(1, id);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				String name = rs.getString("name");
+				String bodypart = rs.getString("bodypart");
+				float price = rs.getFloat("price");
+				String string = rs.getString("date_creation");
+				Date date_creation = Date.valueOf(string);
+				byte[] photo = rs.getBytes("photo");
+				ArrayList<Characteristic> characteristics = viewCharacteristicsFromProduct(id);
+				ArrayList<Material> materials = viewMaterialsFromProduct(id);
+				prod = new Product(id, name, bodypart, price, date_creation, photo, characteristics, materials);
+
+			}
+			rs.close();
+			stmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return prod;
+	}
+	
+	@Override
+	public void addCust_Prod(Customer cust, Product prod) {
+		try {
+			Statement stmt = c.createStatement();
+			String sql = "INSERT INTO customers_products (customer_id, product_id) " + " VALUES ('" + cust.getId() + "','"
+					+ prod.getId() + "');";
+			stmt.executeUpdate(sql);
+			stmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public List<Integer> viewPreviousPurchases(int id) {
+		List<Integer> previousPurchases = new ArrayList<>();
+		try {
+			String sql = "SELECT product_id FROM customers_products WHERE customer_id LIKE ? ORDER BY product_id";
+			PreparedStatement stmt = c.prepareStatement(sql);
+			stmt.setInt(1, id);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				int product_id = rs.getInt("product_id");
+				previousPurchases.add(product_id);
+			}
+			rs.close();
+			stmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return previousPurchases;
+	}
+
+	@Override
 	public void addCharacteristic(Characteristic ch) {
 		try {
 
@@ -204,40 +341,6 @@ public class JDBCManager implements DBManager {
 
 	}
 
-	public void addCustomer(Customer cust) {
-		try {
-			Statement st = c.createStatement();
-			String sql = "INSERT INTO customers(name_surname, age, gender, phone, email, street, city, postal_code) "
-					+ " VALUES ('" + cust.getName_surname() + "', '" + cust.getAge() + "','" + cust.getGender() + "','"
-					+ cust.getPhone() + "', " + "'" + cust.getEmail() + "','" + cust.getStreet() + "','"
-					+ cust.getCity() + "','" + cust.getPostal_code() + "');";
-			st.executeUpdate(sql);
-			st.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-	}
-
-	@Override
-	public int getCustomerID(String email) {
-		int id = 0;
-		try {
-			String sql = "SELECT id FROM customers WHERE email LIKE ?";
-			PreparedStatement stmt = c.prepareStatement(sql);
-			stmt.setString(1, "%" + email + "%");
-			ResultSet rs = stmt.executeQuery();
-			while (rs.next()) {
-				id = rs.getInt("id");
-			}
-			rs.close();
-			stmt.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return id;
-	}
-
 	@Override
 	public void addProd_Ch(Product prod, Characteristic ch) {
 		try {
@@ -250,6 +353,33 @@ public class JDBCManager implements DBManager {
 			e.printStackTrace();
 		}
 
+	}
+
+	public ArrayList<Characteristic> viewCharacteristicsFromProduct(int id) {
+		ArrayList<Characteristic> characteristics = new ArrayList<Characteristic>();
+		try {
+			String sql = "SELECT c.id,c.length,c.width,c.height,c.weight,c.joint_numb,c.flexibility_scale, pc.characteristic_id "
+					+ "FROM products_characteristics as pc JOIN characteristics as c "
+					+ "ON pc.characteristic_id = c.id  WHERE pc.product_id = ?";
+			PreparedStatement stmt = c.prepareStatement(sql);
+			stmt.setInt(1, id);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				float length = rs.getFloat("length");
+				float width = rs.getFloat("width");
+				float weight = rs.getFloat("weight");
+				float height = rs.getFloat("height");
+				int joint_numb = rs.getInt("joint_numb");
+				int flexibilty_scale = rs.getInt("flexibility_scale");
+				Characteristic ch = new Characteristic(length, width, height, weight, joint_numb, flexibilty_scale);
+				characteristics.add(ch);
+			}
+			rs.close();
+			stmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return characteristics;
 	}
 
 	@Override
@@ -266,18 +396,29 @@ public class JDBCManager implements DBManager {
 
 	}
 
-	@Override
-	public void addCust_Prod(Customer cust, Product prod) {
+	public ArrayList<Material> viewMaterialsFromProduct(int id) {
+		ArrayList<Material> materials = new ArrayList<Material>();
 		try {
-			Statement stmt = c.createStatement();
-			String sql = " INSERT INTO customers_products (customer_id, product_id) VALUES ('" + cust.getId() + "','"
-					+ prod.getId() + "')";
-			stmt.executeUpdate(sql);
+			String sql = "SELECT m.id,m.name,m.amount, pm.material_id FROM products_materials as pm JOIN materials as m "
+					+ "ON pm.material_id = m.id WHERE pm.product_id = ?";
+			PreparedStatement stmt = c.prepareStatement(sql);
+			stmt.setInt(1, id);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				String name = rs.getString("name");
+				int amount = rs.getInt("amount");
+				Material mat = new Material(name, amount);
+				materials.add(mat);
+			}
+			rs.close();
 			stmt.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return materials;
 	}
+
+
 
 	@Override
 	public void addEng_Prod(Engineer eng, Product prod) {
@@ -337,7 +478,7 @@ public class JDBCManager implements DBManager {
 			PreparedStatement stmt = c.prepareStatement(sql);
 			stmt.setInt(1, id);
 			ResultSet rs = stmt.executeQuery();
-			if (rs.next()) {
+			while (rs.next()) {
 				int pr_achieved = rs.getInt("project_achieved");
 				p_achieved.add(pr_achieved);
 			}
@@ -372,16 +513,13 @@ public class JDBCManager implements DBManager {
 	@Override
 	public List<String> searchProductByBody(String bodypart) {
 		List<String> prodname = new ArrayList<>();
-		int id;
-		String productname;
 		try {
-			String sql = "SELECT id ,name FROM products WHERE bodypart LIKE ?";
+			String sql = "SELECT name FROM products WHERE bodypart LIKE ?";
 			PreparedStatement stm = c.prepareStatement(sql);
 			stm.setString(1, "%" + bodypart + "%");
 			ResultSet rs = stm.executeQuery();
 			while (rs.next()) {
-				id = rs.getInt("id");
-				productname = rs.getString("name");
+				String productname = rs.getString("name");
 				prodname.add(productname);
 			}
 			rs.close();
@@ -411,59 +549,8 @@ public class JDBCManager implements DBManager {
 		return bodyPart;
 	}
 
-	public ArrayList<Characteristic> viewCharacteristicsFromProduct(int id) {
-		ArrayList<Characteristic> characteristics = new ArrayList<Characteristic>();
-		try {
-			String sql = "SELECT c.id,c.length,c.width,c.height,c.weight,c.joint_numb,c.flexibility_scale, pc.characteristic_id "
-					+ "FROM products_characteristics as pc JOIN characteristics as c "
-					+ "ON pc.characteristic_id = c.id  WHERE pc.product_id = ?";
-			PreparedStatement stmt = c.prepareStatement(sql);
-			stmt.setInt(1, id);
-			ResultSet rs = stmt.executeQuery();
-			while (rs.next()) {
-				float length = rs.getFloat("length");
-				float width = rs.getFloat("width");
-				float weight = rs.getFloat("weight");
-				float height = rs.getFloat("height");
-				int joint_numb = rs.getInt("joint_numb");
-				int flexibilty_scale = rs.getInt("flexibility_scale");
-				Characteristic ch = new Characteristic(length, width, height, weight, joint_numb, flexibilty_scale);
-				characteristics.add(ch);
-			}
-			rs.close();
-			stmt.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return characteristics;
-	}
 
-	public ArrayList<Material> viewMaterialsFromProduct(int id) {
-		ArrayList<Material> materials = new ArrayList<Material>();
-		try {
-			String sql = "SELECT m.id,m.name,m.amount, pm.material_id FROM products_materials as pm JOIN materials as m "
-					+ "ON pm.material_id = m.id WHERE pm.product_id = ?";
-			PreparedStatement stmt = c.prepareStatement(sql);
-			stmt.setInt(1, id);
-			ResultSet rs = stmt.executeQuery();
-			while (rs.next()) {
-				String name = rs.getString("name");
-				int amount = rs.getInt("amount");
-				Material mat = new Material(name, amount);
-				materials.add(mat);
-			}
-			rs.close();
-			stmt.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return materials;
-	}
 
-	@Override
-	public List<Integer> viewPreviousPurchases(int id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 
 }

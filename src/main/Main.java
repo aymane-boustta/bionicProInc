@@ -124,6 +124,13 @@ public class Main {
 		Product p9 = new Product(10, "Left Foot", "Foot",399.0f,Date.valueOf("2021-01-15"), new byte[10]);
 		//j.addProduct(p9);
 		*/
+		
+		//ADDING DUMMY PRODUCTS TO TEST DELETE METHOD FROM ENGINEER'S MENU
+		/*
+		Product p10 = new Product(10, "DUMMY", "Foot",399.0f,Date.valueOf("2021-01-15"), new byte[10]);
+		j.addProduct(p10);
+		Product p11 = new Product(10, "DUMMY2", "Foot",399.0f,Date.valueOf("2021-01-15"), new byte[10]);
+		j.addProduct(p11);*/
 
 		//TESTING
 		/*

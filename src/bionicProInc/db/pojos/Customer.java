@@ -20,8 +20,8 @@ public class Customer implements Serializable {
 	private int postal_code;
 	private List<Product> products;
 
-	public Customer(int id, String name_surname, int age, String gender, int phone, String email, String street, String city,
-			int postal_code, List<Product> products) {
+	public Customer(int id, String name_surname, int age, String gender, int phone, String email, String street,
+			String city, int postal_code, List<Product> products) {
 		super();
 		this.id = id;
 		this.name_surname = name_surname;
@@ -35,8 +35,8 @@ public class Customer implements Serializable {
 		this.products = products;
 	}
 
-	public Customer(int id, String name_surname, int age, String gender, int phone, String email, String street, String city,
-			int postal_code) {
+	public Customer(int id, String name_surname, int age, String gender, int phone, String email, String street,
+			String city, int postal_code) {
 		super();
 		this.id = id;
 		this.name_surname = name_surname;
@@ -49,7 +49,13 @@ public class Customer implements Serializable {
 		this.postal_code = postal_code;
 		this.products = new ArrayList<Product>();
 	}
-	
+
+	public Customer(int id, String name_surname) {
+		super();
+		this.id = id;
+		this.name_surname = name_surname;
+	}
+
 	public Customer(String name_surname, int age, String gender, int phone, String email, String street, String city,
 			int postal_code) {
 		super();
