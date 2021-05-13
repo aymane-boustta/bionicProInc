@@ -39,6 +39,13 @@ public class Material implements Serializable {
 		this.amount = amount;
 		this.products = new ArrayList<Product>();
 	}
+	
+	public Material(String name, int amount) {
+		super();
+		this.name = name;
+		this.amount = amount;
+		this.products = new ArrayList<Product>();
+	}
 
 	public Material() {
 		super();

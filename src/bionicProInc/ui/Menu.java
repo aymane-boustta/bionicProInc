@@ -8,6 +8,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import bionicProInc.db.ifaces.*;
 import bionicProInc.db.jdbc.JDBCManager;
@@ -20,9 +21,8 @@ public class Menu {
 	private static DBManager dbman = new JDBCManager();
 	private static UserManager userman = new JPAUserManager();
 	private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-	private static Product localprod = new Product();
 	private static JDBCManager JDBCmethod = new JDBCManager();
-	private static List<Product> products;
+	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 	public static void main(String[] args) throws Exception {
 		dbman.connect();
@@ -175,20 +175,21 @@ public class Menu {
 	// NEED TO SPEAK ABOUT HOW TO ADD PHOTO ATTRIBUTE FROM A STRING ...
 	private static void addProduct() throws Exception {
 		try {
-
-			int y, m, d;
-			System.out.println("Introduce prothesis ID: ");
-			int id = Integer.parseInt(reader.readLine());
-			localprod.setId(id);
 			System.out.println("Introduce prothesis name: ");
 			String name = reader.readLine();
-			localprod.setName(name);
 			System.out.println("Introduce prothesis bodypart: ");
 			String bodypart = reader.readLine();
-			localprod.setBodypart(bodypart);
 			System.out.println("Introduce prothesis price: ");
 			Float price = Float.parseFloat(reader.readLine());
-			localprod.setPrice(price);
+			System.out.print("Start Date (yyyy-MM-dd): ");
+			LocalDate date_creation = LocalDate.parse(reader.readLine(), formatter);
+			byte[] photo = new byte[10];
+			Product prod = new Product(name, bodypart, price,Date.valueOf(date_creation), photo);
+			
+			//MISSING SET CHARACTERISTICS AND MATERIALS
+			//PRICE COULD BE SET AUTOMATICALLY USING A FORMULA WITH MATERIAL'S AMOUNT
+			/*
+			int y, m, d;
 			System.out.println("Introduce prothesis creation's year: ");
 			y = Integer.parseInt(reader.readLine());
 			System.out.println("Introduce prothesis creation's month: ");
@@ -200,9 +201,14 @@ public class Menu {
 			ZonedDateTime zonedDateTime = ld.atStartOfDay(systemTimeZone);
 			Date date = (Date) Date.from(zonedDateTime.toInstant());
 			localprod.setDate_creation(date);
+			*/
+			
+			/*
 			localprod.setCharacteristics(JDBCmethod.viewCharacteristicsFromProduct(id));
 			localprod.setMaterials(JDBCmethod.viewMaterialsFromProduct(id));
-			dbman.addProduct(localprod);
+			
+			*/
+			dbman.addProduct(prod);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -237,38 +243,12 @@ public class Menu {
 	// Customer OPTION 1
 	// TODO
 	private static void viewProductC() throws Exception {
-		System.out.println(dbman.viewAllProducts().toString());
-	}
-	/*
-	// Customer OPTION 1
-	// TODO
-	private static void viewProductC() throws Exception {
-		try {
-			System.out.println("Choose a bodypart:");
-			dbman.viewBodyparts();
-			String name = reader.readLine();
-			dbman.searchProductByBody(name);
-			System.out.println("Choose a product: ");
-			int id = Integer.parseInt(reader.readLine());
-			dbman.viewCharacteristicsFromProduct(id);
-			dbman.viewMaterialsFromProduct(id);
-			System.out.println("Do you want to add it to your cart? 1->YES 0->NO");
-			int option = Integer.parseInt(reader.readLine());
-			if (option == 1) {
-				for (int i = 0; i < products.size(); i++) {
-					if (products.get(i).getId() == id) {
-						Product prod = products.get(i);
-
-					}
-				}
-			} else {
-				return;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		List<Product> products = dbman.viewAllProducts();
+		for(int i = 0;i<products.size();i++) {
+			System.out.println(products.get(i));
 		}
 	}
-*/
+	
 	// Customer OPTION 2
 	// TODO
 	private static void makePurchase() throws Exception {

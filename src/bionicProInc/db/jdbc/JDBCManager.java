@@ -12,7 +12,6 @@ import bionicProInc.db.ifaces.DBManager;
 
 public class JDBCManager implements DBManager {
 	private Connection c;
-	
 
 	public void connect() {
 		try {
@@ -159,9 +158,14 @@ public class JDBCManager implements DBManager {
 				String name = rs.getString("name");
 				String bodypart = rs.getString("bodypart");
 				float price = rs.getFloat("price");
-				Date date_creation = rs.getDate("date_creation"); 
-				Product prod = new Product(id, name, bodypart, price, date_creation);
+				String string = rs.getString("date_creation");
+				Date date_creation = Date.valueOf(string);
+				byte[] photo = rs.getBytes("photo");
+				ArrayList<Characteristic> characteristics = viewCharacteristicsFromProduct(id);
+				ArrayList<Material> materials = viewMaterialsFromProduct(id);
+				Product prod = new Product(id, name, bodypart, price, date_creation, photo, characteristics, materials);
 				products.add(prod);
+
 			}
 			rs.close();
 			stmt.close();
@@ -410,8 +414,9 @@ public class JDBCManager implements DBManager {
 	public ArrayList<Characteristic> viewCharacteristicsFromProduct(int id) {
 		ArrayList<Characteristic> characteristics = new ArrayList<Characteristic>();
 		try {
-			String sql = "SELECT c.*, p.id FROM products_characteristics as pc JOIN characteristics as c "
-					+ "ON pc.characteristic_id = c.id JOIN products as p ON pc.products_id = p.id WHERE p.id = ?";
+			String sql = "SELECT c.id,c.length,c.width,c.height,c.weight,c.joint_numb,c.flexibility_scale, pc.characteristic_id "
+					+ "FROM products_characteristics as pc JOIN characteristics as c "
+					+ "ON pc.characteristic_id = c.id  WHERE pc.product_id = ?";
 			PreparedStatement stmt = c.prepareStatement(sql);
 			stmt.setInt(1, id);
 			ResultSet rs = stmt.executeQuery();
@@ -421,7 +426,7 @@ public class JDBCManager implements DBManager {
 				float weight = rs.getFloat("weight");
 				float height = rs.getFloat("height");
 				int joint_numb = rs.getInt("joint_numb");
-				int flexibilty_scale = rs.getInt("flexibilty_scale");
+				int flexibilty_scale = rs.getInt("flexibility_scale");
 				Characteristic ch = new Characteristic(length, width, height, weight, joint_numb, flexibilty_scale);
 				characteristics.add(ch);
 			}
@@ -436,17 +441,15 @@ public class JDBCManager implements DBManager {
 	public ArrayList<Material> viewMaterialsFromProduct(int id) {
 		ArrayList<Material> materials = new ArrayList<Material>();
 		try {
-			String sql = "SELECT m.*, p.id FROM products_materials as pm JOIN materials as m "
-					+ "ON pm.material_id = m.id JOIN products as p ON pm.products_id = p.id WHERE p.id = ?";
+			String sql = "SELECT m.id,m.name,m.amount, pm.material_id FROM products_materials as pm JOIN materials as m "
+					+ "ON pm.material_id = m.id WHERE pm.product_id = ?";
 			PreparedStatement stmt = c.prepareStatement(sql);
 			stmt.setInt(1, id);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				String name = rs.getString("name");
-				float price = rs.getFloat("price");
 				int amount = rs.getInt("amount");
-				Material mat = new Material(name, price, amount);
-
+				Material mat = new Material(name, amount);
 				materials.add(mat);
 			}
 			rs.close();
