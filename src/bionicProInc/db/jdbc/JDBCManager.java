@@ -806,7 +806,7 @@ public class JDBCManager implements DBManager {
 	}
 
 	@Override
-	public void updateProducCharacteristics(Product prod) {
+	public void updateProductCharacteristics(Product prod) {
 		try {
 			while (true) {
 
