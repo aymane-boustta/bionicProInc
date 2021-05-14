@@ -383,7 +383,7 @@ public class Menu {
 					"Your purchase history is empty, you should buy some products to make your life better. ;)");
 			return;
 		}
-		System.out.println("You have purchased the following " + previousPurchases.size() + " products:");
+		System.out.println("Your purchase history shows the following " + previousPurchases.size() + " products:");
 		for (int i = 0; i < previousPurchases.size(); i++) {
 			System.out.println(dbman.viewProduct(previousPurchases.get(i)));
 		}
@@ -391,8 +391,16 @@ public class Menu {
 
 	// Customer OPTION 4
 	private static void clearPurchaseHistory(int id) throws Exception {
-		dbman.clearPurchaseHistory(id);
-		System.out.println("Your have purchase history has been cleared, it now shows no items.");
+		
+		System.out.println("\nType YES to confirm. Type anything else to to cancel.");
+		String option = reader.readLine();
+		if (option.equalsIgnoreCase("yes")) {
+			dbman.clearPurchaseHistory(id);
+			System.out.println("Your have purchase history has been cleared, it now shows no items.");
+		} else {
+			System.out.println("Action cancelled.");
+		}
+
 
 	}
 
