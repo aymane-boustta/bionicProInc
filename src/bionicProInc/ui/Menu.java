@@ -171,7 +171,8 @@ public class Menu {
 			}
 		} while (true);
 	}
-
+	
+	//Make match all attributes
 	// Engineer OPTION 1
 	private static void viewProductE() throws Exception {
 		System.out.println("Choose a bodypart:");
@@ -221,7 +222,7 @@ public class Menu {
 				break;
 
 			case 4:
-				dbman.updateProducCharacteristics(prod);
+				dbman.updateProductCharacteristics(prod);
 				break;
 
 			case 5:
@@ -282,6 +283,8 @@ public class Menu {
 
 	}
 
+	//Have any other engineer collaborated in this project?
+	//Anadir characteristics y product
 	// Engineer OPTION 4
 	// NEED TO SPEAK ABOUT HOW TO ADD PHOTO ATTRIBUTE FROM A STRING ...
 	private static void addProduct(int id) throws Exception {
@@ -305,7 +308,8 @@ public class Menu {
 		}
 
 	}
-
+	
+	//remove product selected from every many-to-many table
 	// Engineer OPTION 5
 	private static void removeProduct() throws Exception {
 		try {
@@ -347,7 +351,7 @@ public class Menu {
 	private static void viewProductC() throws Exception {
 		List<Product> products = dbman.viewAllProducts();
 		for (int i = 0; i < products.size(); i++) {
-			System.out.println(products.get(i).toString());
+			System.out.println(products.get(i).toStringCustomer());
 		}
 	}
 
@@ -360,7 +364,7 @@ public class Menu {
 				System.out.println("\nThere is no product with the ID: " + product_id);
 				return;
 			}
-			System.out.println(dbman.viewProduct(product_id).toString());
+			System.out.println(dbman.viewProduct(product_id).toStringCustomer());
 			System.out.println("\nType YES to confirm your purchase. Type anything else to to cancel the purchase.");
 			String option = reader.readLine();
 			if (option.equalsIgnoreCase("yes")) {
@@ -385,7 +389,7 @@ public class Menu {
 		}
 		System.out.println("Your purchase history shows the following " + previousPurchases.size() + " products:");
 		for (int i = 0; i < previousPurchases.size(); i++) {
-			System.out.println(dbman.viewProduct(previousPurchases.get(i)));
+			System.out.println(dbman.viewProduct(previousPurchases.get(i)).toStringCustomer());
 		}
 	}
 

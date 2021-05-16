@@ -83,7 +83,7 @@ public interface DBManager {
 
 	public void updateProductPrice(Product prod);
 
-	public void updateProducCharacteristics(Product prod);
+	public void updateProductCharacteristics(Product prod);
 
 	public void updateProductMaterials(Product prod);
 
