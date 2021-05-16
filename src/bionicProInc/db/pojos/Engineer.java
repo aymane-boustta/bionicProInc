@@ -25,7 +25,7 @@ import bionicProInc.db.xml.utils.SQLDateAdapter;
 @Entity
 @Table(name = "engineers")
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name = "ensineers")
+@XmlRootElement(name = "Engineer")
 @XmlType(propOrder = { "name_surname", "email", "contract_starting_date","contract_ending_date","current_service","salary","bonus","project_achieved","experience_in_years","date_of_birth","products" })
 
 public class Engineer implements Serializable {
@@ -59,7 +59,7 @@ public class Engineer implements Serializable {
 	@XmlJavaTypeAdapter(SQLDateAdapter.class)
 	private Date date_of_birth;
 	@OneToMany(mappedBy="engineer")
-	@XmlElement(name = "product")
+	@XmlElement(name = "Product")
     @XmlElementWrapper(name = "products")
 	private List<Product> products;
 
