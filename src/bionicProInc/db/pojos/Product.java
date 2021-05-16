@@ -5,23 +5,58 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-/**
- * @author macbookair
- *
- */
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.TableGenerator;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import bionicProInc.db.xml.utils.SQLDateAdapter;
+
+@Entity
+@Table(name = "products")
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "Product")
+@XmlType(propOrder = { "name", "bodypart", "employees","price","date_creation","characteristics","engineers","materials" })
 public class Product implements Serializable {
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = -2448117025953730410L;
+	@Id
+	@GeneratedValue(generator="products")
+	@TableGenerator(name="products", table="sqlite_sequence",
+	    pkColumnName="name", valueColumnName="seq", pkColumnValue="products")	
+
+	@XmlAttribute
 	private int id;
+	@XmlAttribute
 	private String name;
+	@XmlAttribute
 	private String bodypart;
+	@XmlAttribute
 	private Float price;
+	@XmlJavaTypeAdapter(SQLDateAdapter.class)
 	private Date date_creation;
 	private byte[] photo;
+	@OneToMany(mappedBy="product")
+	@XmlElement(name = "Characteristic")
+    @XmlElementWrapper(name = "characteristics")
 	private ArrayList<Characteristic> characteristics;
+	@OneToMany(mappedBy="product")
+	@XmlElement(name = "Engineer")
+    @XmlElementWrapper(name = "engineers")
 	private ArrayList<Engineer> engineer;
+	@OneToMany(mappedBy="product")
+	@XmlElement(name = "Material")
+    @XmlElementWrapper(name = "materials")
 	private ArrayList<Material> materials;
 
 	public Product(int id, String name, String bodypart, Float price, Date date_creation, byte[] photo,

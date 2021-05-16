@@ -5,22 +5,62 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.TableGenerator;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import bionicProInc.db.xml.utils.SQLDateAdapter;
+
+@Entity
+@Table(name = "engineers")
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "ensineers")
+@XmlType(propOrder = { "name_surname", "email", "contract_starting_date","contract_ending_date","current_service","salary","bonus","project_achieved","experience_in_years","date_of_birth","products" })
+
 public class Engineer implements Serializable {
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 7354779387678883946L;
+	
+	@Id
+	@GeneratedValue(generator="engineers")
+	@TableGenerator(name="engineers", table="sqlite_sequence",
+	    pkColumnName="name", valueColumnName="seq", pkColumnValue="engineers")	
+	@XmlAttribute
 	private int id;
+	@XmlAttribute
 	private String name_surname;
+	@XmlAttribute
 	private String email;
+	@XmlJavaTypeAdapter(SQLDateAdapter.class)
 	private Date contract_strating_date;
+	@XmlJavaTypeAdapter(SQLDateAdapter.class)
 	private Date contract_ending_date;
+	@XmlAttribute
 	private String current_service;
+	@XmlAttribute
 	private float salary;
+	@XmlAttribute
 	private float bonus;
+	@XmlAttribute
 	private int project_achieved;
+	@XmlAttribute
 	private int experience_in_years;
+	@XmlJavaTypeAdapter(SQLDateAdapter.class)
 	private Date date_of_birth;
+	@OneToMany(mappedBy="engineer")
+	@XmlElement(name = "product")
+    @XmlElementWrapper(name = "products")
 	private List<Product> products;
 
 	public Engineer(int id, String name_surname, String email, Date contract_strating_date, Date contract_ending_date,
