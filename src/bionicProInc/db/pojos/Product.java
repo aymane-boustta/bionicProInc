@@ -8,6 +8,9 @@ import java.util.Arrays;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
@@ -47,15 +50,24 @@ public class Product implements Serializable {
 	private Date date_creation;
 	@XmlAttribute
 	private byte[] photo;
-	@OneToMany(mappedBy="product")
+	@ManyToMany
+	@JoinTable(name="characteristics",
+		joinColumns={@JoinColumn(name="product_id", referencedColumnName="id")},
+	    inverseJoinColumns={@JoinColumn(name="characteristic_id", referencedColumnName="id")})
 	@XmlElement(name = "Characteristic")
     @XmlElementWrapper(name = "characteristics")
 	private ArrayList<Characteristic> characteristics;
-	@OneToMany(mappedBy="product")
+	@ManyToMany
+	@JoinTable(name="engineer",
+		joinColumns={@JoinColumn(name="product_id", referencedColumnName="id")},
+	    inverseJoinColumns={@JoinColumn(name="engineer_id", referencedColumnName="id")})
 	@XmlElement(name = "Engineer")
     @XmlElementWrapper(name = "engineer")
 	private ArrayList<Engineer> engineer;
-	@OneToMany(mappedBy="product")
+	@ManyToMany
+	@JoinTable(name="materials",
+		joinColumns={@JoinColumn(name="product_id", referencedColumnName="id")},
+	    inverseJoinColumns={@JoinColumn(name="material_id", referencedColumnName="id")})
 	@XmlElement(name = "Material")
     @XmlElementWrapper(name = "materials")
 	private ArrayList<Material> materials;

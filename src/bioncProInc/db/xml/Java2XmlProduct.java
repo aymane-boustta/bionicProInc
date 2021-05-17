@@ -50,7 +50,7 @@ public class Java2XmlProduct {
 		printReports();
 		System.out.print("Choose a product to turn into an XML file:");
 		int prod_id = Integer.parseInt(reader.readLine());
-		Query q2 = em.createNativeQuery(" SELECT * FROM products WHERE id = ? ", Product.class);
+		Query q2 = em.createNativeQuery("SELECT * FROM products WHERE id = ? ", Product.class);
 		q2.setParameter(1, prod_id);
 		Product report = (Product) q2.getSingleResult();
 		
