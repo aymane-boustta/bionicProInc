@@ -43,7 +43,7 @@ public class Engineer implements Serializable {
 	@XmlAttribute
 	private String email;
 	@XmlJavaTypeAdapter(SQLDateAdapter.class)
-	private Date contract_strating_date;
+	private Date contract_starting_date;
 	@XmlJavaTypeAdapter(SQLDateAdapter.class)
 	private Date contract_ending_date;
 	@XmlAttribute
@@ -70,7 +70,7 @@ public class Engineer implements Serializable {
 		this.id = id;
 		this.name_surname = name_surname;
 		this.email = email;
-		this.contract_strating_date = contract_strating_date;
+		this.contract_starting_date = contract_strating_date;
 		this.contract_ending_date = contract_ending_date;
 		this.current_service = current_service;
 		this.salary = salary;
@@ -88,7 +88,7 @@ public class Engineer implements Serializable {
 		this.id = id;
 		this.name_surname = name_surname;
 		this.email = email;
-		this.contract_strating_date = contract_strating_date;
+		this.contract_starting_date = contract_strating_date;
 		this.contract_ending_date = contract_ending_date;
 		this.current_service = current_service;
 		this.salary = salary;
@@ -105,7 +105,7 @@ public class Engineer implements Serializable {
 		super();
 		this.name_surname = name_surname;
 		this.email = email;
-		this.contract_strating_date = contract_strating_date;
+		this.contract_starting_date = contract_strating_date;
 		this.contract_ending_date = contract_ending_date;
 		this.current_service = current_service;
 		this.salary = salary;
@@ -165,11 +165,11 @@ public class Engineer implements Serializable {
 	}
 
 	public Date getContract_strating_date() {
-		return contract_strating_date;
+		return contract_starting_date;
 	}
 
 	public void setContract_strating_date(Date contract_strating_date) {
-		this.contract_strating_date = contract_strating_date;
+		this.contract_starting_date = contract_strating_date;
 	}
 
 	public Date getContract_ending_date() {
@@ -265,7 +265,7 @@ public class Engineer implements Serializable {
 	@Override
 	public String toString() {
 		return "Engineer ID: " + id + ", Full name: " + name_surname + ", Email address: " + email
-				+ ", Contract starting date: " + contract_strating_date + ", Contract ending date: "
+				+ ", Contract starting date: " + contract_starting_date + ", Contract ending date: "
 				+ contract_ending_date + ", Current service: " + current_service + ", Salary: " + salary + ", Bonus: "
 				+ bonus + ", Number of projects achieved: " + project_achieved + ", Years of experience: "
 				+ experience_in_years + ", Date of birth:" + date_of_birth;

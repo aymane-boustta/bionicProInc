@@ -26,7 +26,7 @@ import bionicProInc.db.xml.utils.SQLDateAdapter;
 @Table(name = "products")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "Product")
-@XmlType(propOrder = { "name", "bodypart", "employees","price","date_creation","characteristics","engineers","materials" })
+@XmlType(propOrder = { "name", "bodypart","price","date_creation","photo","characteristics","engineer","materials" })
 public class Product implements Serializable {
 	
 	private static final long serialVersionUID = -2448117025953730410L;
@@ -45,6 +45,7 @@ public class Product implements Serializable {
 	private Float price;
 	@XmlJavaTypeAdapter(SQLDateAdapter.class)
 	private Date date_creation;
+	@XmlAttribute
 	private byte[] photo;
 	@OneToMany(mappedBy="product")
 	@XmlElement(name = "Characteristic")
@@ -52,7 +53,7 @@ public class Product implements Serializable {
 	private ArrayList<Characteristic> characteristics;
 	@OneToMany(mappedBy="product")
 	@XmlElement(name = "Engineer")
-    @XmlElementWrapper(name = "engineers")
+    @XmlElementWrapper(name = "engineer")
 	private ArrayList<Engineer> engineer;
 	@OneToMany(mappedBy="product")
 	@XmlElement(name = "Material")
