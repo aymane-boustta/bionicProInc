@@ -172,7 +172,6 @@ public class Menu {
 		} while (true);
 	}
 
-	// Make match all attributes (projects achieved, prices...)
 	// Engineer OPTION 1
 	private static void viewProductE() throws Exception {
 		System.out.println("Choose a bodypart:");
@@ -186,7 +185,7 @@ public class Menu {
 		for (int i = 0; i < products.size(); i++) {
 			System.out.println(products.get(i));
 		}
-		System.out.println("\nChoose the product that you want to update: ");
+		System.out.println("\nType the ID of the product that you want to update: ");
 		int product_id = Integer.parseInt(reader.readLine());
 		if (dbman.viewProduct(product_id).getName() == null) {
 			System.out.println("There is no product with the ID: " + product_id);
@@ -283,8 +282,9 @@ public class Menu {
 
 	}
 
-	// NEED TO SPEAK ABOUT HOW TO ADD PHOTO ATTRIBUTE FROM A STRING ...
+
 	// Engineer OPTION 4
+	// How to add photo attribute from an array of bytes?
 	private static void addProduct(int id) throws Exception {
 		try {
 			System.out.println("Introduce the prothesis' name: ");
@@ -307,7 +307,7 @@ public class Menu {
 			dbman.updateEngineerProjectAchieved(dbman.getEngineer(id));
 
 			System.out.println(
-					"\nHave any other engineers collaborated in the making of the new product? Type YES to indicate who else collaborated, anything else to finish:");
+					"\nHave any other engineers collaborated in the making of the new product? Type YES to proceed, anything else to finish:");
 			String option = reader.readLine();
 			while (option.equalsIgnoreCase("yes")) {
 				if (option.equalsIgnoreCase("yes")) {
@@ -324,7 +324,7 @@ public class Menu {
 					return;
 				}
 				System.out.println(
-						"\nHave any other engineers collaborated in the making of the new product? Type YES to indicate who collaborated, anything else to finish:");
+						"\nHave any other engineers collaborated in the making of the new product? Type YES to proceed, anything else to finish:");
 				option = reader.readLine();
 			}
 
