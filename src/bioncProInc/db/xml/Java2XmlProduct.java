@@ -21,7 +21,7 @@ public class Java2XmlProduct {
 	private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 		
 	private static void printReports() {
-		Query q1 = em.createNativeQuery("SELECT * FROM products", Product.class);
+		Query q1 = em.createNativeQuery("SELECT id, name, bodypart FROM products", Product.class);
 		List<Product> prods = (List<Product>) q1.getResultList();
 		// Print the departments
 		for (Product prod : prods) {
@@ -50,12 +50,12 @@ public class Java2XmlProduct {
 		printReports();
 		System.out.print("Choose a product to turn into an XML file:");
 		int prod_id = Integer.parseInt(reader.readLine());
-		Query q2 = em.createNativeQuery("SELECT * FROM products WHERE id = ? ", Product.class);
+		Query q2 = em.createNativeQuery("SELECT id, name, bodypart FROM products WHERE id = ? ", Product.class);
 		q2.setParameter(1, prod_id);
 		Product report = (Product) q2.getSingleResult();
 		
 		// Use the Marshaller to marshal the Java object to a file
-		File file = new File("./xmls/Sample-Product.xml");
+		File file = new File("./xmls/bionicProInc-Product.xml");
 		marshaller.marshal(report, file);
 		// Printout
 		marshaller.marshal(report, System.out);

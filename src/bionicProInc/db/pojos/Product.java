@@ -5,13 +5,15 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
+
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -20,6 +22,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
@@ -29,7 +32,7 @@ import bionicProInc.db.xml.utils.SQLDateAdapter;
 @Table(name = "products")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "Product")
-@XmlType(propOrder = { "name", "bodypart","price","date_creation","photo","characteristics","engineer","materials" })
+@XmlType(propOrder = { "name", "bodypart","price","date_creation" })
 public class Product implements Serializable {
 	
 	private static final long serialVersionUID = -2448117025953730410L;
@@ -38,7 +41,7 @@ public class Product implements Serializable {
 	@TableGenerator(name="products", table="sqlite_sequence",
 	    pkColumnName="name", valueColumnName="seq", pkColumnValue="products")	
 
-	@XmlAttribute
+	@XmlTransient
 	private int id;
 	@XmlAttribute
 	private String name;
@@ -48,28 +51,16 @@ public class Product implements Serializable {
 	private Float price;
 	@XmlJavaTypeAdapter(SQLDateAdapter.class)
 	private Date date_creation;
-	@XmlAttribute
+    @XmlTransient
 	private byte[] photo;
 	@ManyToMany
-	@JoinTable(name="characteristics",
-		joinColumns={@JoinColumn(name="product_id", referencedColumnName="id")},
-	    inverseJoinColumns={@JoinColumn(name="characteristic_id", referencedColumnName="id")})
-	@XmlElement(name = "Characteristic")
-    @XmlElementWrapper(name = "characteristics")
+	@XmlTransient
 	private ArrayList<Characteristic> characteristics;
 	@ManyToMany
-	@JoinTable(name="engineer",
-		joinColumns={@JoinColumn(name="product_id", referencedColumnName="id")},
-	    inverseJoinColumns={@JoinColumn(name="engineer_id", referencedColumnName="id")})
-	@XmlElement(name = "Engineer")
-    @XmlElementWrapper(name = "engineer")
+	@XmlTransient
 	private ArrayList<Engineer> engineer;
 	@ManyToMany
-	@JoinTable(name="materials",
-		joinColumns={@JoinColumn(name="product_id", referencedColumnName="id")},
-	    inverseJoinColumns={@JoinColumn(name="material_id", referencedColumnName="id")})
-	@XmlElement(name = "Material")
-    @XmlElementWrapper(name = "materials")
+	@XmlTransient
 	private ArrayList<Material> materials;
 
 	public Product(int id, String name, String bodypart, Float price, Date date_creation, byte[] photo,

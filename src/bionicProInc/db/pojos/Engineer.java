@@ -8,6 +8,9 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
@@ -17,6 +20,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
@@ -26,7 +30,7 @@ import bionicProInc.db.xml.utils.SQLDateAdapter;
 @Table(name = "engineers")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "Engineer")
-@XmlType(propOrder = { "name_surname", "email", "contract_starting_date","contract_ending_date","current_service","salary","bonus","project_achieved","experience_in_years","date_of_birth","products" })
+@XmlType(propOrder = {"name_surname", "email", "contract_starting_date","contract_ending_date","current_service","salary","bonus","project_achieved","experience_in_years","date_of_birth" })
 
 public class Engineer implements Serializable {
 	
@@ -36,7 +40,7 @@ public class Engineer implements Serializable {
 	@GeneratedValue(generator="engineers")
 	@TableGenerator(name="engineers", table="sqlite_sequence",
 	    pkColumnName="name", valueColumnName="seq", pkColumnValue="engineers")	
-	@XmlAttribute
+	@XmlTransient
 	private int id;
 	@XmlAttribute
 	private String name_surname;
@@ -58,9 +62,8 @@ public class Engineer implements Serializable {
 	private int experience_in_years;
 	@XmlJavaTypeAdapter(SQLDateAdapter.class)
 	private Date date_of_birth;
-	@OneToMany(mappedBy="engineer")
-	@XmlElement(name = "Product")
-    @XmlElementWrapper(name = "products")
+	@ManyToMany
+	@XmlTransient
 	private List<Product> products;
 
 	public Engineer(int id, String name_surname, String email, Date contract_strating_date, Date contract_ending_date,

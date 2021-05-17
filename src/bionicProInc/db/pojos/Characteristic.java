@@ -4,19 +4,54 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import javax.persistence.TableGenerator;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
+
+
+@Entity
+@Table(name = "characteristics")
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "Characteristic")
+@XmlType(propOrder = {"length","width","height","weight","joint_numb","flexibility_scale" })
 public class Characteristic implements Serializable {
 
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = -8095684428083579778L;
+	@Id
+	@GeneratedValue(generator="characteristics")
+	@TableGenerator(name="characteristics", table="sqlite_sequence",
+	    pkColumnName="name", valueColumnName="seq", pkColumnValue="characteristics")	
+
+	@XmlTransient
 	private int id;
+	@XmlAttribute
 	private float length;
+	@XmlAttribute
 	private float width;
+	@XmlAttribute
 	private float height;
+	@XmlAttribute
 	private float weight;
+	@XmlAttribute
 	private int joint_numb;
-	private int flexibilty_scale;
+	@XmlAttribute
+	private int flexibility_scale;
+	@ManyToMany
+	@XmlTransient
 	private List<Product> products;
 
 	public Characteristic(int id, float length, float width, float height, float weight, int joint_numb,
@@ -27,7 +62,7 @@ public class Characteristic implements Serializable {
 		this.height = height;
 		this.weight = weight;
 		this.joint_numb = joint_numb;
-		this.flexibilty_scale = flexibilty_scale;
+		this.flexibility_scale = flexibilty_scale;
 		this.products = products;
 	}
 
@@ -39,7 +74,7 @@ public class Characteristic implements Serializable {
 		this.height = height;
 		this.weight = weight;
 		this.joint_numb = joint_numb;
-		this.flexibilty_scale = flexibilty_scale;
+		this.flexibility_scale = flexibilty_scale;
 		this.products = new ArrayList<Product>();
 	}
 
@@ -50,7 +85,7 @@ public class Characteristic implements Serializable {
 		this.height = height;
 		this.weight = weight;
 		this.joint_numb = joint_numb;
-		this.flexibilty_scale = flexibilty_scale;
+		this.flexibility_scale = flexibilty_scale;
 		this.products = new ArrayList<Product>();
 	}
 
@@ -115,11 +150,11 @@ public class Characteristic implements Serializable {
 	}
 
 	public int getFlexibilty_scale() {
-		return flexibilty_scale;
+		return flexibility_scale;
 	}
 
 	public void setFlexibilty_scale(int flexibilty_scale) {
-		this.flexibilty_scale = flexibilty_scale;
+		this.flexibility_scale = flexibilty_scale;
 	}
 
 	public List<Product> getProducts() {
@@ -156,7 +191,7 @@ public class Characteristic implements Serializable {
 	public String toString() {
 		return "\n Characteristic ID: " + id + ", Length: " + length + ", Width: " + width + ", Height: " + height
 				+ ", Weight: " + weight + ", Number of joints: " + joint_numb + ", Flexibility scale (1-10): "
-				+ flexibilty_scale;
+				+ flexibility_scale;
 	}
 
 }

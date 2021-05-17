@@ -7,6 +7,9 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
@@ -16,6 +19,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 
@@ -24,7 +28,7 @@ import javax.xml.bind.annotation.XmlType;
 @Table(name = "customers")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "Customer")
-@XmlType(propOrder = { "name_surname", "age", "gender","phone","email","street","city","postal_code","products" })
+@XmlType(propOrder = { "name_surname", "age", "gender","phone","email","street","city","postal_code"})
 
 public class Customer implements Serializable {
 
@@ -33,7 +37,7 @@ public class Customer implements Serializable {
 	@GeneratedValue(generator="engineers")
 	@TableGenerator(name="engineers", table="sqlite_sequence",
 	    pkColumnName="name", valueColumnName="seq", pkColumnValue="engineers")	
-	@XmlAttribute
+	@XmlTransient
 	private int id;
 	@XmlAttribute
 	private String name_surname;
@@ -51,9 +55,8 @@ public class Customer implements Serializable {
 	private String city;
 	@XmlAttribute
 	private int postal_code;
-	@OneToMany(mappedBy="customer")
-	@XmlElement(name = "Product")
-    @XmlElementWrapper(name = "products")
+	@ManyToMany
+	@XmlTransient
 	private List<Product> products;
 
 	public Customer(int id, String name_surname, int age, String gender, int phone, String email, String street,
