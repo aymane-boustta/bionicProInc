@@ -116,9 +116,10 @@ public class Engineer implements Serializable {
 		this.products = new ArrayList<Product>();
 	}
 
-	public Engineer(int id, int project_achieved) {
+	public Engineer(int id, String name_surname,int project_achieved) {
 		super();
 		this.id = id;
+		this.name_surname = name_surname;
 		this.project_achieved = project_achieved;
 	}
 

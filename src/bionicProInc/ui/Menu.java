@@ -171,8 +171,8 @@ public class Menu {
 			}
 		} while (true);
 	}
-	
-	//Make match all attributes
+
+	// Make match all attributes (projects achieved, prices...)
 	// Engineer OPTION 1
 	private static void viewProductE() throws Exception {
 		System.out.println("Choose a bodypart:");
@@ -274,7 +274,7 @@ public class Menu {
 			System.out.println("Introduce the material's amount: ");
 			int amount = Integer.parseInt(reader.readLine());
 			Material mat = new Material(name, price, amount);
-			System.out.println("The material has been successfully addded.");
+			System.out.println("The material has been successfully added.");
 			dbman.addMaterial(mat);
 
 		} catch (Exception e) {
@@ -283,10 +283,8 @@ public class Menu {
 
 	}
 
-	//Have any other engineer collaborated in this project?
-	//Anadir characteristics y product
-	// Engineer OPTION 4
 	// NEED TO SPEAK ABOUT HOW TO ADD PHOTO ATTRIBUTE FROM A STRING ...
+	// Engineer OPTION 4
 	private static void addProduct(int id) throws Exception {
 		try {
 			System.out.println("Introduce the prothesis' name: ");
@@ -300,16 +298,42 @@ public class Menu {
 			byte[] photo = new byte[10];
 			Product prod = new Product(name, bodypart, price, Date.valueOf(date_creation), photo);
 			dbman.addProduct(prod);
-			System.out.println("\nThe product has been successfully added.");
+			dbman.addCharacteristicsToNewProduct(dbman.getProduct(dbman.getProductID(prod.getName())));
+			dbman.addMaterialsToNewProduct(dbman.getProduct(dbman.getProductID(prod.getName())));
+			System.out.println("\nThe product has been successfully added, and it looks like this: "
+					+ dbman.viewProduct(dbman.getProductID(prod.getName())));
+			System.out.println("Congratulations on the finished project!");
 			dbman.addEng_Prod(dbman.getEngineer(id), dbman.getProduct(dbman.getProductID(prod.getName())));
 			dbman.updateEngineerProjectAchieved(dbman.getEngineer(id));
+
+			System.out.println(
+					"\nHave any other engineers collaborated in the making of the new product? Type YES to indicate who else collaborated, anything else to finish:");
+			String option = reader.readLine();
+			while (option.equalsIgnoreCase("yes")) {
+				if (option.equalsIgnoreCase("yes")) {
+					System.out.println(
+							"\nType the ID of the engineer that collaborated in the making of the new product: ");
+					id = Integer.parseInt(reader.readLine());
+					if (dbman.getEngineer(id).getName_surname() == null) {
+						System.out.println("There is no engineer with the ID: " + id);
+					} else if (!(dbman.getEngineer(id).getName_surname() == null)) {
+						dbman.addEng_Prod(dbman.getEngineer(id), dbman.getProduct(dbman.getProductID(prod.getName())));
+						dbman.updateEngineerProjectAchieved(dbman.getEngineer(id));
+					}
+				} else {
+					return;
+				}
+				System.out.println(
+						"\nHave any other engineers collaborated in the making of the new product? Type YES to indicate who collaborated, anything else to finish:");
+				option = reader.readLine();
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 	}
-	
-	//remove product selected from every many-to-many table
+
 	// Engineer OPTION 5
 	private static void removeProduct() throws Exception {
 		try {
@@ -323,6 +347,10 @@ public class Menu {
 			System.out.println("\nType YES to confirm the deletion, type anything else to cancel.");
 			String option = reader.readLine();
 			if (option.equalsIgnoreCase("yes")) {
+				dbman.removeCust_Prod(dbman.viewProduct(product_id));
+				dbman.removeEng_Prod(dbman.viewProduct(product_id));
+				dbman.removeAllProd_Ch(dbman.viewProduct(product_id));
+				dbman.removeAllProd_Mat(dbman.viewProduct(product_id));
 				dbman.removeProduct(product_id);
 				System.out.println("Deletion confirmed.");
 			} else {
@@ -395,7 +423,7 @@ public class Menu {
 
 	// Customer OPTION 4
 	private static void clearPurchaseHistory(int id) throws Exception {
-		
+
 		System.out.println("\nType YES to confirm. Type anything else to to cancel.");
 		String option = reader.readLine();
 		if (option.equalsIgnoreCase("yes")) {
@@ -404,7 +432,6 @@ public class Menu {
 		} else {
 			System.out.println("Action cancelled.");
 		}
-
 
 	}
 
