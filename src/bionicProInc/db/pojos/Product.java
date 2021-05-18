@@ -2,16 +2,16 @@ package bionicProInc.db.pojos;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 
 import javax.persistence.Table;
@@ -32,14 +32,14 @@ import bionicProInc.db.xml.utils.SQLDateAdapter;
 @Table(name = "products")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "Product")
-@XmlType(propOrder = { "name", "bodypart","price","date_creation" })
+@XmlType(propOrder = { "name", "bodypart", "price", "date_creation", "photo", "characteristics", "materials",
+		"engineers" })
 public class Product implements Serializable {
-	
+
 	private static final long serialVersionUID = -2448117025953730410L;
 	@Id
-	@GeneratedValue(generator="products")
-	@TableGenerator(name="products", table="sqlite_sequence",
-	    pkColumnName="name", valueColumnName="seq", pkColumnValue="products")	
+	@GeneratedValue(generator = "products")
+	@TableGenerator(name = "products", table = "sqlite_sequence", pkColumnName = "name", valueColumnName = "seq", pkColumnValue = "products")
 
 	@XmlTransient
 	private int id;
@@ -49,95 +49,108 @@ public class Product implements Serializable {
 	private String bodypart;
 	@XmlAttribute
 	private Float price;
+	@XmlAttribute
 	@XmlJavaTypeAdapter(SQLDateAdapter.class)
 	private Date date_creation;
-    @XmlTransient
+	@XmlAttribute
 	private byte[] photo;
 	@ManyToMany
-	@XmlTransient
-	private ArrayList<Characteristic> characteristics;
+	@JoinTable(name = "products_characteristics", joinColumns = {
+			@JoinColumn(name = "product_id", referencedColumnName = "id") }, inverseJoinColumns = {
+					@JoinColumn(name = "characteristic_id", referencedColumnName = "id") })
+	@XmlElement(name = "characteristics")
+	@XmlElementWrapper(name = "characteristics")
+	private List<Characteristic> characteristics;
 	@ManyToMany
-	@XmlTransient
-	private ArrayList<Engineer> engineer;
+	@JoinTable(name = "engineers_products", joinColumns = {
+			@JoinColumn(name = "product_id", referencedColumnName = "id") }, inverseJoinColumns = {
+					@JoinColumn(name = "engineer_id", referencedColumnName = "id") })
+	@XmlElement(name = "engineers")
+	@XmlElementWrapper(name = "engineers")
+	private List<Engineer> engineers;
 	@ManyToMany
-	@XmlTransient
-	private ArrayList<Material> materials;
+	@JoinTable(name = "products_materials", joinColumns = {
+			@JoinColumn(name = "product_id", referencedColumnName = "id") }, inverseJoinColumns = {
+					@JoinColumn(name = "material_id", referencedColumnName = "id") })
+	@XmlElement(name = "materials")
+	@XmlElementWrapper(name = "materials")
+	private List<Material> materials;
 
-	public Product(int id, String name, String bodypart, Float price, Date date_creation, byte[] photo,
-			ArrayList<Characteristic> characteristics, ArrayList<Engineer> engineer, ArrayList<Material> materials) {
+	public Product(int id, String name, String bodypart, Float price, LocalDate date_creation, byte[] photo,
+			List<Characteristic> characteristics, List<Engineer> engineer, List<Material> materials) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.bodypart = bodypart;
 		this.price = price;
-		this.date_creation = date_creation;
+		this.setDate_creation(date_creation);
 		this.photo = photo;
 		this.characteristics = characteristics;
-		this.engineer = engineer;
+		this.engineers = engineer;
 		this.materials = materials;
 	}
 
-	public Product(int id, String name, String bodypart, Float price, Date date_creation, byte[] photo,
-			ArrayList<Characteristic> characteristics, ArrayList<Material> materials) {
+	public Product(int id, String name, String bodypart, Float price, LocalDate date_creation, byte[] photo,
+			List<Characteristic> characteristics, List<Material> materials) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.bodypart = bodypart;
 		this.price = price;
-		this.date_creation = date_creation;
+		this.setDate_creation(date_creation);
 		this.photo = photo;
 		this.characteristics = characteristics;
-		this.engineer = new ArrayList<Engineer>();
+		this.engineers = new ArrayList<Engineer>();
 		this.materials = materials;
 	}
 
-	public Product(int id, String name, String bodypart, Float price, Date date_creation, byte[] photo) {
+	public Product(int id, String name, String bodypart, Float price, LocalDate date_creation, byte[] photo) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.bodypart = bodypart;
 		this.price = price;
-		this.date_creation = date_creation;
+		this.setDate_creation(date_creation);
 		this.photo = photo;
 		this.characteristics = new ArrayList<Characteristic>();
-		this.engineer = new ArrayList<Engineer>();
+		this.engineers = new ArrayList<Engineer>();
 		this.materials = new ArrayList<Material>();
 	}
 
-	public Product(String name, String bodypart, Float price, Date date_creation, byte[] photo) {
+	public Product(String name, String bodypart, Float price, LocalDate date_creation, byte[] photo) {
 		super();
 		this.name = name;
 		this.bodypart = bodypart;
 		this.price = price;
-		this.date_creation = date_creation;
+		this.setDate_creation(date_creation);
 		this.photo = photo;
 		this.characteristics = new ArrayList<Characteristic>();
-		this.engineer = new ArrayList<Engineer>();
+		this.engineers = new ArrayList<Engineer>();
 		this.materials = new ArrayList<Material>();
 
 	}
 
-	public Product(int id, String name, String bodypart, Float price, Date date_creation) {
+	public Product(int id, String name, String bodypart, Float price, LocalDate date_creation) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.bodypart = bodypart;
 		this.price = price;
-		this.date_creation = date_creation;
+		this.setDate_creation(date_creation);
 		this.characteristics = new ArrayList<Characteristic>();
-		this.engineer = new ArrayList<Engineer>();
+		this.engineers = new ArrayList<Engineer>();
 		this.materials = new ArrayList<Material>();
 
 	}
 
-	public Product(String name, String bodypart, Float price, Date date_creation) {
+	public Product(String name, String bodypart, Float price, LocalDate date_creation) {
 		super();
 		this.name = name;
 		this.bodypart = bodypart;
 		this.price = price;
-		this.date_creation = date_creation;
+		this.setDate_creation(date_creation);
 		this.characteristics = new ArrayList<Characteristic>();
-		this.engineer = new ArrayList<Engineer>();
+		this.engineers = new ArrayList<Engineer>();
 		this.materials = new ArrayList<Material>();
 
 	}
@@ -145,7 +158,7 @@ public class Product implements Serializable {
 	public Product() {
 		super();
 		this.characteristics = new ArrayList<Characteristic>();
-		this.engineer = new ArrayList<Engineer>();
+		this.engineers = new ArrayList<Engineer>();
 		this.materials = new ArrayList<Material>();
 	}
 
@@ -187,12 +200,12 @@ public class Product implements Serializable {
 		this.price = price;
 	}
 
-	public Date getDate_creation() {
-		return date_creation;
+	public LocalDate getDate_creation() {
+		return this.date_creation.toLocalDate();
 	}
 
-	public void setDate_creation(Date date_creation) {
-		this.date_creation = date_creation;
+	public void setDate_creation(LocalDate date_creation) {
+		this.date_creation = Date.valueOf(date_creation);
 	}
 
 	public byte[] getPhoto() {
@@ -203,23 +216,23 @@ public class Product implements Serializable {
 		this.photo = photo;
 	}
 
-	public ArrayList<Characteristic> getCharacteristics() {
+	public List<Characteristic> getCharacteristics() {
 		return characteristics;
 	}
 
-	public void setCharacteristics(ArrayList<Characteristic> characteristics) {
+	public void setCharacteristics(List<Characteristic> characteristics) {
 		this.characteristics = characteristics;
 	}
 
-	public ArrayList<Engineer> getEngineer() {
-		return engineer;
+	public List<Engineer> getEngineers() {
+		return engineers;
 	}
 
-	public void setEngineer(ArrayList<Engineer> engineer) {
-		this.engineer = engineer;
+	public void setEngineer(ArrayList<Engineer> engineers) {
+		this.engineers = engineers;
 	}
 
-	public ArrayList<Material> getMaterials() {
+	public List<Material> getMaterials() {
 		return materials;
 	}
 
@@ -248,7 +261,7 @@ public class Product implements Serializable {
 			return false;
 		return true;
 	}
-	
+
 	public String toStringCustomer() {
 		return "\nProduct ID: " + id + ", Name: " + name + ", Bodypart: " + bodypart + ", Price: " + price
 				+ ", Date of creation: " + date_creation + ", Photo = " + Arrays.toString(photo)

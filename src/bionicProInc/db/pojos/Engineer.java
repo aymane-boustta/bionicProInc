@@ -8,17 +8,12 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
@@ -30,16 +25,16 @@ import bionicProInc.db.xml.utils.SQLDateAdapter;
 @Table(name = "engineers")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "Engineer")
-@XmlType(propOrder = {"name_surname", "email", "contract_starting_date","contract_ending_date","current_service","salary","bonus","project_achieved","experience_in_years","date_of_birth" })
+@XmlType(propOrder = { "name_surname", "email", "contract_starting_date", "contract_ending_date", "current_service",
+		"salary", "bonus", "project_achieved", "experience_in_years", "date_of_birth" })
 
 public class Engineer implements Serializable {
-	
+
 	private static final long serialVersionUID = 7354779387678883946L;
-	
+
 	@Id
-	@GeneratedValue(generator="engineers")
-	@TableGenerator(name="engineers", table="sqlite_sequence",
-	    pkColumnName="name", valueColumnName="seq", pkColumnValue="engineers")	
+	@GeneratedValue(generator = "engineers")
+	@TableGenerator(name = "engineers", table = "sqlite_sequence", pkColumnName = "name", valueColumnName = "seq", pkColumnValue = "engineers")
 	@XmlTransient
 	private int id;
 	@XmlAttribute
@@ -119,7 +114,7 @@ public class Engineer implements Serializable {
 		this.products = new ArrayList<Product>();
 	}
 
-	public Engineer(int id, String name_surname,int project_achieved) {
+	public Engineer(int id, String name_surname, int project_achieved) {
 		super();
 		this.id = id;
 		this.name_surname = name_surname;

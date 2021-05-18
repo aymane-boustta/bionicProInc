@@ -7,34 +7,27 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
-
 
 @Entity
 @Table(name = "characteristics")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "Characteristic")
-@XmlType(propOrder = {"length","width","height","weight","joint_numb","flexibility_scale" })
+@XmlType(propOrder = { "length", "width", "height", "weight", "joint_numb", "flexibility_scale" })
 public class Characteristic implements Serializable {
-
 
 	private static final long serialVersionUID = -8095684428083579778L;
 	@Id
-	@GeneratedValue(generator="characteristics")
-	@TableGenerator(name="characteristics", table="sqlite_sequence",
-	    pkColumnName="name", valueColumnName="seq", pkColumnValue="characteristics")	
+	@GeneratedValue(generator = "characteristics")
+	@TableGenerator(name = "characteristics", table = "sqlite_sequence", pkColumnName = "name", valueColumnName = "seq", pkColumnValue = "characteristics")
 
 	@XmlTransient
 	private int id;

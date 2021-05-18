@@ -11,20 +11,22 @@ import javax.persistence.Query;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 
-import bionicProInc.db.pojos.Product;
+import bionicProInc.db.pojos.Customer;
 
-public class Java2XmlProduct {
+public class Java2XmlCustomer {
 	// Put entity manager and buffered reader here so it can be used
 	// in several methods
 	private static EntityManager em;
 	private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-	private static void printProducts() {
-		Query q1 = em.createNativeQuery("SELECT id, name, bodypart, price, date_creation FROM products", Product.class);
+	private static void printCustomers() {
+		Query q1 = em.createNativeQuery(
+				"SELECT id, name_surname, age, gender,phone,email,street,city,postal_code FROM customers",
+				Customer.class);
 		@SuppressWarnings("unchecked")
-		List<Product> prods = (List<Product>) q1.getResultList();
-		for (Product prod : prods) {
-			System.out.println(prod);
+		List<Customer> customers = (List<Customer>) q1.getResultList();
+		for (Customer cust : customers) {
+			System.out.println(cust);
 		}
 	}
 
@@ -37,27 +39,27 @@ public class Java2XmlProduct {
 		em.getTransaction().commit();
 
 		// Create the JAXBContext
-		JAXBContext jaxbContext = JAXBContext.newInstance(Product.class);
+		JAXBContext jaxbContext = JAXBContext.newInstance(Customer.class);
 		// Get the marshaller
 		Marshaller marshaller = jaxbContext.createMarshaller();
 
 		// Pretty formatting
 		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-
 		// Choose the report to turn into an XML
-		printProducts();
-		System.out.print("\nChoose a product to turn into an XML file:");
-		int prod_id = Integer.parseInt(reader.readLine());
-		Query q2 = em.createNativeQuery("SELECT id, name, bodypart, price, date_creation FROM products WHERE id = ? ",
-				Product.class);
-		q2.setParameter(1, prod_id);
-		Product prod = (Product) q2.getSingleResult();
+		printCustomers();
+		System.out.print("\nChoose a customer to turn into an XML file:");
+		int cust_id = Integer.parseInt(reader.readLine());
+		Query q2 = em.createNativeQuery(
+				"SELECT id, name_surname, age, gender,phone,email,street,city,postal_code FROM customers WHERE id = ? ",
+				Customer.class);
+		q2.setParameter(1, cust_id);
+		Customer cust = (Customer) q2.getSingleResult();
 
 		// Use the Marshaller to marshal the Java object to a file
-		File file = new File("./bionicProInc-SampleProduct.xml");
-		marshaller.marshal(prod, file);
+		File file = new File("./bionicProInc-Customer.xml");
+		marshaller.marshal(cust, file);
 		// Printout
-		marshaller.marshal(prod, System.out);
+		marshaller.marshal(cust, System.out);
 
 	}
 }

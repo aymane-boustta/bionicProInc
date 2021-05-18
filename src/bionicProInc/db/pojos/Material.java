@@ -2,35 +2,32 @@ package bionicProInc.db.pojos;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+
 @Entity
 @Table(name = "materials")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "Material")
-@XmlType(propOrder = { "name", "price","amount"})
+@XmlType(propOrder = { "name", "price", "amount" })
 public class Material implements Serializable {
-	
+
 	private static final long serialVersionUID = 7510802237290550541L;
 	@Id
-	@GeneratedValue(generator="materials")
-	@TableGenerator(name="materials", table="sqlite_sequence",
-	    pkColumnName="name", valueColumnName="seq", pkColumnValue="materials")	
+	@GeneratedValue(generator = "materials")
+	@TableGenerator(name = "materials", table = "sqlite_sequence", pkColumnName = "name", valueColumnName = "seq", pkColumnValue = "materials")
 
 	@XmlTransient
 	private int id;
@@ -42,9 +39,9 @@ public class Material implements Serializable {
 	private int amount;
 	@ManyToMany
 	@XmlTransient
-	private ArrayList<Product> products;
+	private List<Product> products;
 
-	public Material(int id, String name, float price, int amount, ArrayList<Product> products) {
+	public Material(int id, String name, float price, int amount, List<Product> products) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -128,7 +125,7 @@ public class Material implements Serializable {
 		this.amount = amount;
 	}
 
-	public ArrayList<Product> getProducts() {
+	public List<Product> getProducts() {
 		return products;
 	}
 

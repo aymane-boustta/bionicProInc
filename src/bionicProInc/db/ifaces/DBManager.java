@@ -30,7 +30,7 @@ public interface DBManager {
 	public int getProductID(String name);
 
 	public void addCust_Prod(Customer cust, Product prod);
-	
+
 	public void removeCust_Prod(Product prod);
 
 	public List<Integer> viewPurchaseHistory(int id);
@@ -52,7 +52,7 @@ public interface DBManager {
 	public void addProd_Ch(Product prod, Characteristic ch);
 
 	public void removeProd_Ch(Product prod, Characteristic ch);
-	
+
 	public void removeAllProd_Ch(Product prod);
 
 	public ArrayList<Characteristic> viewCharacteristicsFromProduct(int id);
@@ -60,13 +60,13 @@ public interface DBManager {
 	public void addProd_Mat(Product prod, Material mat);
 
 	public void removeProd_Mat(Product prod, Material mat);
-	
+
 	public void removeAllProd_Mat(Product prod);
 
 	public ArrayList<Material> viewMaterialsFromProduct(int id);
 
 	public void addEng_Prod(Engineer eng, Product prod);
-	
+
 	public void removeEng_Prod(Product prod);
 
 	public void addEngineer(Engineer eng);
@@ -92,11 +92,11 @@ public interface DBManager {
 	public void updateProductPrice(Product prod);
 
 	public void updateProductCharacteristics(Product prod);
-	
+
 	public void addCharacteristicsToNewProduct(Product prod);
 
 	public void updateProductMaterials(Product prod);
-	
+
 	public void addMaterialsToNewProduct(Product prod);
 
 }

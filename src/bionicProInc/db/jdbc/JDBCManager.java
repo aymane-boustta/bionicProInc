@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -236,7 +237,7 @@ public class JDBCManager implements DBManager {
 				String bodypart = rs.getString("bodypart");
 				float price = rs.getFloat("price");
 				String string = rs.getString("date_creation");
-				Date date_creation = Date.valueOf(string);
+				LocalDate date_creation = LocalDate.parse(string);
 				byte[] photo = rs.getBytes("photo");
 				ArrayList<Characteristic> characteristics = viewCharacteristicsFromProduct(id);
 				ArrayList<Material> materials = viewMaterialsFromProduct(id);
@@ -265,7 +266,7 @@ public class JDBCManager implements DBManager {
 				String bodypart = rs.getString("bodypart");
 				float price = rs.getFloat("price");
 				String string = rs.getString("date_creation");
-				Date date_creation = Date.valueOf(string);
+				LocalDate date_creation = LocalDate.parse(string);
 				byte[] photo = rs.getBytes("photo");
 				ArrayList<Characteristic> characteristics = viewCharacteristicsFromProduct(id);
 				ArrayList<Material> materials = viewMaterialsFromProduct(id);
@@ -796,7 +797,7 @@ public class JDBCManager implements DBManager {
 				String bodypart = rs.getString("bodypart");
 				float price = rs.getFloat("price");
 				String string = rs.getString("date_creation");
-				Date date_creation = Date.valueOf(string);
+				LocalDate date_creation = LocalDate.parse(string);
 				byte[] photo = rs.getBytes("photo");
 				ArrayList<Characteristic> characteristics = viewCharacteristicsFromProduct(id);
 				ArrayList<Material> materials = viewMaterialsFromProduct(id);
