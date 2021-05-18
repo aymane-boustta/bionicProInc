@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -32,8 +31,7 @@ import bionicProInc.db.xml.utils.SQLDateAdapter;
 @Table(name = "products")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "Product")
-@XmlType(propOrder = { "name", "bodypart", "price", "date_creation", "photo", "characteristics", "materials",
-		"engineers" })
+@XmlType(propOrder = { "name", "bodypart", "price", "date_creation", "characteristics", "materials", "engineers" })
 public class Product implements Serializable {
 
 	private static final long serialVersionUID = -2448117025953730410L;
@@ -52,8 +50,6 @@ public class Product implements Serializable {
 	@XmlAttribute
 	@XmlJavaTypeAdapter(SQLDateAdapter.class)
 	private Date date_creation;
-	@XmlAttribute
-	private byte[] photo;
 	@ManyToMany
 	@JoinTable(name = "products_characteristics", joinColumns = {
 			@JoinColumn(name = "product_id", referencedColumnName = "id") }, inverseJoinColumns = {
@@ -76,7 +72,7 @@ public class Product implements Serializable {
 	@XmlElementWrapper(name = "materials")
 	private List<Material> materials;
 
-	public Product(int id, String name, String bodypart, Float price, LocalDate date_creation, byte[] photo,
+	public Product(int id, String name, String bodypart, Float price, LocalDate date_creation,
 			List<Characteristic> characteristics, List<Engineer> engineer, List<Material> materials) {
 		super();
 		this.id = id;
@@ -84,13 +80,12 @@ public class Product implements Serializable {
 		this.bodypart = bodypart;
 		this.price = price;
 		this.setDate_creation(date_creation);
-		this.photo = photo;
 		this.characteristics = characteristics;
 		this.engineers = engineer;
 		this.materials = materials;
 	}
 
-	public Product(int id, String name, String bodypart, Float price, LocalDate date_creation, byte[] photo,
+	public Product(int id, String name, String bodypart, Float price, LocalDate date_creation,
 			List<Characteristic> characteristics, List<Material> materials) {
 		super();
 		this.id = id;
@@ -98,36 +93,9 @@ public class Product implements Serializable {
 		this.bodypart = bodypart;
 		this.price = price;
 		this.setDate_creation(date_creation);
-		this.photo = photo;
 		this.characteristics = characteristics;
 		this.engineers = new ArrayList<Engineer>();
 		this.materials = materials;
-	}
-
-	public Product(int id, String name, String bodypart, Float price, LocalDate date_creation, byte[] photo) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.bodypart = bodypart;
-		this.price = price;
-		this.setDate_creation(date_creation);
-		this.photo = photo;
-		this.characteristics = new ArrayList<Characteristic>();
-		this.engineers = new ArrayList<Engineer>();
-		this.materials = new ArrayList<Material>();
-	}
-
-	public Product(String name, String bodypart, Float price, LocalDate date_creation, byte[] photo) {
-		super();
-		this.name = name;
-		this.bodypart = bodypart;
-		this.price = price;
-		this.setDate_creation(date_creation);
-		this.photo = photo;
-		this.characteristics = new ArrayList<Characteristic>();
-		this.engineers = new ArrayList<Engineer>();
-		this.materials = new ArrayList<Material>();
-
 	}
 
 	public Product(int id, String name, String bodypart, Float price, LocalDate date_creation) {
@@ -140,7 +108,6 @@ public class Product implements Serializable {
 		this.characteristics = new ArrayList<Characteristic>();
 		this.engineers = new ArrayList<Engineer>();
 		this.materials = new ArrayList<Material>();
-
 	}
 
 	public Product(String name, String bodypart, Float price, LocalDate date_creation) {
@@ -208,14 +175,6 @@ public class Product implements Serializable {
 		this.date_creation = Date.valueOf(date_creation);
 	}
 
-	public byte[] getPhoto() {
-		return photo;
-	}
-
-	public void setPhoto(byte[] photo) {
-		this.photo = photo;
-	}
-
 	public List<Characteristic> getCharacteristics() {
 		return characteristics;
 	}
@@ -264,15 +223,14 @@ public class Product implements Serializable {
 
 	public String toStringCustomer() {
 		return "\nProduct ID: " + id + ", Name: " + name + ", Bodypart: " + bodypart + ", Price: " + price
-				+ ", Date of creation: " + date_creation + ", Photo = " + Arrays.toString(photo)
-				+ ", \nCharacteristics: " + characteristics.toString();
+				+ ", Date of creation: " + date_creation + ", \nCharacteristics: " + characteristics.toString();
 	}
 
 	@Override
 	public String toString() {
 		return "\nProduct ID: " + id + ", Name: " + name + ", Bodypart: " + bodypart + ", Price: " + price
-				+ ", Date of creation: " + date_creation + ", Photo = " + Arrays.toString(photo)
-				+ ", \nCharacteristics: " + characteristics.toString() + ", \nMaterials: " + materials.toString();
+				+ ", Date of creation: " + date_creation + ",  \nCharacteristics: " + characteristics.toString()
+				+ ", \nMaterials: " + materials.toString();
 	}
 
 }

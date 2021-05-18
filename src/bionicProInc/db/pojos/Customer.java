@@ -15,8 +15,6 @@ import javax.persistence.TableGenerator;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
@@ -25,7 +23,7 @@ import javax.xml.bind.annotation.XmlType;
 @Table(name = "customers")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "Customer")
-@XmlType(propOrder = { "name_surname", "age", "gender", "phone", "email", "street", "city", "postal_code", "products" })
+@XmlType(propOrder = { "name_surname", "age", "gender", "phone", "email", "street", "city", "postal_code" })
 
 public class Customer implements Serializable {
 
@@ -55,8 +53,7 @@ public class Customer implements Serializable {
 	@JoinTable(name = "customers_products", joinColumns = {
 			@JoinColumn(name = "customer_id", referencedColumnName = "id") }, inverseJoinColumns = {
 					@JoinColumn(name = "product_id", referencedColumnName = "id") })
-	@XmlElement(name = "products")
-	@XmlElementWrapper(name = "products")
+	@XmlTransient
 	private List<Product> products;
 
 	public Customer(int id, String name_surname, int age, String gender, int phone, String email, String street,

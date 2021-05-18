@@ -282,7 +282,6 @@ public class Menu {
 	}
 
 	// Engineer OPTION 4
-	// How to add photo attribute from an array of bytes?
 	private static void addProduct(int id) throws Exception {
 		try {
 			System.out.println("Introduce the prothesis' name: ");
@@ -293,8 +292,7 @@ public class Menu {
 			Float price = Float.parseFloat(reader.readLine());
 			System.out.print("Introduce the starting date of the project (yyyy-MM-dd): ");
 			LocalDate date_creation = LocalDate.parse(reader.readLine(), formatter);
-			byte[] photo = new byte[10];
-			Product prod = new Product(name, bodypart, price, date_creation, photo);
+			Product prod = new Product(name, bodypart, price, date_creation);
 			dbman.addProduct(prod);
 			dbman.addCharacteristicsToNewProduct(dbman.getProduct(dbman.getProductID(prod.getName())));
 			dbman.addMaterialsToNewProduct(dbman.getProduct(dbman.getProductID(prod.getName())));

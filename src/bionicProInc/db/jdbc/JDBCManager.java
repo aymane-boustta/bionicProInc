@@ -49,7 +49,7 @@ public class JDBCManager implements DBManager {
 			Statement stmt1 = c.createStatement();
 			String sql1 = "CREATE TABLE products " + "(id INTEGER  PRIMARY KEY AUTOINCREMENT UNIQUE,"
 					+ " name TEXT NOT NULL, " + " bodypart  TEXT NOT NULL UNIQUE," + " price REAL NOT NULL,"
-					+ " date_creation DATE NOT NULL," + " photo BLOB )";
+					+ " date_creation DATE NOT NULL)";
 			stmt1.executeUpdate(sql1);
 			stmt1.close();
 
@@ -180,9 +180,8 @@ public class JDBCManager implements DBManager {
 	public void addProduct(Product prod) {
 		try {
 			Statement stmt = c.createStatement();
-			String sql = "INSERT INTO products (name,bodypart, price, date_creation, photo) " + " VALUES('"
-					+ prod.getName() + "','" + prod.getBodypart() + "','" + prod.getPrice() + "','"
-					+ prod.getDate_creation() + "','" + prod.getPhoto() + "');";
+			String sql = "INSERT INTO products (name,bodypart, price, date_creation) " + " VALUES('" + prod.getName()
+					+ "','" + prod.getBodypart() + "','" + prod.getPrice() + "','" + prod.getDate_creation() + "');";
 			stmt.executeUpdate(sql);
 			stmt.close();
 		} catch (Exception e) {
@@ -228,7 +227,7 @@ public class JDBCManager implements DBManager {
 	public List<Product> viewAllProducts() {
 		ArrayList<Product> products = new ArrayList<Product>();
 		try {
-			String sql = "SELECT id,name,bodypart,price,date_creation,photo FROM products";
+			String sql = "SELECT id,name,bodypart,price,date_creation FROM products";
 			PreparedStatement stmt = c.prepareStatement(sql);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
@@ -238,10 +237,9 @@ public class JDBCManager implements DBManager {
 				float price = rs.getFloat("price");
 				String string = rs.getString("date_creation");
 				LocalDate date_creation = LocalDate.parse(string);
-				byte[] photo = rs.getBytes("photo");
 				ArrayList<Characteristic> characteristics = viewCharacteristicsFromProduct(id);
 				ArrayList<Material> materials = viewMaterialsFromProduct(id);
-				Product prod = new Product(id, name, bodypart, price, date_creation, photo, characteristics, materials);
+				Product prod = new Product(id, name, bodypart, price, date_creation, characteristics, materials);
 				products.add(prod);
 
 			}
@@ -257,7 +255,7 @@ public class JDBCManager implements DBManager {
 	public Product viewProduct(int id) {
 		Product prod = new Product();
 		try {
-			String sql = "SELECT name,bodypart,price,date_creation,photo FROM products WHERE id = ?";
+			String sql = "SELECT name,bodypart,price,date_creation FROM products WHERE id = ?";
 			PreparedStatement stmt = c.prepareStatement(sql);
 			stmt.setInt(1, id);
 			ResultSet rs = stmt.executeQuery();
@@ -267,10 +265,9 @@ public class JDBCManager implements DBManager {
 				float price = rs.getFloat("price");
 				String string = rs.getString("date_creation");
 				LocalDate date_creation = LocalDate.parse(string);
-				byte[] photo = rs.getBytes("photo");
 				ArrayList<Characteristic> characteristics = viewCharacteristicsFromProduct(id);
 				ArrayList<Material> materials = viewMaterialsFromProduct(id);
-				prod = new Product(id, name, bodypart, price, date_creation, photo, characteristics, materials);
+				prod = new Product(id, name, bodypart, price, date_creation, characteristics, materials);
 
 			}
 			rs.close();
@@ -787,7 +784,7 @@ public class JDBCManager implements DBManager {
 	public List<Product> searchProductByBody(String bodypart_) {
 		List<Product> products = new ArrayList<>();
 		try {
-			String sql = "SELECT id,name,bodypart,price,date_creation,photo FROM products WHERE bodypart LIKE ?";
+			String sql = "SELECT id,name,bodypart,price,date_creation FROM products WHERE bodypart LIKE ?";
 			PreparedStatement stmt = c.prepareStatement(sql);
 			stmt.setString(1, "%" + bodypart_ + "%");
 			ResultSet rs = stmt.executeQuery();
@@ -798,10 +795,9 @@ public class JDBCManager implements DBManager {
 				float price = rs.getFloat("price");
 				String string = rs.getString("date_creation");
 				LocalDate date_creation = LocalDate.parse(string);
-				byte[] photo = rs.getBytes("photo");
 				ArrayList<Characteristic> characteristics = viewCharacteristicsFromProduct(id);
 				ArrayList<Material> materials = viewMaterialsFromProduct(id);
-				Product prod = new Product(id, name, bodypart, price, date_creation, photo, characteristics, materials);
+				Product prod = new Product(id, name, bodypart, price, date_creation, characteristics, materials);
 				products.add(prod);
 			}
 			rs.close();

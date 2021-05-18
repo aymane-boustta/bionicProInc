@@ -19,8 +19,10 @@ import bionicProInc.db.pojos.Engineer;
 import bionicProInc.db.pojos.Material;
 import bionicProInc.db.pojos.Product;
 
+@SuppressWarnings("unused")
 public class Main {
 
+	
 	private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	
@@ -32,25 +34,25 @@ public class Main {
 		
 		//ADDING PRODUCTS
 		/*
-		Product p0 = new Product(1, "Rigth hand", "Hand",399.0f,Date.valueOf("2021-01-15"), new byte[10]);
+		Product p0 = new Product(1, "Rigth hand", "Hand",399.0f,Date.valueOf("2021-01-15"));
 		//j.addProduct(p0); // 
-		Product p1 = new Product(2, "Left hand", "Hand",399.0f,Date.valueOf("2021-01-15"), new byte[10]);
+		Product p1 = new Product(2, "Left hand", "Hand",399.0f,Date.valueOf("2021-01-15"));
 		//j.addProduct(p1);
-		Product p2 = new Product(3, "Rigth leg", "Leg",799.0f,Date.valueOf("2021-01-15"), new byte[10]);
+		Product p2 = new Product(3, "Rigth leg", "Leg",799.0f,Date.valueOf("2021-01-15"));
 		//j.addProduct(p2);
-		Product p3 = new Product(4, "Left leg", "Leg",799.0f,Date.valueOf("2021-01-15"), new byte[10]);
+		Product p3 = new Product(4, "Left leg", "Leg",799.0f,Date.valueOf("2021-01-15"));
 		//j.addProduct(p3);
-		Product p4 = new Product(5, "Hip joint", "Hip",999.0f,Date.valueOf("2021-01-15"), new byte[10]);
+		Product p4 = new Product(5, "Hip joint", "Hip",999.0f,Date.valueOf("2021-01-15"));
 		//j.addProduct(p4);
-		Product p5 = new Product(6, "Cochlear implant", "Ear",1099.0f,Date.valueOf("2021-01-15"), new byte[10]);
+		Product p5 = new Product(6, "Cochlear implant", "Ear",1099.0f,Date.valueOf("2021-01-15"));
 		//j.addProduct(p5);
-		Product p6 = new Product(7, "Ocular prosthesis", "Eye",199.0f,Date.valueOf("2021-01-15"), new byte[10]);
+		Product p6 = new Product(7, "Ocular prosthesis", "Eye",199.0f,Date.valueOf("2021-01-15"));
 		//j.addProduct(p6);
-		Product p7 = new Product(8, "Nose prosthesis", "Nose",499.0f,Date.valueOf("2021-01-15"), new byte[10]);
+		Product p7 = new Product(8, "Nose prosthesis", "Nose",499.0f,Date.valueOf("2021-01-15"));
 		//j.addProduct(p7);
-		Product p8 = new Product(9, "Rigth foot", "Foot",399.0f,Date.valueOf("2021-01-15"), new byte[10]);
+		Product p8 = new Product(9, "Rigth foot", "Foot",399.0f,Date.valueOf("2021-01-15"));
 		//j.addProduct(p8);
-		Product p9 = new Product(10, "Left Foot", "Foot",399.0f,Date.valueOf("2021-01-15"), new byte[10]);
+		Product p9 = new Product(10, "Left Foot", "Foot",399.0f,Date.valueOf("2021-01-15"));
 		//j.addProduct(p9);
 		*/
 		
