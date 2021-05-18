@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Product name="Right hand" bodypart="Hand" price="399.0" dateCreation="2021-01-15">
+    <characteristics>
+        <characteristics length="70.0" width="25.0" height="15.0" weight="130.0" jointNumb="3" flexibilityScale="4"/>
+        <characteristics length="75.0" width="25.0" height="20.0" weight="100.0" jointNumb="3" flexibilityScale="5"/>
+    </characteristics>
+    <materials>
+        <materials name="Titanium" price="16.75" amount="10000"/>
+        <materials name="Carbon fiber" price="20.75" amount="20000"/>
+    </materials>
+    <engineers>
+        <engineers nameSurname="Jack Browne" email="jackbrowne@engineer.com" currentService="Production Control" salary="4000.0" bonus="3000.0" projectAchieved="3" experienceInYears="8">
+            <contract_starting_date>2009-11-10</contract_starting_date>
+            <contract_ending_date>2022-11-10</contract_ending_date>
+            <date_of_birth>1984-03-04</date_of_birth>
+        </engineers>
+        <engineers nameSurname="Carlos Martinez" email="carlosmartinez@engineer.com" currentService=" Designing" salary="3300.0" bonus="1000.0" projectAchieved="2" experienceInYears="4">
+            <contract_starting_date>2019-10-02</contract_starting_date>
+            <contract_ending_date>2029-10-02</contract_ending_date>
+            <date_of_birth>1982-09-23</date_of_birth>
+        </engineers>
+    </engineers>
+</Product>
