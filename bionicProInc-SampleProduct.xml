@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Product name="Cochlear implant" bodypart="Ear" price="1099.0" dateCreation="2021-01-15">
+<Product name="Rigth foot" bodypart="Foot" price="399.0" dateCreation="2021-01-15">
     <characteristics>
-        <characteristics length="5.0" width="5.0" height="5.0" weight="15.0" jointNumb="0" flexibilityScale="0"/>
+        <characteristics length="110.0" width="60.0" height="20.0" weight="130.0" jointNumb="0" flexibilityScale="2"/>
+        <characteristics length="110.0" width="60.0" height="15.0" weight="170.0" jointNumb="1" flexibilityScale="3"/>
+        <characteristics length="110.0" width="60.0" height="10.0" weight="120.0" jointNumb="1" flexibilityScale="3"/>
     </characteristics>
     <materials>
-        <materials name="Aluminuim" price="11.75" amount="20000"/>
-        <materials name="Polyurethane" price="10.75" amount="8000"/>
+        <materials name="Titanium" price="16.75" amount="10000"/>
+        <materials name="Carbon fiber" price="20.75" amount="20000"/>
     </materials>
     <engineers>
         <engineers nameSurname="Said Almaktum " email="saidalmaktum@engineer.com" currentService="Designing" salary="4000.0" bonus="2000.0" projectAchieved="7" experienceInYears="8">
@@ -17,11 +19,6 @@
             <contract_starting_date>2006-10-10</contract_starting_date>
             <contract_ending_date>2026-10-10</contract_ending_date>
             <date_of_birth>1970-02-23</date_of_birth>
-        </engineers>
-        <engineers nameSurname="Jack Browne" email="jackbrowne@engineer.com" currentService="Production Control" salary="4000.0" bonus="3000.0" projectAchieved="3" experienceInYears="8">
-            <contract_starting_date>2009-11-10</contract_starting_date>
-            <contract_ending_date>2022-11-10</contract_ending_date>
-            <date_of_birth>1984-03-04</date_of_birth>
         </engineers>
     </engineers>
 </Product>
