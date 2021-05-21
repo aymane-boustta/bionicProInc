@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!DOCTYPE Product [
+	<!ELEMENT Product (name,bodypart,price,date_creation)>
+	<!ELEMENT name (#PCDATA)>
+	<!ELEMENT bodypart (#PCDATA)>
+	<!ELEMENT price (#PCDATA)>
+	<!ELEMENT date_creation (#PCDATA)>
+
+]>
+<Product>
+	<name>wristech</name> 
+	<bodypart>wrist </bodypart>
+	<price>1600</price>
+	<date_creation>2021-04-04 </date_creation>
+	
+</Product>

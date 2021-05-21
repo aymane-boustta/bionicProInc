@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!DOCTYPE Customer [
+	<!ELEMENT Customer (name_surname,age,gender,phone,email,street,city,postal_code)>
+	<!ELEMENT name_surname (#PCDATA)>
+	<!ELEMENT age (#PCDATA)>
+	<!ELEMENT gender (#PCDATA)>
+	<!ELEMENT phone (#PCDATA)>
+	<!ELEMENT email (#PCDATA)>
+	<!ELEMENT street (#PCDATA)>
+	<!ELEMENT city (#PCDATA)>
+	<!ELEMENT postal_code (#PCDATA)>
+]>
+
+<Customer>
+	<name_surname>Juan Lopez</name_surname> 
+	<age>47 </age>
+	<gender>MALE</gender>
+	<phone>6222 </phone>
+	<email>juan@gmail.com</email>
+	<street>Calle Jamoncito 22 </street>
+	<city>Granada</city> 
+	<postal_code>19222</postal_code>
+</Customer>
