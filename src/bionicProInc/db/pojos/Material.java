@@ -29,7 +29,7 @@ public class Material implements Serializable {
 	@GeneratedValue(generator = "materials")
 	@TableGenerator(name = "materials", table = "sqlite_sequence", pkColumnName = "name", valueColumnName = "seq", pkColumnValue = "materials")
 
-	@XmlTransient
+	@XmlAttribute
 	private int id;
 	@XmlAttribute
 	private String name;

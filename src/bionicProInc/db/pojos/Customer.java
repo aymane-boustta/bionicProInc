@@ -15,6 +15,7 @@ import javax.persistence.TableGenerator;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
@@ -29,25 +30,25 @@ public class Customer implements Serializable {
 
 	private static final long serialVersionUID = 8505884502597501683L;
 	@Id
-	@GeneratedValue(generator = "engineers")
-	@TableGenerator(name = "engineers", table = "sqlite_sequence", pkColumnName = "name", valueColumnName = "seq", pkColumnValue = "engineers")
+	@GeneratedValue(generator = "customers")
+	@TableGenerator(name = "name_surname", table = "sqlite_sequence", pkColumnName = "name", valueColumnName = "seq", pkColumnValue = "customers")
 	@XmlTransient
-	private int id;
-	@XmlAttribute
+	private Integer id;
+	@XmlElement
 	private String name_surname;
-	@XmlAttribute
+	@XmlElement
 	private int age;
-	@XmlAttribute
+	@XmlElement
 	private String gender;
-	@XmlAttribute
+	@XmlElement
 	private int phone;
-	@XmlAttribute
+	@XmlElement
 	private String email;
-	@XmlAttribute
+	@XmlElement
 	private String street;
-	@XmlAttribute
+	@XmlElement
 	private String city;
-	@XmlAttribute
+	@XmlElement
 	private int postal_code;
 	@ManyToMany
 	@JoinTable(name = "customers_products", joinColumns = {

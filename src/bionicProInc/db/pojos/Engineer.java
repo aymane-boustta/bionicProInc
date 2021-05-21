@@ -35,7 +35,7 @@ public class Engineer implements Serializable {
 	@Id
 	@GeneratedValue(generator = "engineers")
 	@TableGenerator(name = "engineers", table = "sqlite_sequence", pkColumnName = "name", valueColumnName = "seq", pkColumnValue = "engineers")
-	@XmlTransient
+	@XmlAttribute
 	private int id;
 	@XmlAttribute
 	private String name_surname;

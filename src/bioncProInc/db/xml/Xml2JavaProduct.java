@@ -27,7 +27,7 @@ public class Xml2JavaProduct {
 		Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 
 		// Use the Unmarshaller to unmarshal the XML document from a file
-		File file = new File("./bionicProInc-SampleProduct.xml");
+		File file = new File("/bionicProInc/ExternalProduct.xml");
 		Product p = (Product) unmarshaller.unmarshal(file);
 
 		// Print the report
@@ -61,12 +61,13 @@ public class Xml2JavaProduct {
 		for (Engineer en : e) {
 			em.persist(en);
 		}
+		
 		for (Material ma : m) {
 			em.persist(ma);
 		}
 		for (Characteristic c : ch) {
 			em.persist(c);
-		}
+		} 
 		em.persist(p);
 		
 		// End transaction

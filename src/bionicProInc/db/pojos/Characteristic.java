@@ -29,7 +29,7 @@ public class Characteristic implements Serializable {
 	@GeneratedValue(generator = "characteristics")
 	@TableGenerator(name = "characteristics", table = "sqlite_sequence", pkColumnName = "name", valueColumnName = "seq", pkColumnValue = "characteristics")
 
-	@XmlTransient
+	@XmlAttribute
 	private int id;
 	@XmlAttribute
 	private float length;

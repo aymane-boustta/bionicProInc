@@ -21,7 +21,7 @@ public class Java2XmlCustomer {
 
 	private static void printCustomers() {
 		Query q1 = em.createNativeQuery(
-				"SELECT id, name_surname, age, gender,phone,email,street,city,postal_code FROM customers",
+				"SELECT * FROM customers",
 				Customer.class);
 		@SuppressWarnings("unchecked")
 		List<Customer> customers = (List<Customer>) q1.getResultList();
@@ -50,7 +50,7 @@ public class Java2XmlCustomer {
 		System.out.print("\nChoose a customer to turn into an XML file:");
 		int cust_id = Integer.parseInt(reader.readLine());
 		Query q2 = em.createNativeQuery(
-				"SELECT id, name_surname, age, gender,phone,email,street,city,postal_code FROM customers WHERE id = ? ",
+				"SELECT * FROM customers WHERE id = ? ",
 				Customer.class);
 		q2.setParameter(1, cust_id);
 		Customer cust = (Customer) q2.getSingleResult();

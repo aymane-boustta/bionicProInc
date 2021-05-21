@@ -31,7 +31,7 @@ import bionicProInc.db.xml.utils.SQLDateAdapter;
 @Table(name = "products")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "Product")
-@XmlType(propOrder = { "name", "bodypart", "price", "date_creation", "characteristics", "materials", "engineers" })
+@XmlType(propOrder = { "name", "bodypart", "price", "date_creation" })
 public class Product implements Serializable {
 
 	private static final long serialVersionUID = -2448117025953730410L;
@@ -40,7 +40,7 @@ public class Product implements Serializable {
 	@TableGenerator(name = "products", table = "sqlite_sequence", pkColumnName = "name", valueColumnName = "seq", pkColumnValue = "products")
 
 	@XmlTransient
-	private int id;
+	private Integer id;
 	@XmlAttribute
 	private String name;
 	@XmlAttribute
@@ -54,22 +54,19 @@ public class Product implements Serializable {
 	@JoinTable(name = "products_characteristics", joinColumns = {
 			@JoinColumn(name = "product_id", referencedColumnName = "id") }, inverseJoinColumns = {
 					@JoinColumn(name = "characteristic_id", referencedColumnName = "id") })
-	@XmlElement(name = "characteristics")
-	@XmlElementWrapper(name = "characteristics")
+	@XmlTransient
 	private List<Characteristic> characteristics;
 	@ManyToMany
 	@JoinTable(name = "engineers_products", joinColumns = {
 			@JoinColumn(name = "product_id", referencedColumnName = "id") }, inverseJoinColumns = {
 					@JoinColumn(name = "engineer_id", referencedColumnName = "id") })
-	@XmlElement(name = "engineers")
-	@XmlElementWrapper(name = "engineers")
+	@XmlTransient
 	private List<Engineer> engineers;
 	@ManyToMany
 	@JoinTable(name = "products_materials", joinColumns = {
 			@JoinColumn(name = "product_id", referencedColumnName = "id") }, inverseJoinColumns = {
 					@JoinColumn(name = "material_id", referencedColumnName = "id") })
-	@XmlElement(name = "materials")
-	@XmlElementWrapper(name = "materials")
+	@XmlTransient
 	private List<Material> materials;
 
 	public Product(int id, String name, String bodypart, Float price, LocalDate date_creation,
