@@ -7,10 +7,11 @@
 	<!ELEMENT date_creation (#PCDATA)>
 
 ]>
+
 <Product>
 	<name>wristech</name> 
 	<bodypart>wrist </bodypart>
 	<price>1600</price>
-	<date_creation>2021-04-04 </date_creation>
+	<date_creation>2020-04-04</date_creation>
 	
 </Product>

@@ -41,13 +41,13 @@ public class Product implements Serializable {
 
 	@XmlTransient
 	private Integer id;
-	@XmlAttribute
+	@XmlElement
 	private String name;
-	@XmlAttribute
+	@XmlElement
 	private String bodypart;
-	@XmlAttribute
+	@XmlElement
 	private Float price;
-	@XmlAttribute
+	@XmlElement
 	@XmlJavaTypeAdapter(SQLDateAdapter.class)
 	private Date date_creation;
 	@ManyToMany
@@ -166,6 +166,9 @@ public class Product implements Serializable {
 
 	public LocalDate getDate_creation() {
 		return this.date_creation.toLocalDate();
+	}
+	public Date getDate() {
+		return this.date_creation;
 	}
 
 	public void setDate_creation(LocalDate date_creation) {
