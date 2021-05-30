@@ -29,7 +29,7 @@ public interface DBManager {
 
 	public int getProductID(String name);
 
-	public void addCust_Prod(Customer cust, Product prod);
+	public boolean addCust_Prod(Customer cust, Product prod);
 
 	public void removeCust_Prod(Product prod);
 
@@ -79,11 +79,15 @@ public interface DBManager {
 
 	public List<Integer> viewProjectAchieved(int id);
 
-	public Float viewBonus(int id);
-
 	public List<String> viewBodyparts();
 
 	public List<Product> searchProductByBody(String bodypart);
+
+	public List<Characteristic> searchCharacteristicByJointNumb(int joint_numb_);
+
+	public List<Material> searchMaterialByName(String name);
+
+	public List<Engineer> searchEngineerByName(String name);
 
 	public void updateProductName(Product prod);
 

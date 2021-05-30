@@ -4,9 +4,17 @@ import java.io.BufferedReader;
 
 import java.io.InputStreamReader;
 import java.security.MessageDigest;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+
+import bioncProInc.db.xml.Java2XmlCustomer;
+import bioncProInc.db.xml.Java2XmlProduct;
+import bioncProInc.db.xml.Xml2HtmlCustomer;
+import bioncProInc.db.xml.Xml2HtmlProduct;
+import bioncProInc.db.xml.Xml2JavaCustomer;
+import bioncProInc.db.xml.Xml2JavaProduct;
 import bionicProInc.db.ifaces.*;
 import bionicProInc.db.jdbc.JDBCManager;
 import bionicProInc.db.jpa.JPAUserManager;
@@ -93,7 +101,9 @@ public class Menu {
 			System.out.println("4. Add a new product to the shop");
 			System.out.println("5. Remove an existing product from the shop");
 			System.out.println("6. See how many projects you have successfully achieved (Good job, keep it up!)");
-			System.out.println("7. View your current bonus");
+			System.out.println("7. Export a product or a customer to XML");
+			System.out.println("8. Import a product or a customer from XML");
+			System.out.println("9. Export a product or a customer from XML to Html");
 			System.out.println("0. Log out");
 			int choice = Integer.parseInt(reader.readLine());
 			switch (choice) {
@@ -122,7 +132,15 @@ public class Menu {
 				break;
 
 			case 7:
-				viewBonus(id);
+				exportToXML();
+				break;
+
+			case 8:
+				importFromXML();
+				break;
+
+			case 9:
+				exportXMLToHtml();
 				break;
 
 			case 0:
@@ -138,7 +156,7 @@ public class Menu {
 	private static void customerMenu(int id) throws Exception {
 		do {
 			System.out.println("\n Choose an option:");
-			System.out.println("1. View all available products");
+			System.out.println("1. Search for a product");
 			System.out.println("2. Purchase a product");
 			System.out.println("3. Show my purchase history");
 			System.out.println("4. Clear my purchase history");
@@ -308,13 +326,25 @@ public class Menu {
 			while (option.equalsIgnoreCase("yes")) {
 				if (option.equalsIgnoreCase("yes")) {
 					System.out.println(
-							"\nType the ID of the engineer that collaborated in the making of the new product: ");
-					id = Integer.parseInt(reader.readLine());
-					if (dbman.getEngineer(id).getName_surname() == null) {
-						System.out.println("There is no engineer with the ID: " + id);
-					} else if (!(dbman.getEngineer(id).getName_surname() == null)) {
-						dbman.addEng_Prod(dbman.getEngineer(id), dbman.getProduct(dbman.getProductID(prod.getName())));
-						dbman.updateEngineerProjectAchieved(dbman.getEngineer(id));
+							"\nType the name of the engineer that collaborated in the making of the new product: ");
+					String name_eng = reader.readLine();
+					List<Engineer> engineers = dbman.searchEngineerByName(name_eng);
+					if (engineers.isEmpty()) {
+						System.out.println("There are no engineers with the name: " + name_eng);
+					} else {
+						for (int i = 0; i < engineers.size(); i++) {
+							System.out.println(engineers.get(i).toString());
+						}
+						System.out.println(
+								"\nType the ID of the engineer that collaborated in the making of the new product: ");
+						id = Integer.parseInt(reader.readLine());
+						if (dbman.getEngineer(id).getName_surname() == null) {
+							System.out.println("There is no engineer with the ID: " + id);
+						} else if (!(dbman.getEngineer(id).getName_surname() == null)) {
+							dbman.addEng_Prod(dbman.getEngineer(id),
+									dbman.getProduct(dbman.getProductID(prod.getName())));
+							dbman.updateEngineerProjectAchieved(dbman.getEngineer(id));
+						}
 					}
 				} else {
 					return;
@@ -333,7 +363,17 @@ public class Menu {
 	// Engineer OPTION 5
 	private static void removeProduct() throws Exception {
 		try {
-			System.out.println(dbman.viewAllProducts());
+			System.out.println("Choose a bodypart:");
+			System.out.println(dbman.viewBodyparts());
+			String bodypart = reader.readLine();
+			List<Product> products = dbman.searchProductByBody(bodypart);
+			if (products.isEmpty()) {
+				System.out.println("There are no products with the bodypart: " + bodypart);
+				return;
+			}
+			for (int i = 0; i < products.size(); i++) {
+				System.out.println(products.get(i));
+			}
 			System.out.println("Introduce the ID of the product that you want to remove: ");
 			int product_id = Integer.parseInt(reader.readLine());
 			if (dbman.viewProduct(product_id).getName() == null) {
@@ -365,22 +405,86 @@ public class Menu {
 	}
 
 	// Engineer OPTION 7
-	private static void viewBonus(int id) throws Exception {
 
-		System.out.println("Your bonus is: " + dbman.viewBonus(id) + "€");
+	private static void exportToXML() throws Exception {
+		try {
+			System.out.println("\nDo you want to export a product or a customer? (Type PRODUCT/CUSTOMER): ");
+			String option = reader.readLine();
+			if (option.equalsIgnoreCase("product")) {
+				Java2XmlProduct java2XmlProd = new Java2XmlProduct();
+				java2XmlProd.exportToXml();
+			} else if (option.equalsIgnoreCase("customer")) {
+				Java2XmlCustomer java2XmlCust = new Java2XmlCustomer();
+				java2XmlCust.exportToXml();
+			} else {
+				return;
+			}
 
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	// Engineer OPTION 8
+
+	private static void importFromXML() throws Exception {
+		try {
+			System.out.println("\nDo you want to import a product or a customer? (Type PRODUCT/CUSTOMER): ");
+			String option = reader.readLine();
+			if (option.equalsIgnoreCase("product")) {
+				Xml2JavaProduct xml2JavaProd = new Xml2JavaProduct();
+				xml2JavaProd.importFromXml();
+
+			} else if (option.equalsIgnoreCase("customer")) {
+				Xml2JavaCustomer xml2JavaCust = new Xml2JavaCustomer();
+				xml2JavaCust.importFromXml();
+			} else {
+				return;
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	// Engineer OPTION 9
+	private static void exportXMLToHtml() throws Exception {
+		try {
+			System.out.println("\nDo you want to export a product or a customer? (Type PRODUCT/CUSTOMER): ");
+			String option = reader.readLine();
+			if (option.equalsIgnoreCase("product")) {
+				Xml2HtmlProduct xml2HtmlProd = new Xml2HtmlProduct();
+				xml2HtmlProd.exportToHtml();
+
+			} else if (option.equalsIgnoreCase("customer")) {
+				Xml2HtmlCustomer xml2HtmlCust = new Xml2HtmlCustomer();
+				xml2HtmlCust.exportToHtml();
+			} else {
+				return;
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	// Customer OPTION 1
 	private static void viewProductC() throws Exception {
-		List<Product> products = dbman.viewAllProducts();
+		System.out.println("Choose a bodypart:");
+		System.out.println(dbman.viewBodyparts());
+		String bodypart = reader.readLine();
+		List<Product> products = dbman.searchProductByBody(bodypart);
+		if (products.isEmpty()) {
+			System.out.println("There are no products with the bodypart: " + bodypart);
+			return;
+		}
 		for (int i = 0; i < products.size(); i++) {
-			System.out.println(products.get(i).toStringCustomer());
+			System.out.println(products.get(i));
 		}
 	}
 
 	// Customer OPTION 2
-	private static void makePurchase(int customer_id) throws Exception {
+	private static void makePurchase(int customer_id) throws Exception, SQLException {
 		try {
 			System.out.println("Introduce the ID of the product that you want to buy: ");
 			int product_id = Integer.parseInt(reader.readLine());
@@ -392,8 +496,11 @@ public class Menu {
 			System.out.println("\nType YES to confirm your purchase. Type anything else to to cancel the purchase.");
 			String option = reader.readLine();
 			if (option.equalsIgnoreCase("yes")) {
-				dbman.addCust_Prod(dbman.getCustomer(customer_id), dbman.getProduct(product_id));
-				System.out.println("Purchase confirmed.");
+				if (dbman.addCust_Prod(dbman.getCustomer(customer_id), dbman.getProduct(product_id))) {
+					System.out.println("Purchase confirmed.");
+				} else {
+					System.out.println("You already bought this product in the past, buy another one.");
+				}
 			} else {
 				System.out.println("Purchase cancelled.");
 			}

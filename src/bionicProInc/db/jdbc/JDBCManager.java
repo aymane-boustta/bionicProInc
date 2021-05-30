@@ -297,15 +297,16 @@ public class JDBCManager implements DBManager {
 	}
 
 	@Override
-	public void addCust_Prod(Customer cust, Product prod) {
+	public boolean addCust_Prod(Customer cust, Product prod) {
 		try {
 			Statement stmt = c.createStatement();
 			String sql = "INSERT INTO customers_products (customer_id, product_id) " + " VALUES ('" + cust.getId()
 					+ "','" + prod.getId() + "');";
 			stmt.executeUpdate(sql);
 			stmt.close();
+			return true;
 		} catch (Exception e) {
-			e.printStackTrace();
+			return false;
 		}
 	}
 
@@ -743,25 +744,6 @@ public class JDBCManager implements DBManager {
 	}
 
 	@Override
-	public Float viewBonus(int id) {
-		Float bonus = null;
-		try {
-			String sql = "SELECT bonus FROM engineers WHERE id= ?";
-			PreparedStatement stmt = c.prepareStatement(sql);
-			stmt.setInt(1, id);
-			ResultSet rs = stmt.executeQuery();
-			while (rs.next()) {
-				bonus = rs.getFloat("bonus");
-			}
-			rs.close();
-			stmt.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return bonus;
-	}
-
-	@Override
 	public List<String> viewBodyparts() {
 		List<String> bodyParts = new ArrayList<String>();
 		try {
@@ -806,6 +788,77 @@ public class JDBCManager implements DBManager {
 			e.printStackTrace();
 		}
 		return products;
+	}
+
+	public List<Characteristic> searchCharacteristicByJointNumb(int joint_numb_) {
+		List<Characteristic> characteristics = new ArrayList<>();
+		try {
+			String sql = "SELECT id,length,width,height,weight,joint_numb,flexibility_scale FROM characteristics WHERE joint_numb LIKE ?";
+			PreparedStatement stmt = c.prepareStatement(sql);
+			stmt.setInt(1, joint_numb_);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				float length = rs.getFloat("length");
+				float width = rs.getFloat("width");
+				float height = rs.getFloat("height");
+				float weight = rs.getFloat("weight");
+				int joint_numb = rs.getInt("joint_numb");
+				int flexibility_scale = rs.getInt("flexibility_scale");
+				Characteristic ch = new Characteristic(id, length, width, height, weight, joint_numb,
+						flexibility_scale);
+				characteristics.add(ch);
+			}
+			rs.close();
+			stmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return characteristics;
+	}
+
+	public List<Material> searchMaterialByName(String name_) {
+		List<Material> materials = new ArrayList<>();
+		try {
+			String sql = "SELECT id,name,price,amount FROM materials WHERE name LIKE ?";
+			PreparedStatement stmt = c.prepareStatement(sql);
+			stmt.setString(1, "%" + name_ + "%");
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String name = rs.getString("name");
+				float price = rs.getFloat("price");
+				int amount = rs.getInt("amount");
+				Material mat = new Material(id, name, price, amount);
+				materials.add(mat);
+			}
+			rs.close();
+			stmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return materials;
+	}
+
+	public List<Engineer> searchEngineerByName(String name_surname_) {
+		List<Engineer> engineers = new ArrayList<>();
+		try {
+			String sql = "SELECT id,name_surname FROM engineers WHERE name_surname LIKE ?";
+			PreparedStatement stmt = c.prepareStatement(sql);
+			stmt.setString(1, "%" + name_surname_ + "%");
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String name_surname = rs.getString("name_surname");
+				Engineer eng = new Engineer(id, name_surname);
+				engineers.add(eng);
+			}
+			rs.close();
+			stmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return engineers;
 	}
 
 	@Override
@@ -872,14 +925,24 @@ public class JDBCManager implements DBManager {
 				String option = reader.readLine();
 
 				if (option.equalsIgnoreCase("add")) {
-					System.out.println("\nSelect the characteristic that you want to add: " + viewAllCharacteristics());
-					int id = Integer.parseInt(reader.readLine());
-					Characteristic ch = getCharacteristic(id);
-					if (ch.getId() == 0) {
-						System.out.println("There is no characteristic with the ID: " + id);
+					System.out.println("\nEnter the number of joints of the characteristic that you want to add: ");
+					int joint_numb = Integer.parseInt(reader.readLine());
+					List<Characteristic> characteristics = searchCharacteristicByJointNumb(joint_numb);
+					if (characteristics.isEmpty()) {
+						System.out.println("There are no characteristics with " + joint_numb + " joints.");
 					} else {
-						addProd_Ch(prod, ch);
-						System.out.println("\nThe characteristic has been successfully added.");
+						for (int i = 0; i < characteristics.size(); i++) {
+							System.out.println(characteristics.get(i).toString());
+						}
+						System.out.println("\nSelect the ID of the characteristic that you want to add: ");
+						int id = Integer.parseInt(reader.readLine());
+						Characteristic ch = getCharacteristic(id);
+						if (ch.getId() == 0) {
+							System.out.println("There is no characteristic with the ID: " + id);
+						} else {
+							addProd_Ch(prod, ch);
+							System.out.println("\nThe characteristic has been successfully added.");
+						}
 					}
 
 				} else if (option.equalsIgnoreCase("remove")) {
@@ -914,14 +977,24 @@ public class JDBCManager implements DBManager {
 				String option = reader.readLine();
 
 				if (option.equalsIgnoreCase("add")) {
-					System.out.println("\nSelect the characteristic that you want to add: " + viewAllCharacteristics());
-					int id = Integer.parseInt(reader.readLine());
-					Characteristic ch = getCharacteristic(id);
-					if (ch.getId() == 0) {
-						System.out.println("There is no characteristic with the ID: " + id);
+					System.out.println("\nEnter the number of joints of the characteristic that you want to add: ");
+					int joint_numb = Integer.parseInt(reader.readLine());
+					List<Characteristic> characteristics = searchCharacteristicByJointNumb(joint_numb);
+					if (characteristics.isEmpty()) {
+						System.out.println("There are no characteristics with " + joint_numb + " joints.");
 					} else {
-						addProd_Ch(prod, ch);
-						System.out.println("\nThe characteristic has been successfully added.");
+						for (int i = 0; i < characteristics.size(); i++) {
+							System.out.println(characteristics.get(i).toString());
+						}
+						System.out.println("\nSelect the ID of the characteristic that you want to add: ");
+						int id = Integer.parseInt(reader.readLine());
+						Characteristic ch = getCharacteristic(id);
+						if (ch.getId() == 0) {
+							System.out.println("There is no characteristic with the ID: " + id);
+						} else {
+							addProd_Ch(prod, ch);
+							System.out.println("\nThe characteristic has been successfully added.");
+						}
 					}
 
 				} else {
@@ -944,15 +1017,25 @@ public class JDBCManager implements DBManager {
 				String option = reader.readLine();
 
 				if (option.equalsIgnoreCase("add")) {
-					System.out.println("\nSelect the material that you want to add: " + viewAllMaterials());
-					int id = Integer.parseInt(reader.readLine());
-					Material mat = getMaterial(id);
-					if (mat.getId() == 0) {
-						System.out.println("There is no material with the ID: " + id);
-
+					System.out.println("\nEnter the name of the material that you want to add: ");
+					String name = reader.readLine();
+					List<Material> materials = searchMaterialByName(name);
+					if (materials.isEmpty()) {
+						System.out.println("There are no materials with the name: " + name);
 					} else {
-						addProd_Mat(prod, mat);
-						System.out.println("\nThe material has been successfully added.");
+						for (int i = 0; i < materials.size(); i++) {
+							System.out.println(materials.get(i).toString());
+						}
+						System.out.println("\nSelect the ID of material that you want to add: ");
+						int id = Integer.parseInt(reader.readLine());
+						Material mat = getMaterial(id);
+						if (mat.getId() == 0) {
+							System.out.println("There is no material with the ID: " + id);
+
+						} else {
+							addProd_Mat(prod, mat);
+							System.out.println("\nThe material has been successfully added.");
+						}
 					}
 
 				} else if (option.equalsIgnoreCase("remove")) {
@@ -988,15 +1071,25 @@ public class JDBCManager implements DBManager {
 				String option = reader.readLine();
 
 				if (option.equalsIgnoreCase("add")) {
-					System.out.println("\nSelect the material that you want to add: " + viewAllMaterials());
-					int id = Integer.parseInt(reader.readLine());
-					Material mat = getMaterial(id);
-					if (mat.getId() == 0) {
-						System.out.println("There is no material with the ID: " + id);
-
+					System.out.println("\nEnter the name of the material that you want to add: ");
+					String name = reader.readLine();
+					List<Material> materials = searchMaterialByName(name);
+					if (materials.isEmpty()) {
+						System.out.println("There are no materials with the name: " + name);
 					} else {
-						addProd_Mat(prod, mat);
-						System.out.println("\nThe material has been successfully added.");
+						for (int i = 0; i < materials.size(); i++) {
+							System.out.println(materials.get(i).toString());
+						}
+						System.out.println("\nSelect the ID of material that you want to add: ");
+						int id = Integer.parseInt(reader.readLine());
+						Material mat = getMaterial(id);
+						if (mat.getId() == 0) {
+							System.out.println("There is no material with the ID: " + id);
+
+						} else {
+							addProd_Mat(prod, mat);
+							System.out.println("\nThe material has been successfully added.");
+						}
 					}
 
 				} else {

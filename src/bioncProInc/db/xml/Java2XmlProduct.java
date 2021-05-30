@@ -28,7 +28,7 @@ public class Java2XmlProduct {
 		}
 	}
 
-	public static void main(String[] args) throws Exception {
+	public void exportToXml() throws Exception {
 		// Get the entity manager
 		// Note that we are using the class' entity manager
 		em = Persistence.createEntityManagerFactory("user-provider").createEntityManager();
@@ -54,7 +54,9 @@ public class Java2XmlProduct {
 		Product prod = (Product) q2.getSingleResult();
 
 		// Use the Marshaller to marshal the Java object to a file
-		File file = new File("./bionicProInc-SampleProduct.xml");
+		System.out.print("\nType the desired name for the file (FileName.xml): ");
+		String fileName = reader.readLine();
+		File file = new File(fileName);
 		marshaller.marshal(prod, file);
 		// Printout
 		marshaller.marshal(prod, System.out);
