@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import bionicProInc.db.ifaces.DBManager;
 public class JDBCManager implements DBManager {
 	private Connection c;
 	BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 	public void connect() {
 		try {
@@ -181,7 +183,7 @@ public class JDBCManager implements DBManager {
 		try {
 			Statement stmt = c.createStatement();
 			String sql = "INSERT INTO products (name,bodypart, price, date_creation) " + " VALUES('" + prod.getName()
-					+ "','" + prod.getBodypart() + "','" + prod.getPrice() + "','" + prod.getDate_creation() + "');";
+					+ "','" + prod.getBodypart() + "','" + prod.getPrice() + "','" + prod.getDate() + "');";
 			stmt.executeUpdate(sql);
 			stmt.close();
 		} catch (Exception e) {
@@ -776,7 +778,8 @@ public class JDBCManager implements DBManager {
 				String bodypart = rs.getString("bodypart");
 				float price = rs.getFloat("price");
 				String string = rs.getString("date_creation");
-				LocalDate date_creation = LocalDate.parse(string);
+				LocalDate date_creation = LocalDate.parse(string, formatter);
+				
 				ArrayList<Characteristic> characteristics = viewCharacteristicsFromProduct(id);
 				ArrayList<Material> materials = viewMaterialsFromProduct(id);
 				Product prod = new Product(id, name, bodypart, price, date_creation, characteristics, materials);

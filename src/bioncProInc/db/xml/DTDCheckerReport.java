@@ -13,7 +13,7 @@ import bionicProInc.db.xml.utils.CustomErrorHandler;
 public class DTDCheckerReport {
 
 	public static void main(String[] args) {
-		File xmlFile = new File("./xmls/External-Report.xml");
+		File xmlFile = new File("./ExternalProduct.xml");
 		try {
 			// Create a DocumentBuilderFactory
 			DocumentBuilderFactory dBF = DocumentBuilderFactory.newInstance();

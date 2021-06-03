@@ -87,7 +87,7 @@ public class Product implements Serializable {
 		this.name = name;
 		this.bodypart = bodypart;
 		this.price = price;
-		this.setDate_creation(date_creation);
+		this.date_creation = Date.valueOf(date_creation);
 		this.characteristics = characteristics;
 		this.engineers = new ArrayList<Engineer>();
 		this.materials = materials;
@@ -110,12 +110,24 @@ public class Product implements Serializable {
 		this.name = name;
 		this.bodypart = bodypart;
 		this.price = price;
-		this.setDate_creation(date_creation);
+		this.date_creation = Date.valueOf(date_creation);
 		this.characteristics = new ArrayList<Characteristic>();
 		this.engineers = new ArrayList<Engineer>();
 		this.materials = new ArrayList<Material>();
 
 	}
+	public Product(String name, String bodypart, Float price, Date date_creation) {
+		super();
+		this.name = name;
+		this.bodypart = bodypart;
+		this.price = price;
+		this.date_creation = date_creation;
+		this.characteristics = new ArrayList<Characteristic>();
+		this.engineers = new ArrayList<Engineer>();
+		this.materials = new ArrayList<Material>();
+
+	}
+
 
 	public Product() {
 		super();

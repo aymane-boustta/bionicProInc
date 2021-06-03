@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 
 import java.io.InputStreamReader;
 import java.security.MessageDigest;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -309,7 +310,7 @@ public class Menu {
 			System.out.println("Introduce the prothesis' price: ");
 			Float price = Float.parseFloat(reader.readLine());
 			System.out.print("Introduce the starting date of the project (yyyy-MM-dd): ");
-			LocalDate date_creation = LocalDate.parse(reader.readLine(), formatter);
+			LocalDate date_creation = LocalDate.parse(reader.readLine());
 			Product prod = new Product(name, bodypart, price, date_creation);
 			dbman.addProduct(prod);
 			dbman.addCharacteristicsToNewProduct(dbman.getProduct(dbman.getProductID(prod.getName())));
