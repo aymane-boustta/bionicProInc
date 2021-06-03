@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Product>
+    <name>kneetech</name>
+    <bodypart>knee</bodypart>
+    <price>1000.0</price>
+    <date_creation>2021-04-05</date_creation>
+</Product>

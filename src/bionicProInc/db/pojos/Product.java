@@ -80,6 +80,18 @@ public class Product implements Serializable {
 		this.materials = materials;
 	}
 
+	public Product(int id, String name, String bodypart, Float price, Date date_creation,
+			List<Characteristic> characteristics, List<Material> materials) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.bodypart = bodypart;
+		this.price = price;
+		this.date_creation = date_creation;
+		this.characteristics = characteristics;
+		this.engineers = new ArrayList<Engineer>();
+		this.materials = materials;
+	}
 	public Product(int id, String name, String bodypart, Float price, LocalDate date_creation,
 			List<Characteristic> characteristics, List<Material> materials) {
 		super();
@@ -99,7 +111,7 @@ public class Product implements Serializable {
 		this.name = name;
 		this.bodypart = bodypart;
 		this.price = price;
-		this.setDate_creation(date_creation);
+		this.date_creation = Date.valueOf(date_creation);
 		this.characteristics = new ArrayList<Characteristic>();
 		this.engineers = new ArrayList<Engineer>();
 		this.materials = new ArrayList<Material>();

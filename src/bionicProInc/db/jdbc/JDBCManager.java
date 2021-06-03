@@ -265,8 +265,9 @@ public class JDBCManager implements DBManager {
 				String name = rs.getString("name");
 				String bodypart = rs.getString("bodypart");
 				float price = rs.getFloat("price");
-				String string = rs.getString("date_creation");
-				LocalDate date_creation = LocalDate.parse(string);
+				//String string = rs.getString("date_creation");
+				//LocalDate date_creation = LocalDate.parse(string);
+				Date date_creation = rs.getDate("date_creation");
 				ArrayList<Characteristic> characteristics = viewCharacteristicsFromProduct(id);
 				ArrayList<Material> materials = viewMaterialsFromProduct(id);
 				prod = new Product(id, name, bodypart, price, date_creation, characteristics, materials);
@@ -777,9 +778,9 @@ public class JDBCManager implements DBManager {
 				String name = rs.getString("name");
 				String bodypart = rs.getString("bodypart");
 				float price = rs.getFloat("price");
-				String string = rs.getString("date_creation");
-				LocalDate date_creation = LocalDate.parse(string, formatter);
-				
+				//String string = rs.getString("date_creation");
+				//LocalDate date_creation = LocalDate.parse(string, formatter);
+				Date date_creation = rs.getDate("date_creation");
 				ArrayList<Characteristic> characteristics = viewCharacteristicsFromProduct(id);
 				ArrayList<Material> materials = viewMaterialsFromProduct(id);
 				Product prod = new Product(id, name, bodypart, price, date_creation, characteristics, materials);
