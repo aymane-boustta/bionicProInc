@@ -4,10 +4,8 @@ import java.io.BufferedReader;
 
 import java.io.InputStreamReader;
 import java.security.MessageDigest;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import bioncProInc.db.xml.Java2XmlCustomer;
@@ -27,8 +25,7 @@ public class Menu {
 	private static DBManager dbman = new JDBCManager();
 	private static UserManager userman = new JPAUserManager();
 	private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
+	
 	public static void main(String[] args) throws Exception {
 		dbman.connect();
 		userman.connect();

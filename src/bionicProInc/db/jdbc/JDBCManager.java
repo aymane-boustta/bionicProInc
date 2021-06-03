@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.*;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +14,6 @@ import bionicProInc.db.ifaces.DBManager;
 public class JDBCManager implements DBManager {
 	private Connection c;
 	BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 	public void connect() {
 		try {
@@ -124,6 +122,7 @@ public class JDBCManager implements DBManager {
 		}
 	}
 
+	@Override
 	public void addCustomer(Customer cust) {
 		try {
 			Statement stmt = c.createStatement();
@@ -179,6 +178,7 @@ public class JDBCManager implements DBManager {
 		return id;
 	}
 
+	@Override
 	public void addProduct(Product prod) {
 		try {
 			Statement stmt = c.createStatement();
@@ -280,6 +280,7 @@ public class JDBCManager implements DBManager {
 		return prod;
 	}
 
+	@Override
 	public int getProductID(String name) {
 		int id = 0;
 		try {
@@ -347,6 +348,7 @@ public class JDBCManager implements DBManager {
 		return previousPurchases;
 	}
 
+	@Override
 	public void clearPurchaseHistory(int id) {
 		try {
 			String sql = "DELETE FROM customers_products WHERE customer_id=?";
@@ -423,6 +425,7 @@ public class JDBCManager implements DBManager {
 		return ch;
 	}
 
+	@Override
 	public void addMaterial(Material mat) {
 		try {
 			Statement stmt = c.createStatement();
@@ -526,6 +529,7 @@ public class JDBCManager implements DBManager {
 
 	}
 
+	@Override
 	public ArrayList<Characteristic> viewCharacteristicsFromProduct(int product_id) {
 		ArrayList<Characteristic> characteristics = new ArrayList<Characteristic>();
 		try {
@@ -599,6 +603,7 @@ public class JDBCManager implements DBManager {
 
 	}
 
+	@Override
 	public ArrayList<Material> viewMaterialsFromProduct(int product_id) {
 		ArrayList<Material> materials = new ArrayList<Material>();
 		try {
@@ -652,6 +657,7 @@ public class JDBCManager implements DBManager {
 		}
 	}
 
+	@Override
 	public void addEngineer(Engineer eng) {
 		try {
 
@@ -684,6 +690,7 @@ public class JDBCManager implements DBManager {
 
 	}
 
+	@Override
 	public Engineer getEngineer(int id_) {
 		Engineer eng = new Engineer();
 		try {
@@ -726,6 +733,7 @@ public class JDBCManager implements DBManager {
 		return id;
 	}
 
+	@Override
 	public List<Integer> viewProjectAchieved(int id) {
 		List<Integer> p_achieved = new ArrayList<>();
 		try {
@@ -791,6 +799,7 @@ public class JDBCManager implements DBManager {
 		return products;
 	}
 
+	@Override
 	public List<Characteristic> searchCharacteristicByJointNumb(int joint_numb_) {
 		List<Characteristic> characteristics = new ArrayList<>();
 		try {
@@ -818,6 +827,7 @@ public class JDBCManager implements DBManager {
 		return characteristics;
 	}
 
+	@Override
 	public List<Material> searchMaterialByName(String name_) {
 		List<Material> materials = new ArrayList<>();
 		try {
@@ -841,6 +851,7 @@ public class JDBCManager implements DBManager {
 		return materials;
 	}
 
+	@Override
 	public List<Engineer> searchEngineerByName(String name_surname_) {
 		List<Engineer> engineers = new ArrayList<>();
 		try {

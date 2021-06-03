@@ -92,6 +92,7 @@ public class Product implements Serializable {
 		this.engineers = new ArrayList<Engineer>();
 		this.materials = materials;
 	}
+
 	public Product(int id, String name, String bodypart, Float price, LocalDate date_creation,
 			List<Characteristic> characteristics, List<Material> materials) {
 		super();
@@ -128,6 +129,7 @@ public class Product implements Serializable {
 		this.materials = new ArrayList<Material>();
 
 	}
+
 	public Product(String name, String bodypart, Float price, Date date_creation) {
 		super();
 		this.name = name;
@@ -139,7 +141,6 @@ public class Product implements Serializable {
 		this.materials = new ArrayList<Material>();
 
 	}
-
 
 	public Product() {
 		super();
