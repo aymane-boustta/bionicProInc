@@ -27,6 +27,7 @@ public class Menu {
 	private static UserManager userman = new JPAUserManager();
 	private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 	private static inputOutput io = new inputOutput();
+	
 
 	public static void main(String[] args) throws Exception {
 		try {
