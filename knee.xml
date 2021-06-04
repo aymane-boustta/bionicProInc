@@ -1,7 +1,16 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!DOCTYPE Product [
+	<!ELEMENT Product (name,bodypart,price,date_creation)>
+	<!ELEMENT name (#PCDATA)>
+	<!ELEMENT bodypart (#PCDATA)>
+	<!ELEMENT price (#PCDATA)>
+	<!ELEMENT date_creation (#PCDATA)>
+
+]>
+
+
+
 <Product>
     <name>kneetech</name>
     <bodypart>knee</bodypart>
-    <price>1000.0</price>
     <date_creation>2021-04-05</date_creation>
 </Product>

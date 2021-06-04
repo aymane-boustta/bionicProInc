@@ -1,4 +1,12 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!DOCTYPE Product [
+	<!ELEMENT Product (name,bodypart,price,date_creation)>
+	<!ELEMENT name (#PCDATA)>
+	<!ELEMENT bodypart (#PCDATA)>
+	<!ELEMENT price (#PCDATA)>
+	<!ELEMENT date_creation (#PCDATA)>
+
+]>
+
 <Product>
     <name>kneech</name>
     <bodypart>knee</bodypart>

@@ -12,8 +12,8 @@ import bionicProInc.db.xml.utils.CustomErrorHandler;
 
 public class DTDCheckerProduct {
 
-	public static void main(String[] args) {
-		File xmlFile = new File("./ExternalProduct.xml");
+	public boolean checkProduct(String filename) {
+		File xmlFile = new File(filename);
 		try {
 			// Create a DocumentBuilderFactory
 			DocumentBuilderFactory dBF = DocumentBuilderFactory.newInstance();
@@ -28,6 +28,7 @@ public class DTDCheckerProduct {
 			Document doc = builder.parse(xmlFile);
 			if (customErrorHandler.isValid()) {
 				System.out.println(xmlFile + " was valid!");
+				return true;
 			}
 		} catch (ParserConfigurationException ex) {
 			System.out.println(xmlFile + " error while parsing!");
@@ -36,6 +37,6 @@ public class DTDCheckerProduct {
 		} catch (IOException ex) {
 			System.out.println(xmlFile + " was not accesible!");
 		}
-
+		return false;
 	}
 }

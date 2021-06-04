@@ -35,39 +35,44 @@ public class Xml2JavaCustomer {
 		try {
 			System.out.print("\nType the name of the file (FileName.xml): ");
 			String fileName = reader.readLine();
-			File file = new File(fileName);
-			Customer c = (Customer) unmarshaller.unmarshal(file);
+			DTDCheckerCustomer d = new DTDCheckerCustomer();
+			if (!d.checkCustomer(fileName)) {
+				System.out.println("please check the file");
+			} else {
+				File file = new File(fileName);
+				Customer c = (Customer) unmarshaller.unmarshal(file);
 
-			// Print the customer
-			System.out.println("Customer:");
-			System.out.println("Name and surname: " + c.getName_surname());
-			System.out.println("Age: " + c.getAge());
-			System.out.println("Phone: " + c.getPhone());
-			System.out.println("Email: " + c.getEmail());
-			List<Product> p = new ArrayList<>();
+				// Print the customer
+				System.out.println("Customer:");
+				System.out.println("Name and surname: " + c.getName_surname());
+				System.out.println("Age: " + c.getAge());
+				System.out.println("Phone: " + c.getPhone());
+				System.out.println("Email: " + c.getEmail());
+				List<Product> p = new ArrayList<>();
 
-			// Store the customer in the database
-			// Create entity manager
-			factory = Persistence.createEntityManagerFactory(PERSISTENCE_PROVIDER);
-			EntityManager em = factory.createEntityManager();
-			em.getTransaction().begin();
-			em.createNativeQuery("PRAGMA foreign_keys=ON").executeUpdate();
-			em.getTransaction().commit();
+				// Store the customer in the database
+				// Create entity manager
+				factory = Persistence.createEntityManagerFactory(PERSISTENCE_PROVIDER);
+				EntityManager em = factory.createEntityManager();
+				em.getTransaction().begin();
+				em.createNativeQuery("PRAGMA foreign_keys=ON").executeUpdate();
+				em.getTransaction().commit();
 
-			// Create a transaction
-			EntityTransaction tx1 = em.getTransaction();
+				// Create a transaction
+				EntityTransaction tx1 = em.getTransaction();
 
-			// Start transaction
-			tx1.begin();
+				// Start transaction
+				tx1.begin();
 
-			// Persist
-			for (Product product : p) {
-				em.persist(product);
+				// Persist
+				for (Product product : p) {
+					em.persist(product);
+				}
+				em.persist(c);
+
+				// End transaction
+				tx1.commit();
 			}
-			em.persist(c);
-
-			// End transaction
-			tx1.commit();
 		} catch (IllegalArgumentException iae) {
 			System.out.print("\nNo such file with that name.\n");
 		}

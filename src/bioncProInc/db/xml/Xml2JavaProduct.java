@@ -14,8 +14,15 @@ import javax.persistence.Persistence;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 import bionicProInc.db.pojos.*;
+import bionicProInc.db.xml.utils.CustomErrorHandler;
 
 public class Xml2JavaProduct {
 	private static final String PERSISTENCE_PROVIDER = "user-provider";
@@ -33,48 +40,54 @@ public class Xml2JavaProduct {
 		try {
 			System.out.print("\nType the name of the file (FileName.xml): ");
 			String fileName = reader.readLine();
-			File file = new File(fileName);
-			Product p = (Product) unmarshaller.unmarshal(file);
+			DTDCheckerProduct d = new DTDCheckerProduct();
+			if (!d.checkProduct(fileName)) {
+				System.out.println("please check the file");
+			} else {
+				File file = new File(fileName);
+				Product p = (Product) unmarshaller.unmarshal(file);
 
-			// Print the product
-			System.out.println("Product:");
-			System.out.println("Name: " + p.getName());
-			System.out.println("BodyPart: " + p.getBodypart());
-			System.out.println("Price: " + p.getPrice());
-			System.out.println("Creation date: " + p.getDate());
-			List<Characteristic> ch = new ArrayList<>();
-			List<Material> m = new ArrayList<>();
-			List<Engineer> e = new ArrayList<>();
+				// Print the product
+				System.out.println("Product:");
+				System.out.println("Name: " + p.getName());
+				System.out.println("BodyPart: " + p.getBodypart());
+				System.out.println("Price: " + p.getPrice());
+				System.out.println("Creation date: " + p.getDate());
+				List<Characteristic> ch = new ArrayList<>();
+				List<Material> m = new ArrayList<>();
+				List<Engineer> e = new ArrayList<>();
 
-			// Store the product in the database
-			// Create entity manager
-			factory = Persistence.createEntityManagerFactory(PERSISTENCE_PROVIDER);
-			EntityManager em = factory.createEntityManager();
-			em.getTransaction().begin();
-			em.createNativeQuery("PRAGMA foreign_keys=ON").executeUpdate();
-			em.getTransaction().commit();
+				// Store the product in the database
+				// Create entity manager
+				factory = Persistence.createEntityManagerFactory(PERSISTENCE_PROVIDER);
+				EntityManager em = factory.createEntityManager();
+				em.getTransaction().begin();
+				em.createNativeQuery("PRAGMA foreign_keys=ON").executeUpdate();
+				em.getTransaction().commit();
 
-			// Create a transaction
-			EntityTransaction tx1 = em.getTransaction();
+				// Create a transaction
+				EntityTransaction tx1 = em.getTransaction();
 
-			// Start transaction
-			tx1.begin();
+				// Start transaction
+				tx1.begin();
 
-			// Persist
-			for (Engineer en : e) {
-				em.persist(en);
+				// Persist
+				for (Engineer en : e) {
+					em.persist(en);
+				}
+
+				for (Material ma : m) {
+					em.persist(ma);
+				}
+				for (Characteristic c : ch) {
+					em.persist(c);
+				}
+				em.persist(p);
+
+				// End transaction
+				tx1.commit();
+
 			}
-
-			for (Material ma : m) {
-				em.persist(ma);
-			}
-			for (Characteristic c : ch) {
-				em.persist(c);
-			}
-			em.persist(p);
-
-			// End transaction
-			tx1.commit();
 		} catch (IllegalArgumentException iae) {
 			System.out.print("\nNo such file with that name.\n");
 		}
