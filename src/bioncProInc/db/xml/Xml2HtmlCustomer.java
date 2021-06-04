@@ -26,7 +26,7 @@ public class Xml2HtmlCustomer {
 			Transformer transformer = tFactory.newTransformer(new StreamSource(new File(xsltPath)));
 			transformer.transform(new StreamSource(new File(sourcePath)), new StreamResult(new File(resultDir)));
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.print("\nThe XML file does not exist, or is not well formed.\n");
 		}
 	}
 
@@ -37,8 +37,8 @@ public class Xml2HtmlCustomer {
 			System.out.print("\nType the desired name of the Html file (FileName.html): ");
 			String htmlName = reader.readLine();
 			simpleTransform(xmlName, "./Customer-Style.xslt", htmlName);
-		} catch (IllegalArgumentException iae) {
-			System.out.print("\nNo such file with that name.\n");
+		} catch (Exception e) {
+			System.out.print("\nThe XML file does not exist, or is not well formed.\n");
 		}
 
 	}

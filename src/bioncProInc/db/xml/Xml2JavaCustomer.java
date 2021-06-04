@@ -2,6 +2,7 @@ package bioncProInc.db.xml;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.SQLException;
@@ -74,7 +75,7 @@ public class Xml2JavaCustomer {
 				// End transaction
 				tx1.commit();
 			}
-		} catch (IllegalArgumentException iae) {
+		} catch (FileNotFoundException fnfe) {
 			System.out.print("\nNo such file with that name.\n");
 		} catch (Exception e) {
 			System.out.println("\nERROR: Please check the file again, something is wrong with it.");
