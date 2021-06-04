@@ -1,7 +1,6 @@
 package bionicProInc.ui;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.security.MessageDigest;
 import java.sql.SQLException;
@@ -19,12 +18,14 @@ import bionicProInc.db.jdbc.JDBCManager;
 import bionicProInc.db.jpa.JPAUserManager;
 import bionicProInc.db.pojos.*;
 import bionicProInc.db.pojos.users.*;
+import bionicProInc.db.utils.inputOutput;
 
 public class Menu {
 
 	private static DBManager dbman = new JDBCManager();
 	private static UserManager userman = new JPAUserManager();
 	private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+	private static inputOutput io = new inputOutput();
 
 	public static void main(String[] args) throws Exception {
 		try {
@@ -35,7 +36,7 @@ public class Menu {
 				System.out.println("1. Register");
 				System.out.println("2. Login");
 				System.out.println("0. Exit Database");
-				int choice = Integer.parseInt(reader.readLine());
+				int choice = io.getIntFromKeyboard();
 				switch (choice) {
 				case 1:
 					register();
@@ -54,8 +55,8 @@ public class Menu {
 				}
 
 			} while (true);
-		} catch (IOException | NumberFormatException e) {
-			System.out.println("ERROR: you have to select a valid option.");
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 	}
@@ -67,7 +68,7 @@ public class Menu {
 		String password = reader.readLine();
 		System.out.println(userman.getRoles());
 		System.out.println("Type the chosen role ID:");
-		int id = Integer.parseInt(reader.readLine());
+		int id = io.getIntFromKeyboard();
 		Role role = userman.getRole(id);
 		MessageDigest md = MessageDigest.getInstance("MD5");
 		md.update(password.getBytes());
@@ -107,7 +108,7 @@ public class Menu {
 			System.out.println("8. Import a product or a customer from XML");
 			System.out.println("9. Export a product or a customer from XML to Html");
 			System.out.println("0. Log out");
-			int choice = Integer.parseInt(reader.readLine());
+			int choice = io.getIntFromKeyboard();
 			switch (choice) {
 			case 1:
 				viewProductE();
@@ -163,7 +164,7 @@ public class Menu {
 			System.out.println("3. Show my purchase history");
 			System.out.println("4. Clear my purchase history");
 			System.out.println("0. Log out");
-			int choice = Integer.parseInt(reader.readLine());
+			int choice = io.getIntFromKeyboard();
 			switch (choice) {
 			case 1:
 				viewProductC();
@@ -205,7 +206,7 @@ public class Menu {
 			System.out.println(products.get(i));
 		}
 		System.out.println("\nType the ID of the product that you want to update: ");
-		int product_id = Integer.parseInt(reader.readLine());
+		int product_id = io.getIntFromKeyboard();
 		if (dbman.viewProduct(product_id).getName() == null) {
 			System.out.println("There is no product with the ID: " + product_id);
 			return;
@@ -225,7 +226,7 @@ public class Menu {
 			System.out.println("4. Update the characteristics");
 			System.out.println("5. Update the materials");
 			System.out.println("0. Exit");
-			int choice = Integer.parseInt(reader.readLine());
+			int choice = io.getIntFromKeyboard();
 			switch (choice) {
 			case 1:
 				dbman.updateProductName(prod);
@@ -256,22 +257,22 @@ public class Menu {
 			}
 		} while (true);
 	}
-
+	
 	// Engineer OPTION 2
 	private static void addCharacteristic() throws Exception {
 		try {
 			System.out.println("Introduce the characteristic's length: ");
-			Float length = Float.parseFloat(reader.readLine());
+			Float length = io.getFloatFromKeyboard();
 			System.out.println("Introduce the characteristic's width: ");
-			Float width = Float.parseFloat(reader.readLine());
+			Float width = io.getFloatFromKeyboard();
 			System.out.println("Introduce the characteristic's height: ");
-			Float height = Float.parseFloat(reader.readLine());
+			Float height = io.getFloatFromKeyboard();
 			System.out.println("Introduce the characteristic's weight: ");
-			Float weight = Float.parseFloat(reader.readLine());
+			Float weight = io.getFloatFromKeyboard();
 			System.out.println("Introduce the characteristic's joint_numb: ");
-			int joint_numb = Integer.parseInt(reader.readLine());
+			int joint_numb = io.getIntFromKeyboard();
 			System.out.println("Introduce the characteristic's flexibility_scale: ");
-			int flexibility_scale = Integer.parseInt(reader.readLine());
+			int flexibility_scale = io.getIntFromKeyboard();
 			Characteristic ch = new Characteristic(length, width, height, weight, joint_numb, flexibility_scale);
 			System.out.println("The characteristic has been successfully added.");
 			dbman.addCharacteristic(ch);
@@ -288,9 +289,9 @@ public class Menu {
 			System.out.println("Introduce the material's name: ");
 			String name = reader.readLine();
 			System.out.println("Introduce the material's price: ");
-			Float price = Float.parseFloat(reader.readLine());
+			Float price = io.getFloatFromKeyboard();
 			System.out.println("Introduce the material's amount: ");
-			int amount = Integer.parseInt(reader.readLine());
+			int amount = io.getIntFromKeyboard();
 			Material mat = new Material(name, price, amount);
 			System.out.println("The material has been successfully added.");
 			dbman.addMaterial(mat);
@@ -309,7 +310,7 @@ public class Menu {
 			System.out.println("Introduce the bodypart that the prothesis will substitute: ");
 			String bodypart = reader.readLine();
 			System.out.println("Introduce the prothesis' price: ");
-			Float price = Float.parseFloat(reader.readLine());
+			Float price = io.getFloatFromKeyboard();
 			System.out.print("Introduce the starting date of the project (yyyy-MM-dd): ");
 			LocalDate date_creation = LocalDate.parse(reader.readLine());
 			Product prod = new Product(name, bodypart, price, date_creation);
@@ -339,7 +340,7 @@ public class Menu {
 						}
 						System.out.println(
 								"\nType the ID of the engineer that collaborated in the making of the new product: ");
-						id = Integer.parseInt(reader.readLine());
+						id = io.getIntFromKeyboard();
 						if (dbman.getEngineer(id).getName_surname() == null) {
 							System.out.println("There is no engineer with the ID: " + id);
 						} else if (!(dbman.getEngineer(id).getName_surname() == null)) {
@@ -377,7 +378,7 @@ public class Menu {
 				System.out.println(products.get(i));
 			}
 			System.out.println("Introduce the ID of the product that you want to remove: ");
-			int product_id = Integer.parseInt(reader.readLine());
+			int product_id = io.getIntFromKeyboard();
 			if (dbman.viewProduct(product_id).getName() == null) {
 				System.out.println("\nThere is no product with the ID: " + product_id);
 				return;
@@ -489,7 +490,7 @@ public class Menu {
 	private static void makePurchase(int customer_id) throws Exception, SQLException {
 		try {
 			System.out.println("Introduce the ID of the product that you want to buy: ");
-			int product_id = Integer.parseInt(reader.readLine());
+			int product_id = io.getIntFromKeyboard();
 			if (dbman.viewProduct(product_id).getName() == null) {
 				System.out.println("\nThere is no product with the ID: " + product_id);
 				return;
