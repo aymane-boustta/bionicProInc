@@ -1,7 +1,7 @@
 package bionicProInc.ui;
 
 import java.io.BufferedReader;
-
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.security.MessageDigest;
 import java.sql.SQLException;
@@ -25,34 +25,38 @@ public class Menu {
 	private static DBManager dbman = new JDBCManager();
 	private static UserManager userman = new JPAUserManager();
 	private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-	
+
 	public static void main(String[] args) throws Exception {
-		dbman.connect();
-		userman.connect();
-		do {
-			System.out.println("\n Choose an option:");
-			System.out.println("1. Register");
-			System.out.println("2. Login");
-			System.out.println("0. Exit Database");
-			int choice = Integer.parseInt(reader.readLine());
-			switch (choice) {
-			case 1:
-				register();
-				break;
-			case 2:
-				login();
-				break;
-			case 0:
-				dbman.disconnect();
-				userman.disconnect();
-				System.exit(0);
-				break;
+		try {
+			dbman.connect();
+			userman.connect();
+			do {
+				System.out.println("\n Choose an option:");
+				System.out.println("1. Register");
+				System.out.println("2. Login");
+				System.out.println("0. Exit Database");
+				int choice = Integer.parseInt(reader.readLine());
+				switch (choice) {
+				case 1:
+					register();
+					break;
+				case 2:
+					login();
+					break;
+				case 0:
+					dbman.disconnect();
+					userman.disconnect();
+					System.exit(0);
+					break;
 
-			default:
-				break;
-			}
+				default:
+					break;
+				}
 
-		} while (true);
+			} while (true);
+		} catch (IOException | NumberFormatException e) {
+			System.out.println("ERROR: you have to select a valid option.");
+		}
 
 	}
 
