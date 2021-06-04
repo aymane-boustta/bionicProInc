@@ -244,6 +244,11 @@ public class Product implements Serializable {
 			return false;
 		return true;
 	}
+	
+	public String toStringSimple() {
+		return "\nProduct ID: " + id + ", Name: " + name + ", Bodypart: " + bodypart + ", Price: " + price
+				+ ", Date of creation: " + date_creation;
+	}
 
 	public String toStringCustomer() {
 		return "\nProduct ID: " + id + ", Name: " + name + ", Bodypart: " + bodypart + ", Price: " + price

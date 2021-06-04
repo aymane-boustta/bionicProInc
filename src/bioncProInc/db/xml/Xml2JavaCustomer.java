@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class Xml2JavaCustomer {
 	private static EntityManagerFactory factory;
 	private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-	public void importFromXml() throws JAXBException, IOException {
+	public void importFromXml() throws JAXBException, IOException, SQLException {
 
 		// Create the JAXBContext
 		JAXBContext jaxbContext = JAXBContext.newInstance(Customer.class);
@@ -37,7 +38,7 @@ public class Xml2JavaCustomer {
 			String fileName = reader.readLine();
 			DTDCheckerCustomer d = new DTDCheckerCustomer();
 			if (!d.checkCustomer(fileName)) {
-				System.out.println("please check the file");
+				return;
 			} else {
 				File file = new File(fileName);
 				Customer c = (Customer) unmarshaller.unmarshal(file);
@@ -75,6 +76,8 @@ public class Xml2JavaCustomer {
 			}
 		} catch (IllegalArgumentException iae) {
 			System.out.print("\nNo such file with that name.\n");
+		} catch (Exception e) {
+			System.out.println("\nERROR: Please check the file again, something is wrong with it.");
 		}
 	}
 }

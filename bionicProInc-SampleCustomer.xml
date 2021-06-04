@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Customer>
+    <name_surname>Melinda Gates</name_surname>
+    <age>66</age>
+    <gender>FEMALE</gender>
+    <phone>725384909</phone>
+    <email>melindagates@gmail.com</email>
+    <street>Calle de la Esperanza 55</street>
+    <city>Madrid</city>
+    <postal_code>28214</postal_code>
+</Customer>
