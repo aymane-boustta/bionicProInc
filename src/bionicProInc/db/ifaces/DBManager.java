@@ -49,7 +49,7 @@ public interface DBManager {
 
 	public Material getMaterial(int id);
 
-	public void addProd_Ch(Product prod, Characteristic ch);
+	public boolean addProd_Ch(Product prod, Characteristic ch);
 
 	public void removeProd_Ch(Product prod, Characteristic ch);
 
@@ -57,7 +57,7 @@ public interface DBManager {
 
 	public ArrayList<Characteristic> viewCharacteristicsFromProduct(int id);
 
-	public void addProd_Mat(Product prod, Material mat);
+	public boolean addProd_Mat(Product prod, Material mat);
 
 	public void removeProd_Mat(Product prod, Material mat);
 
@@ -65,7 +65,7 @@ public interface DBManager {
 
 	public ArrayList<Material> viewMaterialsFromProduct(int id);
 
-	public void addEng_Prod(Engineer eng, Product prod);
+	public boolean addEng_Prod(Engineer eng, Product prod);
 
 	public void removeEng_Prod(Product prod);
 

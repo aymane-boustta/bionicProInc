@@ -9,11 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import bionicProInc.db.pojos.*;
+import bionicProInc.db.utils.inputOutput;
 import bionicProInc.db.ifaces.DBManager;
 
 public class JDBCManager implements DBManager {
 	private Connection c;
 	BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+	private static inputOutput io = new inputOutput();
 
 	public void connect() {
 		try {
@@ -485,15 +487,17 @@ public class JDBCManager implements DBManager {
 	}
 
 	@Override
-	public void addProd_Ch(Product prod, Characteristic ch) {
+	public boolean addProd_Ch(Product prod, Characteristic ch) {
 		try {
 			Statement stmt = c.createStatement();
 			String sql = " INSERT INTO products_characteristics (product_id, characteristic_id) VALUES ('"
 					+ prod.getId() + "','" + ch.getId() + "')";
 			stmt.executeUpdate(sql);
 			stmt.close();
+			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
+			return false;
 		}
 
 	}
@@ -559,15 +563,17 @@ public class JDBCManager implements DBManager {
 	}
 
 	@Override
-	public void addProd_Mat(Product prod, Material mat) {
+	public boolean addProd_Mat(Product prod, Material mat) {
 		try {
 			Statement stmt = c.createStatement();
 			String sql = " INSERT INTO products_materials (product_id, material_id) VALUES ('" + prod.getId() + "','"
 					+ mat.getId() + "')";
 			stmt.executeUpdate(sql);
 			stmt.close();
+			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
+			return false;
 		}
 
 	}
@@ -629,15 +635,17 @@ public class JDBCManager implements DBManager {
 	}
 
 	@Override
-	public void addEng_Prod(Engineer eng, Product prod) {
+	public boolean addEng_Prod(Engineer eng, Product prod) {
 		try {
 			Statement stmt = c.createStatement();
 			String sql = " INSERT INTO engineers_products (engineer_id, product_id) VALUES ('" + eng.getId() + "','"
 					+ prod.getId() + "')";
 			stmt.executeUpdate(sql);
 			stmt.close();
+			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
+			return false;
 		}
 
 	}
@@ -913,7 +921,7 @@ public class JDBCManager implements DBManager {
 	public void updateProductPrice(Product prod) {
 		try {
 			System.out.println("Introduce the new price for the product: ");
-			Float price = Float.parseFloat(reader.readLine());
+			Float price = io.getFloatFromKeyboard();
 			String sql = "UPDATE products SET price=? WHERE id=?";
 			PreparedStatement prep = c.prepareStatement(sql);
 			prep.setFloat(1, price);
@@ -921,8 +929,6 @@ public class JDBCManager implements DBManager {
 			prep.executeUpdate();
 			System.out.println("Price updated successfully.");
 		} catch (SQLException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -938,7 +944,7 @@ public class JDBCManager implements DBManager {
 
 				if (option.equalsIgnoreCase("add")) {
 					System.out.println("\nEnter the number of joints of the characteristic that you want to add: ");
-					int joint_numb = Integer.parseInt(reader.readLine());
+					int joint_numb = io.getIntFromKeyboard();
 					List<Characteristic> characteristics = searchCharacteristicByJointNumb(joint_numb);
 					if (characteristics.isEmpty()) {
 						System.out.println("There are no characteristics with " + joint_numb + " joints.");
@@ -947,13 +953,18 @@ public class JDBCManager implements DBManager {
 							System.out.println(characteristics.get(i).toString());
 						}
 						System.out.println("\nSelect the ID of the characteristic that you want to add: ");
-						int id = Integer.parseInt(reader.readLine());
+						int id = io.getIntFromKeyboard();
 						Characteristic ch = getCharacteristic(id);
 						if (ch.getId() == 0) {
 							System.out.println("There is no characteristic with the ID: " + id);
 						} else {
-							addProd_Ch(prod, ch);
-							System.out.println("\nThe characteristic has been successfully added.");
+							if (addProd_Ch(prod, ch)) {
+								System.out.println("\nThe characteristic has been successfully added.");
+							} else {
+								System.out.println(
+										"\nThe product already contains this characteristic, try adding another one.");
+							}
+
 						}
 					}
 
@@ -964,7 +975,7 @@ public class JDBCManager implements DBManager {
 					}
 					System.out.println("Select the characteristic you want to remove: "
 							+ viewCharacteristicsFromProduct(prod.getId()));
-					int id = Integer.parseInt(reader.readLine());
+					int id = io.getIntFromKeyboard();
 					Characteristic ch = getCharacteristic(id);
 					removeProd_Ch(prod, ch);
 					System.out.println("\nThe characteristic has been successfully removed.");
@@ -990,7 +1001,7 @@ public class JDBCManager implements DBManager {
 
 				if (option.equalsIgnoreCase("add")) {
 					System.out.println("\nEnter the number of joints of the characteristic that you want to add: ");
-					int joint_numb = Integer.parseInt(reader.readLine());
+					int joint_numb = io.getIntFromKeyboard();
 					List<Characteristic> characteristics = searchCharacteristicByJointNumb(joint_numb);
 					if (characteristics.isEmpty()) {
 						System.out.println("There are no characteristics with " + joint_numb + " joints.");
@@ -999,13 +1010,18 @@ public class JDBCManager implements DBManager {
 							System.out.println(characteristics.get(i).toString());
 						}
 						System.out.println("\nSelect the ID of the characteristic that you want to add: ");
-						int id = Integer.parseInt(reader.readLine());
+						int id = io.getIntFromKeyboard();
 						Characteristic ch = getCharacteristic(id);
 						if (ch.getId() == 0) {
 							System.out.println("There is no characteristic with the ID: " + id);
 						} else {
-							addProd_Ch(prod, ch);
-							System.out.println("\nThe characteristic has been successfully added.");
+							if (addProd_Ch(prod, ch)) {
+								System.out.println("\nThe characteristic has been successfully added.");
+							} else {
+								System.out.println(
+										"\nThe product already contains this characteristic, try adding another one.");
+							}
+
 						}
 					}
 
@@ -1039,14 +1055,19 @@ public class JDBCManager implements DBManager {
 							System.out.println(materials.get(i).toString());
 						}
 						System.out.println("\nSelect the ID of material that you want to add: ");
-						int id = Integer.parseInt(reader.readLine());
+						int id = io.getIntFromKeyboard();
 						Material mat = getMaterial(id);
 						if (mat.getId() == 0) {
 							System.out.println("There is no material with the ID: " + id);
 
 						} else {
-							addProd_Mat(prod, mat);
-							System.out.println("\nThe material has been successfully added.");
+							if (addProd_Mat(prod, mat)) {
+								System.out.println("\nThe material has been successfully added.");
+							} else {
+								System.out.println(
+										"\nThe product already contains this material, try adding another one.");
+							}
+
 						}
 					}
 
@@ -1057,7 +1078,7 @@ public class JDBCManager implements DBManager {
 					}
 					System.out.println(
 							"Select the material you want to remove: " + viewMaterialsFromProduct(prod.getId()));
-					int id = Integer.parseInt(reader.readLine());
+					int id = io.getIntFromKeyboard();
 					Material mat = getMaterial(id);
 					removeProd_Mat(prod, mat);
 					System.out.println("\nThe material has beensuccessfully removed.");
@@ -1093,14 +1114,19 @@ public class JDBCManager implements DBManager {
 							System.out.println(materials.get(i).toString());
 						}
 						System.out.println("\nSelect the ID of material that you want to add: ");
-						int id = Integer.parseInt(reader.readLine());
+						int id = io.getIntFromKeyboard();
 						Material mat = getMaterial(id);
 						if (mat.getId() == 0) {
 							System.out.println("There is no material with the ID: " + id);
 
 						} else {
-							addProd_Mat(prod, mat);
-							System.out.println("\nThe material has been successfully added.");
+							if (addProd_Mat(prod, mat)) {
+								System.out.println("\nThe material has been successfully added.");
+							} else {
+								System.out.println(
+										"\nThe product already contains this material, try adding another one.");
+							}
+
 						}
 					}
 

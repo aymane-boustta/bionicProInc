@@ -257,7 +257,7 @@ public class Menu {
 			}
 		} while (true);
 	}
-	
+
 	// Engineer OPTION 2
 	private static void addCharacteristic() throws Exception {
 		try {
@@ -343,10 +343,14 @@ public class Menu {
 						id = io.getIntFromKeyboard();
 						if (dbman.getEngineer(id).getName_surname() == null) {
 							System.out.println("There is no engineer with the ID: " + id);
-						} else if (!(dbman.getEngineer(id).getName_surname() == null)) {
-							dbman.addEng_Prod(dbman.getEngineer(id),
-									dbman.getProduct(dbman.getProductID(prod.getName())));
-							dbman.updateEngineerProjectAchieved(dbman.getEngineer(id));
+						} else {
+							if (dbman.addEng_Prod(dbman.getEngineer(id),
+									dbman.getProduct(dbman.getProductID(prod.getName())))) {
+								dbman.updateEngineerProjectAchieved(dbman.getEngineer(id));
+								System.out.println("The collaboration was noted!");
+							} else {
+								System.out.println("This collaboration is already noted in this project.");
+							}
 						}
 					}
 				} else {
