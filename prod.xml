@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Product>
-    <name>Ocular prosthesis</name>
-    <bodypart>Eye</bodypart>
-    <price>199.0</price>
-    <date_creation>2020-01-15</date_creation>
+    <name>kneech</name>
+    <bodypart>knee</bodypart>
+    <price>1000.0</price>
+    <date_creation>2021-04-05</date_creation>
 </Product>
