@@ -111,7 +111,7 @@ public class Menu {
 			int choice = io.getIntFromKeyboard();
 			switch (choice) {
 			case 1:
-				viewProductE();
+				updateProduct();
 				break;
 
 			case 2:
@@ -167,7 +167,7 @@ public class Menu {
 			int choice = io.getIntFromKeyboard();
 			switch (choice) {
 			case 1:
-				viewProductC();
+				viewProduct();
 				break;
 
 			case 2:
@@ -193,7 +193,7 @@ public class Menu {
 	}
 
 	// Engineer OPTION 1
-	private static void viewProductE() throws Exception {
+	private static void updateProduct() throws Exception, SQLException {
 		System.out.println("Choose a bodypart:");
 		System.out.println(dbman.viewBodyparts());
 		String bodypart = reader.readLine();
@@ -303,7 +303,7 @@ public class Menu {
 	}
 
 	// Engineer OPTION 4
-	private static void addProduct(int id) throws Exception {
+	private static void addProduct(int id) throws Exception, SQLException {
 		try {
 			System.out.println("Introduce the prothesis' name: ");
 			String name = reader.readLine();
@@ -476,7 +476,7 @@ public class Menu {
 	}
 
 	// Customer OPTION 1
-	private static void viewProductC() throws Exception {
+	private static void viewProduct() throws Exception {
 		System.out.println("Choose a bodypart:");
 		System.out.println(dbman.viewBodyparts());
 		String bodypart = reader.readLine();
