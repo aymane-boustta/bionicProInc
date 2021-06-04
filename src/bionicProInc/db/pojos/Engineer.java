@@ -257,7 +257,7 @@ public class Engineer implements Serializable {
 	}
 
 	public String showID() {
-		return "[id=" + this.id + ", name_surname=" + this.name_surname + "]";
+		return "Engineer ID: " + this.id + ", Full name: " + this.name_surname;
 	}
 
 	@Override

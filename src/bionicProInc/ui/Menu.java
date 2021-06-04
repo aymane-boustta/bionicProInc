@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.security.MessageDigest;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 import bioncProInc.db.xml.Java2XmlCustomer;
@@ -194,30 +195,35 @@ public class Menu {
 
 	// Engineer OPTION 1
 	private static void updateProduct() throws Exception, SQLException {
-		System.out.println("Choose a bodypart:");
-		System.out.println(dbman.viewBodyparts());
-		String bodypart = reader.readLine();
-		List<Product> products = dbman.searchProductByBody(bodypart);
-		if (products.isEmpty()) {
-			System.out.println("There are no products with the bodypart: " + bodypart);
-			return;
+		try {
+			System.out.println("Choose a bodypart:");
+			System.out.println(dbman.viewBodyparts());
+			String bodypart = reader.readLine();
+			List<Product> products = dbman.searchProductByBody(bodypart);
+			if (products.isEmpty()) {
+				System.out.println("There are no products with the bodypart: " + bodypart);
+				return;
+			}
+			for (int i = 0; i < products.size(); i++) {
+				System.out.println(products.get(i));
+			}
+			System.out.println("\nType the ID of the product that you want to update: ");
+			int product_id = io.getIntFromKeyboard();
+			if (dbman.viewProduct(product_id).getName() == null) {
+				System.out.println("There is no product with the ID: " + product_id);
+				return;
+			}
+			System.out.println(dbman.viewProduct(product_id));
+			productUpdateMenu(dbman.viewProduct(product_id));
+			System.out.println("\nThe product has been successfully updated, and now it looks like this: ");
+			System.out.println(dbman.viewProduct(product_id));
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		for (int i = 0; i < products.size(); i++) {
-			System.out.println(products.get(i));
-		}
-		System.out.println("\nType the ID of the product that you want to update: ");
-		int product_id = io.getIntFromKeyboard();
-		if (dbman.viewProduct(product_id).getName() == null) {
-			System.out.println("There is no product with the ID: " + product_id);
-			return;
-		}
-		System.out.println(dbman.viewProduct(product_id));
-		productUpdateMenu(dbman.viewProduct(product_id));
-		System.out.println("\nThe product has been successfully updated, and now it looks like this: ");
-		System.out.println(dbman.viewProduct(product_id));
+
 	}
 
-	private static void productUpdateMenu(Product prod) throws Exception {
+	private static void productUpdateMenu(Product prod) throws SQLException, Exception {
 		do {
 			System.out.println("\n Choose an option:");
 			System.out.println("1. Update the name");
@@ -256,6 +262,7 @@ public class Menu {
 
 			}
 		} while (true);
+
 	}
 
 	// Engineer OPTION 2
@@ -305,12 +312,26 @@ public class Menu {
 	// Engineer OPTION 4
 	private static void addProduct(int id) throws Exception, SQLException {
 		try {
+
 			System.out.println("Introduce the prothesis' name: ");
 			String name = reader.readLine();
+			while (name.isBlank()) {
+				System.out.println("The prosthesis' name cannot be blank: ");
+				name = reader.readLine();
+			}
+
 			System.out.println("Introduce the bodypart that the prothesis will substitute: ");
 			String bodypart = reader.readLine();
+			while (bodypart.isBlank()) {
+				System.out.println("The prosthesis' bodypart cannot be blank: ");
+				bodypart = reader.readLine();
+			}
 			System.out.println("Introduce the prothesis' price: ");
 			Float price = io.getFloatFromKeyboard();
+			while (price <= 0) {
+				System.out.println("The prosthesis' price has to be greater than 0: ");
+				price = io.getFloatFromKeyboard();
+			}
 			System.out.print("Introduce the starting date of the project (yyyy-MM-dd): ");
 			LocalDate date_creation = LocalDate.parse(reader.readLine());
 			Product prod = new Product(name, bodypart, price, date_creation);
@@ -336,7 +357,7 @@ public class Menu {
 						System.out.println("There are no engineers with the name: " + name_eng);
 					} else {
 						for (int i = 0; i < engineers.size(); i++) {
-							System.out.println(engineers.get(i).toString());
+							System.out.println(engineers.get(i).showID());
 						}
 						System.out.println(
 								"\nType the ID of the engineer that collaborated in the making of the new product: ");
@@ -354,6 +375,7 @@ public class Menu {
 						}
 					}
 				} else {
+					System.out.println("All collaboration were successfully registered, well done!");
 					return;
 				}
 				System.out.println(
@@ -361,6 +383,8 @@ public class Menu {
 				option = reader.readLine();
 			}
 
+		} catch (DateTimeParseException dtpe) {
+			System.out.println("\nERROR: The date is invalid, also it has to match the following format: (yyyy-MM-dd)");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -391,7 +415,7 @@ public class Menu {
 			String option = reader.readLine();
 			if (option.equalsIgnoreCase("yes")) {
 				dbman.removeCust_Prod(dbman.viewProduct(product_id));
-				dbman.removeEng_Prod(dbman.viewProduct(product_id));
+				dbman.removeAllEng_Prod(dbman.viewProduct(product_id));
 				dbman.removeAllProd_Ch(dbman.viewProduct(product_id));
 				dbman.removeAllProd_Mat(dbman.viewProduct(product_id));
 				dbman.removeProduct(product_id);

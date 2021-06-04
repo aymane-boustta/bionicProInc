@@ -185,7 +185,7 @@ public class JDBCManager implements DBManager {
 		try {
 			Statement stmt = c.createStatement();
 			String sql = "INSERT INTO products (name,bodypart, price, date_creation) " + " VALUES('" + prod.getName()
-					+ "','" + prod.getBodypart() + "','" + prod.getPrice() + "','" + prod.getDate() + "');";
+					+ "','" + prod.getBodypart() + "','" + prod.getPrice() + "','" + prod.getDate().getTime() + "');";
 			stmt.executeUpdate(sql);
 			stmt.close();
 		} catch (Exception e) {
@@ -267,7 +267,6 @@ public class JDBCManager implements DBManager {
 				String name = rs.getString("name");
 				String bodypart = rs.getString("bodypart");
 				float price = rs.getFloat("price");
-
 				Date date_creation = rs.getDate("date_creation");
 				ArrayList<Characteristic> characteristics = viewCharacteristicsFromProduct(id);
 				ArrayList<Material> materials = viewMaterialsFromProduct(id);
@@ -496,10 +495,29 @@ public class JDBCManager implements DBManager {
 			stmt.close();
 			return true;
 		} catch (Exception e) {
-			e.printStackTrace();
 			return false;
 		}
 
+	}
+
+	@Override
+	public boolean containsProd_Ch(Product prod, Characteristic ch) {
+		try {
+			String sql = "SELECT product_id, characteristic_id FROM products_characteristics WHERE product_id=? AND characteristic_id=?";
+			PreparedStatement stmt = c.prepareStatement(sql);
+			stmt.setInt(1, prod.getId());
+			stmt.setInt(2, ch.getId());
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				rs.close();
+				stmt.close();
+				return true;
+			}
+			return false;
+		} catch (SQLException e) {
+
+			return false;
+		}
 	}
 
 	@Override
@@ -507,9 +525,7 @@ public class JDBCManager implements DBManager {
 		try {
 			String sql = "DELETE FROM products_characteristics WHERE product_id=? AND characteristic_id=?";
 			PreparedStatement prep;
-
 			prep = c.prepareStatement(sql);
-
 			prep.setInt(1, prod.getId());
 			prep.setInt(2, ch.getId());
 			prep.executeUpdate();
@@ -524,7 +540,6 @@ public class JDBCManager implements DBManager {
 			String sql = "DELETE FROM products_characteristics WHERE product_id=?";
 			PreparedStatement prep;
 			prep = c.prepareStatement(sql);
-
 			prep.setInt(1, prod.getId());
 			prep.executeUpdate();
 		} catch (SQLException e) {
@@ -572,10 +587,28 @@ public class JDBCManager implements DBManager {
 			stmt.close();
 			return true;
 		} catch (Exception e) {
-			e.printStackTrace();
 			return false;
 		}
 
+	}
+
+	@Override
+	public boolean containsProd_Mat(Product prod, Material mat) {
+		try {
+			String sql = "SELECT product_id, material_id FROM products_materials WHERE product_id=? AND material_id=?";
+			PreparedStatement stmt = c.prepareStatement(sql);
+			stmt.setInt(1, prod.getId());
+			stmt.setInt(2, mat.getId());
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				rs.close();
+				stmt.close();
+				return true;
+			}
+			return false;
+		} catch (SQLException e) {
+			return false;
+		}
 	}
 
 	@Override
@@ -644,14 +677,13 @@ public class JDBCManager implements DBManager {
 			stmt.close();
 			return true;
 		} catch (Exception e) {
-			e.printStackTrace();
 			return false;
 		}
 
 	}
 
 	@Override
-	public void removeEng_Prod(Product prod) {
+	public void removeAllEng_Prod(Product prod) {
 		try {
 			String sql = "DELETE FROM engineers_products WHERE product_id=?";
 			PreparedStatement prep;
@@ -863,7 +895,7 @@ public class JDBCManager implements DBManager {
 	public List<Engineer> searchEngineerByName(String name_surname_) {
 		List<Engineer> engineers = new ArrayList<>();
 		try {
-			String sql = "SELECT id,name_surname FROM engineers WHERE name_surname LIKE ?";
+			String sql = "SELECT id,name_surname FROM engineers WHERE name_surname LIKE ? ORDER BY id";
 			PreparedStatement stmt = c.prepareStatement(sql);
 			stmt.setString(1, "%" + name_surname_ + "%");
 			ResultSet rs = stmt.executeQuery();
@@ -886,6 +918,10 @@ public class JDBCManager implements DBManager {
 		try {
 			System.out.println("Introduce the new name for the product: ");
 			String name = reader.readLine();
+			if (name.isBlank()) {
+				System.out.println("The prosthesis' name cannot be blank.");
+				return;
+			}
 			String sql = "UPDATE products SET name=? WHERE id=?";
 			PreparedStatement prep = c.prepareStatement(sql);
 			prep.setString(1, name);
@@ -904,6 +940,10 @@ public class JDBCManager implements DBManager {
 		try {
 			System.out.println("Introduce the new bodypart for the product: ");
 			String bodypart = reader.readLine();
+			if (bodypart.isBlank()) {
+				System.out.println("The prosthesis' bodypart cannot be blank.");
+				return;
+			}
 			String sql = "UPDATE products SET bodypart=? WHERE id=?";
 			PreparedStatement prep = c.prepareStatement(sql);
 			prep.setString(1, bodypart);
@@ -922,6 +962,10 @@ public class JDBCManager implements DBManager {
 		try {
 			System.out.println("Introduce the new price for the product: ");
 			Float price = io.getFloatFromKeyboard();
+			if (price <= 0) {
+				System.out.println("The prosthesis' price has to be greater than 0.");
+				return;
+			}
 			String sql = "UPDATE products SET price=? WHERE id=?";
 			PreparedStatement prep = c.prepareStatement(sql);
 			prep.setFloat(1, price);
@@ -934,9 +978,10 @@ public class JDBCManager implements DBManager {
 	}
 
 	@Override
-	public void updateProductCharacteristics(Product prod) {
-		try {
-			while (true) {
+	public void updateProductCharacteristics(Product prod) throws Exception, SQLException {
+
+		while (true) {
+			try {
 
 				System.out.println("\nType ADD if you want to add characteristics to the product, or type REMOVE if "
 						+ "you want to remove characteristics from it. \nType anything else to finish updating: ");
@@ -973,25 +1018,36 @@ public class JDBCManager implements DBManager {
 						System.out.println("The product currently has no characteristics.");
 						break;
 					}
-					System.out.println("Select the characteristic you want to remove: "
+					System.out.println("\nSelect the ID of the characteristic that you want to remove: "
 							+ viewCharacteristicsFromProduct(prod.getId()));
 					int id = io.getIntFromKeyboard();
 					Characteristic ch = getCharacteristic(id);
-					removeProd_Ch(prod, ch);
-					System.out.println("\nThe characteristic has been successfully removed.");
+					if (ch.getId() == 0) {
+						System.out.println("There is no characteristic with the ID: " + id);
+					} else {
+						if (containsProd_Ch(prod, ch)) {
+							removeProd_Ch(prod, ch);
+							System.out.println("\nThe characteristic has been successfully removed.");
+						} else {
+							System.out.println(
+									"\nThe product does not contain this characteristic, try removing another one.");
+						}
+
+					}
 				} else {
 					System.out.println("\nThe product has been successfully updated.");
 					return;
 				}
-
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
+
 		}
+
 	}
 
 	@Override
-	public void addCharacteristicsToNewProduct(Product prod) {
+	public void addCharacteristicsToNewProduct(Product prod) throws Exception, SQLException {
 		try {
 			while (true) {
 
@@ -1031,13 +1087,13 @@ public class JDBCManager implements DBManager {
 				}
 
 			}
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	@Override
-	public void updateProductMaterials(Product prod) {
+	public void updateProductMaterials(Product prod) throws Exception, SQLException {
 		try {
 			while (true) {
 				System.out.println("\nType ADD if you want to add materials to the product, or type REMOVE if "
@@ -1076,27 +1132,36 @@ public class JDBCManager implements DBManager {
 						System.out.println("The product currently has no materials.");
 						break;
 					}
-					System.out.println(
-							"Select the material you want to remove: " + viewMaterialsFromProduct(prod.getId()));
+					System.out.println("\nSelect the ID of the material that you want to remove: "
+							+ viewMaterialsFromProduct(prod.getId()));
 					int id = io.getIntFromKeyboard();
 					Material mat = getMaterial(id);
-					removeProd_Mat(prod, mat);
-					System.out.println("\nThe material has beensuccessfully removed.");
+					if (mat.getId() == 0) {
+						System.out.println("There is no material with the ID: " + id);
+					} else {
+						if (containsProd_Mat(prod, mat)) {
+							removeProd_Mat(prod, mat);
+							System.out.println("\nThe material has been successfully removed.");
+						} else {
+							System.out
+									.println("\nThe product does not contain this material, try removing another one.");
+						}
 
+					}
 				} else {
 					System.out.println("\nThe product has been successfully updated.");
 					return;
 				}
 
 			}
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 	}
 
 	@Override
-	public void addMaterialsToNewProduct(Product prod) {
+	public void addMaterialsToNewProduct(Product prod) throws Exception, SQLException {
 		try {
 			while (true) {
 				System.out.println(
@@ -1136,7 +1201,7 @@ public class JDBCManager implements DBManager {
 				}
 
 			}
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

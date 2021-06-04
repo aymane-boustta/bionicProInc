@@ -1,5 +1,6 @@
 package bionicProInc.db.ifaces;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,6 +52,8 @@ public interface DBManager {
 
 	public boolean addProd_Ch(Product prod, Characteristic ch);
 
+	public boolean containsProd_Ch(Product prod, Characteristic ch);
+
 	public void removeProd_Ch(Product prod, Characteristic ch);
 
 	public void removeAllProd_Ch(Product prod);
@@ -58,6 +61,8 @@ public interface DBManager {
 	public ArrayList<Characteristic> viewCharacteristicsFromProduct(int id);
 
 	public boolean addProd_Mat(Product prod, Material mat);
+
+	public boolean containsProd_Mat(Product prod, Material mat);
 
 	public void removeProd_Mat(Product prod, Material mat);
 
@@ -67,7 +72,7 @@ public interface DBManager {
 
 	public boolean addEng_Prod(Engineer eng, Product prod);
 
-	public void removeEng_Prod(Product prod);
+	public void removeAllEng_Prod(Product prod);
 
 	public void addEngineer(Engineer eng);
 
@@ -95,12 +100,12 @@ public interface DBManager {
 
 	public void updateProductPrice(Product prod);
 
-	public void updateProductCharacteristics(Product prod);
+	public void updateProductCharacteristics(Product prod) throws Exception, SQLException;
 
-	public void addCharacteristicsToNewProduct(Product prod);
+	public void addCharacteristicsToNewProduct(Product prod) throws Exception, SQLException;
 
-	public void updateProductMaterials(Product prod);
+	public void updateProductMaterials(Product prod) throws Exception, SQLException;
 
-	public void addMaterialsToNewProduct(Product prod);
+	public void addMaterialsToNewProduct(Product prod) throws Exception, SQLException;
 
 }
